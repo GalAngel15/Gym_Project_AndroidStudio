@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activities.HomePageActivity"
+    android:background="#100B0B">
+
+    <!-- קו אופקי עליון -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- כפתור התנתק בצד שמאל -->
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout"
+            android:textSize="14sp"
+            android:textColor="#ECF400"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+        <!-- טקסט שלום, name בצד ימין -->
+        <TextView
+            android:id="@+id/textViewWelcome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Welcome, name"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#ECF400"
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"/>
+    </LinearLayout>
+
+    <!-- כותרת -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="תוכנית אימונים"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="16dp"
+        android:textColor="#ECF400"/>
+
+    <!-- כותרות -->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:background="#DDDDDD">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="תמונה"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="שם תרגיל"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="מספר סטים"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="מספר חזרות"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="משקל"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="מנוחה"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+    </TableRow>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:background="#FFFFFF"
+        tools:listitem="@layout/item_workout_exercise"/>
+
+    <!-- כפתור לביצוע פיצ'ר נוסף -->
+    <Button
+        android:id="@+id/addExerciseFromLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת תרגיל מהמאגר"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/addCustomExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת תרגיל עצמאית"
+        android:layout_gravity="center" />
+
+</LinearLayout>

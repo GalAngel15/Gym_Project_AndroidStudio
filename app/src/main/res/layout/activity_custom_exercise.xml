@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activities.AddExerciseActivity"
+    android:background="#100B0B">
+
+    <!-- כותרת -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="יצירת תרגיל חדש"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="16dp"
+        android:textColor="#ECF400"/>
+
+    <!-- שם שריר מרכזי -->
+    <Spinner
+        android:id="@+id/typeExerciseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_spinner_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"
+        android:entries="@array/muscles"
+        android:layout_marginHorizontal="3dp"/>
+    <!-- שם התרגיל -->
+    <EditText
+        android:id="@+id/editTextExerciseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="שם התרגיל"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- כמות סטים -->
+    <EditText
+        android:id="@+id/editTextSets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="כמות סטים"
+        android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- כמות חזרות -->
+    <EditText
+        android:id="@+id/editTextReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="כמות חזרות"
+        android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- משקל -->
+    <EditText
+        android:id="@+id/editTextWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="משקל"
+        android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+    <!-- משקל -->
+    <EditText
+        android:id="@+id/additionalComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="הערות נוספות "
+        android:inputType="number"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCCCCC"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- כפתור הוספת תרגיל -->
+    <Button
+        android:id="@+id/buttonAddExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוסף תרגיל"
+        android:layout_gravity="center"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

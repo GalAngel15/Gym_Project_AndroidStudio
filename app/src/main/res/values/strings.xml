@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Gym Project</string>
+
+    <string-array name="muscles">
+        <item>שריר מרכזי</item>
+        <item>גב</item>
+        <item>כתפיים</item>
+        <item>חזה</item>
+        <item>בטן</item>
+        <item>יד קדמית</item>
+        <item>יד אחורית</item>
+        <item>רגליים</item>
+    </string-array>
+</resources>

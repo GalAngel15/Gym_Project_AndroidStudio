@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "578740618814",
+    "project_id": "gymproject-f232c",
+    "storage_bucket": "gymproject-f232c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578740618814:android:85bc3e0e7e16beab79736f",
+        "android_client_info": {
+          "package_name": "com.example.gymproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2622QJZh8DYfOAxgie3vzyNFgbOuqnQ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

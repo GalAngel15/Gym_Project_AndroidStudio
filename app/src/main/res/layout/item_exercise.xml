@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/rounded_corners_background"
+    android:layout_marginBottom="8dp">
+
+    <!-- תמונה של התרגיל -->
+    <ImageView
+        android:id="@+id/imageViewExercise"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- טקסט של שם התרגיל -->
+    <TextView
+        android:id="@+id/textViewExerciseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="שם תרגיל"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- כפתור הוספה -->
+    <ImageButton
+        android:id="@+id/btnAdd"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/baseline_add"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="הוסף"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp"/>
+
+</LinearLayout>
