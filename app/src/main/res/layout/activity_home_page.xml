@@ -128,15 +128,14 @@
         android:background="#FFFFFF"
         tools:listitem="@layout/item_workout_exercise"/>
 
-    <!-- כפתור לביצוע פיצ'ר נוסף -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/addExerciseFromLibrary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="הוספת תרגיל מהמאגר"
         android:layout_gravity="center" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/addCustomExercise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
