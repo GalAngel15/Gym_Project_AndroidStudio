@@ -1,7 +1,7 @@
 package com.example.gymproject.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,31 +22,54 @@ public class HomePageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ExerciseAdapter adapter;
     private List<Exercise> exerciseList;
-    private Button btnOtherFeature;
+    private Button btnLogout;
+    private FirebaseAuth mAuth;
+    private TextView textViewUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        initView();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize exercise list and adapter
         exerciseList = new ArrayList<>();
 
+
         exerciseList.add(new Exercise("תרגיל 1", "url_to_image", 3, 12, 20, 60,""));
         exerciseList.add(new Exercise("תרגיל 2", "url_to_image", 4, 10, 25, 90,""));
-        TextView textViewUsername = findViewById(R.id.textViewWelcome);
 
         adapter = new ExerciseAdapter(this, exerciseList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
             textViewUsername.setText("Welcome, " + userName + "!");
         }
+        logout();
+    }
+
+    private void initView() {
+        recyclerView = findViewById(R.id.recyclerView);
+        textViewUsername = findViewById(R.id.textViewWelcome);
+
+
+    }
+
+    public void logout() {
+        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(v -> {
+            mAuth.signOut();
+            Toast.makeText(HomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }
