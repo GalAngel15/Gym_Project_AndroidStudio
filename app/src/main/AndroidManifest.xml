@@ -30,6 +30,7 @@
         <activity android:name=".activities.RegisterActivity" android:exported="false" />
         <activity android:name=".activities.HomePageActivity" android:exported="false" />
         <activity android:name=".activities.AddExerciseActivity" android:exported="false" />
+        <activity android:name=".activities.AddExerciseFromLibraryActivity" android:exported="false" />
 
     </application>
 

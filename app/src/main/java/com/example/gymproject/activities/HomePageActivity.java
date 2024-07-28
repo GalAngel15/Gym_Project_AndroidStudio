@@ -33,7 +33,7 @@ public class HomePageActivity extends AppCompatActivity {
         initButtons();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-//        addExercise();
+        addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
@@ -72,7 +72,7 @@ public class HomePageActivity extends AppCompatActivity {
         //add exercise from library button
         addExerciseFromLibrary.setOnClickListener(v -> {
 
-            Intent intent = new Intent(HomePageActivity.this, AddExerciseActivity.class);
+            Intent intent = new Intent(HomePageActivity.this, AddExerciseFromLibraryActivity.class);
             startActivity(intent);
         });
 

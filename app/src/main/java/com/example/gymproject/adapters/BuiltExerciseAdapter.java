@@ -43,13 +43,13 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
 
         ImageLoader.getInstance().load(imageUrl, holder.imageViewExercise);
 
-        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // קריאה לפונקציה שתבצע את הפעולה הרצויה
-                onAddButtonClick(exercise);
-            }
-        });
+//        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // קריאה לפונקציה שתבצע את הפעולה הרצויה
+//                onAddButtonClick(exercise);
+//            }
+//        });
     }
 
     @Override
