@@ -1,6 +1,7 @@
 package com.example.gymproject.models;
 
-public class Exercise {
+public class CustomExercise {
+    private String mainMuscle;
     private String name;
     private String imageUrl;
     private int sets;
@@ -10,10 +11,11 @@ public class Exercise {
     private String other;
 
     // בונה ברירת מחדל דרוש לפעולה של Firebase
-    public Exercise() {
+    public CustomExercise() {
     }
 
-    public Exercise(String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
+    public CustomExercise(String mainMuscle, String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
+        this.mainMuscle=mainMuscle;
         this.name = name;
         this.imageUrl = imageUrl;
         this.sets = sets;
@@ -22,8 +24,22 @@ public class Exercise {
         this.rest = rest;
         this.other = other;
     }
+    public CustomExercise(String mainMuscle, String name, String imageUrl) {
+        this.mainMuscle=mainMuscle;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.sets = 0;
+        this.reps = 0;
+        this.weight = 0;
+        this.rest = 0;
+        this.other = "";
+    }
 
     // Getters and Setters
+    public String getMainMuscle() {
+        return mainMuscle;
+    }
+
     public String getName() {
         return name;
     }

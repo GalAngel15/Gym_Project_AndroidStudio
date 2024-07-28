@@ -60,50 +60,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:text="תמונה"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="שם תרגיל"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="מספר סטים"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="מספר חזרות"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="משקל"
-            android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:padding="8dp"
             android:gravity="center" />
 
@@ -113,9 +73,40 @@
             android:layout_weight="1"
             android:text="מנוחה"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:padding="8dp"
             android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="משקל"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="חזרות"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="סטים"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
     </TableRow>
 
     <!-- RecyclerView -->
@@ -124,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
+        android:padding="4dp"
         android:background="#FFFFFF"
         tools:listitem="@layout/item_workout_exercise"/>
 

@@ -1,15 +1,12 @@
 package com.example.gymproject.activities;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
-import com.example.gymproject.models.Exercise;
 
 import java.util.ArrayList;
 import java.util.List;

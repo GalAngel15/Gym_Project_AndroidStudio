@@ -8,14 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
-import com.example.gymproject.models.Exercise;
+import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.gson.Gson;
 
 
-public class AddExerciseActivity extends AppCompatActivity {
+public class AddExerciseActivity extends BaseActivity {
     private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, additionalComments;
     private Spinner typeExerciseName;
     private Button buttonAddExercise;
@@ -71,11 +70,22 @@ public class AddExerciseActivity extends AppCompatActivity {
                     Toast.makeText(AddExerciseActivity.this, "אנא מלא את כל השדות", Toast.LENGTH_SHORT).show();
                 } else {
                     //save successfully
-                    Exercise exercise= new Exercise(exerciseName, "", sets,reps,weight,0,other);
+//                    Exercise exercise= new Exercise(selectedMuscle,exerciseName, "", sets,reps,weight,0,other);
+                    DatabaseUtils.addCustomUserExercise(
+                            currentUser.getUid(),
+                            "1",
+                            selectedMuscle,
+                            exerciseName,
+                            "custom_url_to_image",
+                            sets,
+                            reps,
+                            weight,
+                            60,
+                            other
+                    );
+
                     Toast.makeText(AddExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddExerciseActivity.this, HomePageActivity.class);
-                    String json=gson.toJson(exercise);
-                    intent.putExtra("newExercise", json);
                     startActivity(intent);
                 }
             }
@@ -88,7 +98,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         String repsString = editTextReps.getText().toString();
         String weightString = editTextWeight.getText().toString();
         other = additionalComments.getText().toString();
-        if (exerciseName.isEmpty() || setsString.isEmpty() || repsString.isEmpty() || weightString.isEmpty()) {
+        if (selectedMuscle==null ||exerciseName.isEmpty() || setsString.isEmpty() || repsString.isEmpty() || weightString.isEmpty()) {
             return false;
         }
         sets=Integer.parseInt(setsString);
@@ -96,5 +106,7 @@ public class AddExerciseActivity extends AppCompatActivity {
         weight=Integer.parseInt(weightString);
         return true;
     }
+
+
 
 }

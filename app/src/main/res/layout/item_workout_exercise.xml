@@ -3,61 +3,77 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="#EEEEEE">
+    android:background="#EEEEEE"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/imageViewExercise"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_weight="1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="centerCrop"
         android:padding="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
-        />
+        android:gravity="center" />
 
-    <TextView
-        android:id="@+id/textViewExerciseName"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="שם"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/textViewSets"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="סטים"/>
+        <TextView
+            android:id="@+id/textViewExerciseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="שם התרגיל"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textViewReps"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="חזרות"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
 
-    <TextView
-        android:id="@+id/textViewWeight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="משקל"/>
+            <TextView
+                android:id="@+id/textViewRest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center"
+                android:text="מנוחה"/>
 
-    <TextView
-        android:id="@+id/textViewRest"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="מנוחה"/>
+            <TextView
+                android:id="@+id/textViewWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center"
+                android:text="משקל"/>
+
+            <TextView
+                android:id="@+id/textViewReps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center"
+                android:text="חזרות"/>
+
+
+            <TextView
+                android:id="@+id/textViewSets"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center"
+                android:text="סטים"/>
+
+        </LinearLayout>
+    </LinearLayout>
 </TableRow>

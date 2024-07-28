@@ -6,19 +6,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
-import com.example.gymproject.adapters.ExerciseAdapter;
 import com.example.gymproject.managers.WorkoutPlanManager;
-import com.example.gymproject.models.Exercise;
+import com.example.gymproject.models.CustomExercise;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class HomePageActivity extends AppCompatActivity {
     private Button btnLogout;
@@ -37,12 +33,22 @@ public class HomePageActivity extends AppCompatActivity {
         initButtons();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+//        addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
             textViewUsername.setText("Welcome, " + userName + "!");
         }
         planManager = new WorkoutPlanManager(this, currentUser);
+    }
+
+    private void addExercise() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference exercisesRef = database.getReference("exercisesWarehouse");
+        CustomExercise exercise1=new CustomExercise("chest","bench press","https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/04/10-Exercises-Build-Muscle-Bench-Press.jpg?quality=86&strip=all");
+        CustomExercise exercise2=new CustomExercise("back","pull-ups","https://youfit.com/wp-content/uploads/2022/11/pull-ups-for-beginners.jpg");
+        exercisesRef.child("E1").setValue(exercise1);
+        exercisesRef.child("E2").setValue(exercise2);
     }
 
     private void initView() {

@@ -7,19 +7,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.activities.HomePageActivity;
-import com.example.gymproject.activities.LoginActivity;
-import com.example.gymproject.adapters.ExerciseAdapter;
-import com.example.gymproject.models.Exercise;
+import com.example.gymproject.adapters.CustomExerciseAdapter;
+import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.util.Log;
+
 
 public class WorkoutPlanManager {
     FirebaseUser currentUser;
     private RecyclerView recyclerView;
-    private ExerciseAdapter adapter;
-    private List<Exercise> exerciseList;
+    private CustomExerciseAdapter adapter;
+    private List<CustomExercise> exerciseList;
     private Context context;
 
     public WorkoutPlanManager(Context context, FirebaseUser currentUser) {
@@ -29,19 +36,40 @@ public class WorkoutPlanManager {
         init();
     }
 
-    public void init(){
+    public void init() {
         this.recyclerView = ((HomePageActivity) context).findViewById(R.id.recyclerView);
-        initExerciseList();
-        adapter = new ExerciseAdapter(context, exerciseList);
-        recyclerView.setAdapter(adapter);
+        adapter = new CustomExerciseAdapter(context, exerciseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
+        loadExerciseList("1"); // העברת ה-ID של תוכנית האימונים הנוכחית
     }
 
-    private void initExerciseList() {
-        exerciseList.add(new Exercise("תרגיל 1", "url_to_image", 3, 12, 20, 60,""));
-        exerciseList.add(new Exercise("תרגיל 2", "url_to_image", 4, 10, 25, 90,""));
+    private void loadExerciseList(String workoutPlanId) {
+        DatabaseUtils.loadUserWorkoutPlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                exerciseList.clear();
+                if (!dataSnapshot.exists()) {
+                    System.out.println("No exercises found in the warehouse.");
+                    return;
+                }
 
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CustomExercise exercise = snapshot.getValue(CustomExercise.class);
+                    if (exercise != null) {
+                        Log.e("Exercise", "Loaded exercise: " + exercise.getName() + ", Sets: " + exercise.getSets() + ", Reps: " + exercise.getReps());
+                        exerciseList.add(exercise);
+                    } else {
+                        Log.e("Exercise", "Exercise is null");
+                    }
+                }
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("WorkoutPlanManager", "Error loading exercise: " + databaseError.getMessage());
+            }
+        });
     }
 
 }

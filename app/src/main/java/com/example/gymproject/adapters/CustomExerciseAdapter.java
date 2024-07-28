@@ -11,17 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
-import com.example.gymproject.models.Exercise;
+import com.example.gymproject.models.CustomExercise;
 
 
 import java.util.List;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
+public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAdapter.ExerciseViewHolder> {
 
     private Context context;
-    private List<Exercise> exerciseList;
+    private List<CustomExercise> exerciseList;
 
-    public ExerciseAdapter(Context context, List<Exercise> exerciseList) {
+    public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList) {
         this.context = context;
         this.exerciseList = exerciseList;
     }
@@ -35,7 +35,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
-        Exercise exercise = exerciseList.get(position);
+        CustomExercise exercise = exerciseList.get(position);
         holder.textViewExerciseName.setText(exercise.getName());
         holder.textViewSets.setText(String.valueOf(exercise.getSets()));
         holder.textViewReps.setText(String.valueOf(exercise.getReps()));
