@@ -2,40 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="8dp"
     android:background="@drawable/rounded_corners_background"
     android:layout_marginBottom="8dp">
 
-    <!-- תמונה של התרגיל -->
-    <ImageView
-        android:id="@+id/imageViewExercise"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"/>
-
-    <!-- טקסט של שם התרגיל -->
-    <TextView
-        android:id="@+id/textViewExerciseName"
-        android:layout_width="0dp"
+    <!-- פריסה ראשית -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="שם תרגיל"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:layout_gravity="center_vertical"/>
+        android:orientation="horizontal">
 
-    <!-- כפתור הוספה -->
-    <ImageButton
-        android:id="@+id/btnAdd"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/baseline_add"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="הוסף"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="16dp"/>
+        <!-- תמונה של התרגיל -->
+        <ImageView
+            android:id="@+id/imageViewExercise"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"/>
 
+        <!-- טקסט של שם התרגיל -->
+        <TextView
+            android:id="@+id/textViewExerciseName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="שם תרגיל"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+
+        <!-- כפתור הוספה -->
+        <ImageButton
+            android:id="@+id/btnShowInputFields"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_add"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="הוסף"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"/>
+    </LinearLayout>
+
+    <!-- פריסה נוספת לקלט מהמשתמש -->
+    <LinearLayout
+        android:id="@+id/inputDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:visibility="visible">
+
+        <!-- שדות קלט -->
+        <EditText
+            android:id="@+id/inputSets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/hints"
+            android:hint="הזן מספר סטים"
+            android:textColor="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/inputReps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/hints"
+            android:hint="הזן מספר חזרות"
+            android:textColor="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/inputWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="הזן משקל"
+            android:textColorHint="@color/hints"
+            android:textColor="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/inputRest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="הזן זמן מנוחה (בשניות)"
+            android:textColorHint="@color/hints"
+            android:textColor="#FFFFFF"/>
+
+        <EditText
+            android:id="@+id/inputNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="הזן הערות"
+            android:textColorHint="@color/hints"
+            android:textColor="#FFFFFF"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddBuiltExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"/>
+
+    </LinearLayout>
 </LinearLayout>

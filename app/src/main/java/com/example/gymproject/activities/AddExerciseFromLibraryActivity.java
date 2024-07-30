@@ -41,7 +41,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity {
         setContentView(R.layout.activity_our_exercises);
         exerciseList = new ArrayList<>();
         initViews();
-        initButtons();
+        //initButtons();
         ImageLoader.init(this);
     }
 
@@ -53,6 +53,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity {
         recyclerView=findViewById(R.id.ourExercisesRecyclerView);
         adapter = new BuiltExerciseAdapter(this, exerciseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         DatabaseUtils.loadAllWarehouseExercises(new ValueEventListener() {
             @Override

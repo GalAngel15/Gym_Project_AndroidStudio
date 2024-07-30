@@ -1,20 +1,23 @@
 package com.example.gymproject.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.models.BuiltExercise;
-import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.utilities.ImageLoader;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
     @NonNull
     @Override
     public BuiltExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_workout_exercise, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_built_exercise, parent, false);
         return new BuiltExerciseViewHolder(view);
     }
 
@@ -43,13 +46,27 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
 
         ImageLoader.getInstance().load(imageUrl, holder.imageViewExercise);
 
-//        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // קריאה לפונקציה שתבצע את הפעולה הרצויה
-//                onAddButtonClick(exercise);
-//            }
-//        });
+        // הגדרת הפעולה בלחיצה על הכפתור
+        if (holder.btnShowInputFields == null) {
+            Log.e("BuiltExerciseAdapter", "btnAdd is null at position: " + position);
+        } else {
+            holder.btnShowInputFields.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(holder.inputDetailsLayout.getVisibility() == View.VISIBLE){
+                        holder.inputDetailsLayout.setVisibility(View.GONE);
+                    }else{
+                        holder.inputDetailsLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
+        holder.btnAddBuiltExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Exercise added successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -61,17 +78,18 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
 
         ImageView imageViewExercise;
         TextView textViewExerciseName;
-        ImageButton btnAdd;
+        ImageButton btnShowInputFields;
+        MaterialButton btnAddBuiltExercise;
+        LinearLayout inputDetailsLayout;
 
 
         public BuiltExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewExercise = itemView.findViewById(R.id.imageViewExercise);
             textViewExerciseName = itemView.findViewById(R.id.textViewExerciseName);
-            btnAdd = itemView.findViewById(R.id.btnAdd);
+            btnShowInputFields = itemView.findViewById(R.id.btnShowInputFields);
+            inputDetailsLayout = itemView.findViewById(R.id.inputDetailsLayout);
+            btnAddBuiltExercise = itemView.findViewById(R.id.btnAddBuiltExercise);
         }
-    }
-    private void onAddButtonClick(BuiltExercise exercise) {
-        return;
     }
 }
