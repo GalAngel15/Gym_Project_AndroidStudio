@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
+import com.example.gymproject.interfaces.OnExerciseSaveListener;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.utilities.ImageLoader;
 import com.google.android.material.button.MaterialButton;
@@ -25,10 +26,12 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
 
     private Context context;
     private List<BuiltExercise> exerciseList;
+    private OnExerciseSaveListener onExerciseSaveListener;
 
-    public BuiltExerciseAdapter(Context context, List<BuiltExercise> exerciseList) {
+    public BuiltExerciseAdapter(Context context, List<BuiltExercise> exerciseList, OnExerciseSaveListener onExerciseSaveListener) {
         this.context = context;
         this.exerciseList = exerciseList;
+        this.onExerciseSaveListener = onExerciseSaveListener;
     }
 
     @NonNull
@@ -64,7 +67,10 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
         holder.btnAddBuiltExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Exercise added successfully", Toast.LENGTH_SHORT).show();
+                int adapterPosition = holder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    onExerciseSaveListener.onSaveExercise(exerciseList.get(adapterPosition), adapterPosition);
+                }
             }
         });
     }

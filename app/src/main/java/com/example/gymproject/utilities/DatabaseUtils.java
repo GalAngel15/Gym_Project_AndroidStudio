@@ -1,5 +1,6 @@
 package com.example.gymproject.utilities;
 
+import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.models.CustomExercise;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,9 +10,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DatabaseUtils {
 
-    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static DatabaseReference exercisesWerehouseRef = database.getReference("exercisesWarehouse");
-    private static DatabaseReference userWorkoutPlansRef = database.getReference("userWorkoutPlans");
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final DatabaseReference exercisesWerehouseRef = database.getReference("exercisesWarehouse");
+    private static final DatabaseReference userWorkoutPlansRef = database.getReference("userWorkoutPlans");
 
     // פונקציה להוספת תרגיל למחסן התרגילים
     public static void addExerciseToWarehouse(String exerciseId, String mainMuscle, String name, String imageUrl) {
@@ -58,5 +59,17 @@ public class DatabaseUtils {
     // פונקציה לטעינת כל התרגילים במחסן
     public static void loadAllWarehouseExercises(ValueEventListener listener) {
         exercisesWerehouseRef.addListenerForSingleValueEvent(listener);
+    }
+
+    public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, CustomExercise exercise, OnExerciseSavedListener listener) {
+        DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises");
+        String exerciseId = customExercisesRef.push().getKey();
+        if (exerciseId != null) {
+            customExercisesRef.child(exerciseId).setValue(exercise)
+                    .addOnSuccessListener(aVoid -> listener.onSuccess())
+                    .addOnFailureListener(listener::onFailure);
+        } else {
+            listener.onFailure(new Exception("Failed to generate exercise ID"));
+        }
     }
 }

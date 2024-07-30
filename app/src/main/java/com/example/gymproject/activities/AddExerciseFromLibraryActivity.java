@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gymproject.R;
 import com.example.gymproject.adapters.BuiltExerciseAdapter;
 import com.example.gymproject.adapters.CustomExerciseAdapter;
+import com.example.gymproject.interfaces.OnExerciseSaveListener;
+import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddExerciseFromLibraryActivity extends BaseActivity {
+public class AddExerciseFromLibraryActivity extends BaseActivity implements OnExerciseSaveListener {
     private Button buttonAddExercise;
     private String selectedMuscle, exerciseName, other;
     private TextView textViewExerciseName;
@@ -34,6 +38,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private BuiltExerciseAdapter adapter;
     private List<BuiltExercise> exerciseList;
+    private EditText inputSets, inputReps, inputWeight, inputRest, inputNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +46,27 @@ public class AddExerciseFromLibraryActivity extends BaseActivity {
         setContentView(R.layout.activity_our_exercises);
         exerciseList = new ArrayList<>();
         initViews();
-        //initButtons();
         ImageLoader.init(this);
+        loadExercises();
     }
 
     private void initViews() {
+        inputSets = findViewById(R.id.inputSets);
+        inputReps = findViewById(R.id.inputReps);
+        inputWeight = findViewById(R.id.inputWeight);
+        inputRest = findViewById(R.id.inputRest);
+        inputNotes = findViewById(R.id.inputNotes);
+
         textViewExerciseName= findViewById(R.id.textViewExerciseName);
         imageViewExercise= findViewById(R.id.imageViewExercise);
-        buttonAddExercise = findViewById(R.id.btnAddBuiltExercise);
-
+        exerciseList = new ArrayList<>();
         recyclerView=findViewById(R.id.ourExercisesRecyclerView);
-        adapter = new BuiltExerciseAdapter(this, exerciseList);
+        adapter = new BuiltExerciseAdapter(this, exerciseList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
 
+    private void loadExercises() {
         DatabaseUtils.loadAllWarehouseExercises(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,17 +97,40 @@ public class AddExerciseFromLibraryActivity extends BaseActivity {
         });
     }
 
-    private void initButtons() {
-        onSaveButtonClick();
-    }
+    @Override
+    public void onSaveExercise(BuiltExercise exercise, int position) {
+        // מציאת הפריט המתאים ב-RecyclerView על פי המיקום (position)
+        View itemView = recyclerView.getLayoutManager().findViewByPosition(position);
+        if (itemView != null) {
+            inputSets = itemView.findViewById(R.id.inputSets);
+            inputReps = itemView.findViewById(R.id.inputReps);
+            inputWeight = itemView.findViewById(R.id.inputWeight);
+            inputRest = itemView.findViewById(R.id.inputRest);
+            inputNotes = itemView.findViewById(R.id.inputNotes);
 
+            String sets = inputSets.getText().toString();
+            String reps = inputReps.getText().toString();
+            String weight = inputWeight.getText().toString();
+            String rest = inputRest.getText().toString();
+            String notes = inputNotes.getText().toString();
 
-    public void onSaveButtonClick() {
-        buttonAddExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (sets.isEmpty() || reps.isEmpty() || weight.isEmpty() || rest.isEmpty()) {
+                Log.e("Exercise", "empty field");
                 return;
             }
-        });
+
+            CustomExercise customExercise = new CustomExercise(exercise.getMainMuscle(), exercise.getName(), exercise.getImageUrl(), Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
+            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", customExercise, new OnExerciseSavedListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(AddExerciseFromLibraryActivity.this, "Exercise saved successfully", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast.makeText(AddExerciseFromLibraryActivity.this, "Failed to save exercise", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }
