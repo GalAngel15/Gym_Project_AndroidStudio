@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
 import com.example.gymproject.managers.WorkoutPlanManager;
+import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,12 +45,10 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void addExercise() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference exercisesRef = database.getReference("exercisesWarehouse");
-        CustomExercise exercise1=new CustomExercise("chest","bench press","https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/04/10-Exercises-Build-Muscle-Bench-Press.jpg?quality=86&strip=all");
-        CustomExercise exercise2=new CustomExercise("back","pull-ups","https://youfit.com/wp-content/uploads/2022/11/pull-ups-for-beginners.jpg");
-        exercisesRef.child("E1").setValue(exercise1);
-        exercisesRef.child("E2").setValue(exercise2);
+        BuiltExercise exercise1=new BuiltExercise("chest","bench press","https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/04/10-Exercises-Build-Muscle-Bench-Press.jpg?quality=86&strip=all");
+        BuiltExercise exercise2=new BuiltExercise("back","pull-ups","https://youfit.com/wp-content/uploads/2022/11/pull-ups-for-beginners.jpg");
+        DatabaseUtils.addExerciseToWarehouse2("E1",exercise1);
+        DatabaseUtils.addExerciseToWarehouse2("E2",exercise2);
     }
 
     private void initView() {

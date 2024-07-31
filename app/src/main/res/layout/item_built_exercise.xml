@@ -59,6 +59,7 @@
             android:id="@+id/inputSets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:textColorHint="@color/hints"
             android:hint="הזן מספר סטים"
             android:textColor="#FFFFFF"/>
@@ -67,6 +68,7 @@
             android:id="@+id/inputReps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:textColorHint="@color/hints"
             android:hint="הזן מספר חזרות"
             android:textColor="#FFFFFF"/>
@@ -75,6 +77,7 @@
             android:id="@+id/inputWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="הזן משקל"
             android:textColorHint="@color/hints"
             android:textColor="#FFFFFF"/>
@@ -83,6 +86,7 @@
             android:id="@+id/inputRest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="הזן זמן מנוחה (בשניות)"
             android:textColorHint="@color/hints"
             android:textColor="#FFFFFF"/>

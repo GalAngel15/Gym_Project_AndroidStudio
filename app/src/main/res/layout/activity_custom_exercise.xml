@@ -28,7 +28,8 @@
         android:padding="8dp"
         android:layout_marginBottom="16dp"
         android:entries="@array/muscles"
-        android:layout_marginHorizontal="3dp"/>
+        android:layout_marginHorizontal="3dp"
+        android:autofillHints="main muscle"/>
     <!-- שם התרגיל -->
     <EditText
         android:id="@+id/editTextExerciseName"
@@ -85,7 +86,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="הערות נוספות "
-        android:inputType="number"
         android:textColor="#000000"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"

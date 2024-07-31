@@ -1,7 +1,9 @@
 package com.example.gymproject.utilities;
 
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
+import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.models.PartialCustomExercise;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +18,10 @@ public class DatabaseUtils {
 
     // פונקציה להוספת תרגיל למחסן התרגילים
     public static void addExerciseToWarehouse(String exerciseId, String mainMuscle, String name, String imageUrl) {
-        CustomExercise exercise = new CustomExercise(mainMuscle, name, imageUrl);
+        BuiltExercise exercise = new BuiltExercise(mainMuscle, name, imageUrl);
+        exercisesWerehouseRef.child(exerciseId).setValue(exercise);
+    }
+    public static void addExerciseToWarehouse2(String exerciseId, BuiltExercise exercise) {
         exercisesWerehouseRef.child(exerciseId).setValue(exercise);
     }
 
@@ -61,7 +66,7 @@ public class DatabaseUtils {
         exercisesWerehouseRef.addListenerForSingleValueEvent(listener);
     }
 
-    public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, CustomExercise exercise, OnExerciseSavedListener listener) {
+    public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, OnExerciseSavedListener listener) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises");
         String exerciseId = customExercisesRef.push().getKey();
         if (exerciseId != null) {

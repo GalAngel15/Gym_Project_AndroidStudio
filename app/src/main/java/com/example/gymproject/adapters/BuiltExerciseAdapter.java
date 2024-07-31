@@ -28,12 +28,14 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
     private List<BuiltExercise> exerciseList;
     private OnExerciseSaveListener onExerciseSaveListener;
 
-    public BuiltExerciseAdapter(Context context, List<BuiltExercise> exerciseList, OnExerciseSaveListener onExerciseSaveListener) {
+    public BuiltExerciseAdapter(Context context, List<BuiltExercise> exerciseList) {
         this.context = context;
         this.exerciseList = exerciseList;
-        this.onExerciseSaveListener = onExerciseSaveListener;
     }
 
+    public void setOnExerciseSaveListener(OnExerciseSaveListener listener){
+        this.onExerciseSaveListener = listener;
+    }
     @NonNull
     @Override
     public BuiltExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

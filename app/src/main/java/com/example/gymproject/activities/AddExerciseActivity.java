@@ -51,7 +51,11 @@ public class AddExerciseActivity extends BaseActivity {
         typeExerciseName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedMuscle = parent.getItemAtPosition(position).toString();
+                if (position == 0) {
+                    Toast.makeText(getApplicationContext(), "בחר שריר מרכזי", Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedMuscle = parent.getItemAtPosition(position).toString();
+                }
             }
 
             @Override

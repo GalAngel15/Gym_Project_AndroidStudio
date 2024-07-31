@@ -20,7 +20,9 @@ import com.example.gymproject.interfaces.OnExerciseSaveListener;
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.models.PartialCustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
+import com.example.gymproject.utilities.ExercisesUtiles;
 import com.example.gymproject.utilities.ImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddExerciseFromLibraryActivity extends BaseActivity implements OnExerciseSaveListener {
+public class AddExerciseFromLibraryActivity extends BaseActivity{
     private Button buttonAddExercise;
     private String selectedMuscle, exerciseName, other;
     private TextView textViewExerciseName;
@@ -61,7 +63,8 @@ public class AddExerciseFromLibraryActivity extends BaseActivity implements OnEx
         imageViewExercise= findViewById(R.id.imageViewExercise);
         exerciseList = new ArrayList<>();
         recyclerView=findViewById(R.id.ourExercisesRecyclerView);
-        adapter = new BuiltExerciseAdapter(this, exerciseList, this);
+        adapter = new BuiltExerciseAdapter(this, exerciseList);
+        adapter.setOnExerciseSaveListener(this::onSaveExercise); //init callback
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -97,7 +100,6 @@ public class AddExerciseFromLibraryActivity extends BaseActivity implements OnEx
         });
     }
 
-    @Override
     public void onSaveExercise(BuiltExercise exercise, int position) {
         // מציאת הפריט המתאים ב-RecyclerView על פי המיקום (position)
         View itemView = recyclerView.getLayoutManager().findViewByPosition(position);
@@ -114,13 +116,13 @@ public class AddExerciseFromLibraryActivity extends BaseActivity implements OnEx
             String rest = inputRest.getText().toString();
             String notes = inputNotes.getText().toString();
 
-            if (sets.isEmpty() || reps.isEmpty() || weight.isEmpty() || rest.isEmpty()) {
-                Log.e("Exercise", "empty field");
+            if (!ExercisesUtiles.checkValuesForExercise(exercise.getMainMuscle(), exercise.getName(), sets, reps, weight, rest)) {
+                Toast.makeText(AddExerciseFromLibraryActivity.this, "Invalid fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            CustomExercise customExercise = new CustomExercise(exercise.getMainMuscle(), exercise.getName(), exercise.getImageUrl(), Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
-            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", customExercise, new OnExerciseSavedListener() {
+            PartialCustomExercise partialCustomExercise = new PartialCustomExercise( Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
+            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", partialCustomExercise, new OnExerciseSavedListener() {
                 @Override
                 public void onSuccess() {
                     Toast.makeText(AddExerciseFromLibraryActivity.this, "Exercise saved successfully", Toast.LENGTH_SHORT).show();
