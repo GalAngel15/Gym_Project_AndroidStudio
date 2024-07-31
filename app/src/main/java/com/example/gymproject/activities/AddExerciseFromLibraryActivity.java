@@ -1,5 +1,6 @@
 package com.example.gymproject.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.List;
 
 
 public class AddExerciseFromLibraryActivity extends BaseActivity{
-    private Button buttonAddExercise;
+    private Button btnFinish;
     private String selectedMuscle, exerciseName, other;
     private TextView textViewExerciseName;
     private ImageView imageViewExercise;
@@ -48,6 +49,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         setContentView(R.layout.activity_our_exercises);
         exerciseList = new ArrayList<>();
         initViews();
+        initButtons();
         ImageLoader.init(this);
         loadExercises();
     }
@@ -58,6 +60,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         inputWeight = findViewById(R.id.inputWeight);
         inputRest = findViewById(R.id.inputRest);
         inputNotes = findViewById(R.id.inputNotes);
+        btnFinish= findViewById(R.id.btnFinish);
 
         textViewExerciseName= findViewById(R.id.textViewExerciseName);
         imageViewExercise= findViewById(R.id.imageViewExercise);
@@ -67,6 +70,16 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         adapter.setOnExerciseSaveListener(this::onSaveExercise); //init callback
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void initButtons() {
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddExerciseFromLibraryActivity.this, HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadExercises() {

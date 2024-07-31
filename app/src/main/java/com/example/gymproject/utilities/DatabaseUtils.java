@@ -59,6 +59,7 @@ public class DatabaseUtils {
     // פונקציה לטעינת תוכנית אימונים של משתמש
     public static void loadUserWorkoutPlan(String userId, String workoutPlanId, ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises").addListenerForSingleValueEvent(listener);
+        userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").addListenerForSingleValueEvent(listener);
     }
 
     // פונקציה לטעינת כל התרגילים במחסן

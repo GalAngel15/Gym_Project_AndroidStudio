@@ -44,10 +44,10 @@ public class WorkoutPlanManager {
     }
 
     private void loadExerciseList(String workoutPlanId) {
+        exerciseList.clear();
         DatabaseUtils.loadUserWorkoutPlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                exerciseList.clear();
                 if (!dataSnapshot.exists()) {
                     System.out.println("No exercises found in the warehouse.");
                     return;
