@@ -2,9 +2,11 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="3dp"
     android:background="#EEEEEE"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:backgroundTint="#FF3655">
 
     <ImageView
         android:id="@+id/imageViewExercise"
@@ -75,5 +77,12 @@
                 android:text="סטים"/>
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/additionalComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="הערות"/>
     </LinearLayout>
 </TableRow>

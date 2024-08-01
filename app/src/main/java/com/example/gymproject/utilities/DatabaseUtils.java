@@ -18,7 +18,7 @@ public class DatabaseUtils {
 
     // פונקציה להוספת תרגיל למחסן התרגילים
     public static void addExerciseToWarehouse(String exerciseId, String mainMuscle, String name, String imageUrl) {
-        BuiltExercise exercise = new BuiltExercise(mainMuscle, name, imageUrl);
+        BuiltExercise exercise = new BuiltExercise(exerciseId,mainMuscle, name, imageUrl);
         exercisesWerehouseRef.child(exerciseId).setValue(exercise);
     }
     public static void addExerciseToWarehouse2(String exerciseId, BuiltExercise exercise) {

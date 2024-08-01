@@ -5,9 +5,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".activities.AddExerciseActivity"
+    tools:context=".activities.CustomExerciseActivity"
     android:background="#100B0B">
 
+    <Button
+        android:id="@+id/btnReturnToHomePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="return"
+        android:textSize="14sp"
+        android:textColor="#ECF400"
+        android:padding="8dp"
+        android:gravity="center"/>
     <!-- כותרת -->
     <TextView
         android:layout_width="wrap_content"
@@ -80,7 +89,19 @@
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
         android:layout_marginBottom="16dp"/>
-    <!-- משקל -->
+    <!-- מנוחה -->
+    <EditText
+        android:id="@+id/editTextRest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="זמן מנוחה (בשניות)"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="@color/hints"
+        android:background="@android:drawable/editbox_background"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+    <!-- הערות -->
     <EditText
         android:id="@+id/additionalComments"
         android:layout_width="match_parent"

@@ -115,7 +115,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="4dp"
         android:background="#FFFFFF"
         tools:listitem="@layout/item_workout_exercise"/>
 

@@ -16,11 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.adapters.BuiltExerciseAdapter;
-import com.example.gymproject.adapters.CustomExerciseAdapter;
-import com.example.gymproject.interfaces.OnExerciseSaveListener;
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.models.BuiltExercise;
-import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.PartialCustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
 import com.example.gymproject.utilities.ExercisesUtiles;

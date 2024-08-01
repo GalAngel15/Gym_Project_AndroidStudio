@@ -1,6 +1,7 @@
 package com.example.gymproject.models;
 
 public class BuiltExercise {
+    private String id;
     private String mainMuscle;
     private String name;
     private String imageUrl;
@@ -8,10 +9,11 @@ public class BuiltExercise {
     public BuiltExercise() {
     }
 
-    public BuiltExercise(String mainMuscle, String name, String imageUrl) {
+    public BuiltExercise(String id,String mainMuscle, String name, String imageUrl) {
         this.mainMuscle = mainMuscle;
         this.name = name;
         this.imageUrl = imageUrl;
+        this.id = id;
     }
 
     public String getMainMuscle() {
@@ -36,5 +38,13 @@ public class BuiltExercise {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

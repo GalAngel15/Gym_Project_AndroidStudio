@@ -11,15 +11,16 @@ import android.widget.Toast;
 
 import com.example.gymproject.R;
 import com.example.gymproject.utilities.DatabaseUtils;
+import com.example.gymproject.utilities.ExercisesUtiles;
 import com.google.gson.Gson;
 
 
-public class AddExerciseActivity extends BaseActivity {
-    private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, additionalComments;
+public class CustomExerciseActivity extends BaseActivity {
+    private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, editTextRest, additionalComments;
     private Spinner typeExerciseName;
-    private Button buttonAddExercise;
+    private Button buttonAddExercise, btnReturnToHomePage;
     private String selectedMuscle, exerciseName, other;
-    private int sets,reps, weight;
+    private int sets,reps, weight, rest;
     private Gson gson;
 
     @Override
@@ -38,13 +39,16 @@ public class AddExerciseActivity extends BaseActivity {
         editTextSets = findViewById(R.id.editTextSets);
         editTextReps = findViewById(R.id.editTextReps);
         editTextWeight = findViewById(R.id.editTextWeight);
+        editTextRest= findViewById(R.id.editTextRest);
         additionalComments= findViewById(R.id.additionalComments);
         buttonAddExercise = findViewById(R.id.buttonAddExercise);
+        btnReturnToHomePage = findViewById(R.id.btnReturnToHomePage);
     }
 
     private void initButtons() {
         onMuscleSelected();
         onSaveButtonClick();
+        onReturnClicked();
     }
 
     public void onMuscleSelected() {
@@ -72,10 +76,8 @@ public class AddExerciseActivity extends BaseActivity {
             public void onClick(View v) {
                 checkValues();
                 if (!checkValues()) {
-                    Toast.makeText(AddExerciseActivity.this, "אנא מלא את כל השדות", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CustomExerciseActivity.this, "invalid inputs", Toast.LENGTH_SHORT).show();
                 } else {
-                    //save successfully
-//                    Exercise exercise= new Exercise(selectedMuscle,exerciseName, "", sets,reps,weight,0,other);
                     DatabaseUtils.addCustomUserExercise(
                             currentUser.getUid(),
                             "1",
@@ -85,12 +87,11 @@ public class AddExerciseActivity extends BaseActivity {
                             sets,
                             reps,
                             weight,
-                            60,
+                            rest,
                             other
                     );
-
-                    Toast.makeText(AddExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AddExerciseActivity.this, HomePageActivity.class);
+                    Toast.makeText(CustomExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
                     startActivity(intent);
                 }
             }
@@ -102,16 +103,26 @@ public class AddExerciseActivity extends BaseActivity {
         String setsString = editTextSets.getText().toString();
         String repsString = editTextReps.getText().toString();
         String weightString = editTextWeight.getText().toString();
+        String restString= editTextRest.getText().toString();
         other = additionalComments.getText().toString();
-        if (selectedMuscle==null ||exerciseName.isEmpty() || setsString.isEmpty() || repsString.isEmpty() || weightString.isEmpty()) {
+        if (!ExercisesUtiles.checkValuesForExercise(selectedMuscle, exerciseName, setsString, repsString, weightString, restString)) {
             return false;
         }
         sets=Integer.parseInt(setsString);
         reps=Integer.parseInt(repsString);
         weight=Integer.parseInt(weightString);
+        rest=Integer.parseInt(restString);
         return true;
     }
-
-
+    public void onReturnClicked() {
+        btnReturnToHomePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
 }

@@ -41,6 +41,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         holder.textViewReps.setText(String.valueOf(exercise.getReps()));
         holder.textViewWeight.setText(String.valueOf(exercise.getWeight()));
         holder.textViewRest.setText(String.valueOf(exercise.getRest()));
+        holder.additionalComments.setText(exercise.getOther());
 
     }
 
@@ -57,6 +58,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         TextView textViewReps;
         TextView textViewWeight;
         TextView textViewRest;
+        TextView additionalComments;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +68,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
             textViewReps = itemView.findViewById(R.id.textViewReps);
             textViewWeight = itemView.findViewById(R.id.textViewWeight);
             textViewRest = itemView.findViewById(R.id.textViewRest);
+            additionalComments = itemView.findViewById(R.id.additionalComments);
         }
     }
 }
