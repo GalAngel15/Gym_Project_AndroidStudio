@@ -92,6 +92,8 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     BuiltExercise exercise = snapshot.getValue(BuiltExercise.class);
                     if (exercise != null) {
+                        exercise.setId(snapshot.getKey());
+                        Log.e("ExerciseKey", "key" + snapshot.getKey());
                         Log.e("Exercise", "name" + exercise.getName() +", imageUrl: " + exercise.getImageUrl() + ", mainMuscle: " + exercise.getMainMuscle() + "\n");
                         exerciseList.add(exercise);
                     } else {
@@ -132,7 +134,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
             }
 
             PartialCustomExercise partialCustomExercise = new PartialCustomExercise( Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
-            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", partialCustomExercise, new OnExerciseSavedListener() {
+            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", partialCustomExercise,exercise.getId(), new OnExerciseSavedListener() {
                 @Override
                 public void onSuccess() {
                     Toast.makeText(AddExerciseFromLibraryActivity.this, "Exercise saved successfully", Toast.LENGTH_SHORT).show();

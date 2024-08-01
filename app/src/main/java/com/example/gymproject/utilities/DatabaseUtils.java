@@ -10,6 +10,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DatabaseUtils {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -21,8 +24,12 @@ public class DatabaseUtils {
         BuiltExercise exercise = new BuiltExercise(exerciseId,mainMuscle, name, imageUrl);
         exercisesWerehouseRef.child(exerciseId).setValue(exercise);
     }
-    public static void addExerciseToWarehouse2(String exerciseId, BuiltExercise exercise) {
-        exercisesWerehouseRef.child(exerciseId).setValue(exercise);
+    public static void addExerciseToWarehouse2(BuiltExercise exercise) {
+        Map<String, Object> exerciseData = new HashMap<>();
+        exerciseData.put("mainMuscle", exercise.getMainMuscle());
+        exerciseData.put("name", exercise.getName());
+        exerciseData.put("imageUrl", exercise.getImageUrl());
+        exercisesWerehouseRef.child(exercise.getId()).setValue(exerciseData);
     }
 
     public static void addCustomUserExercise(String userId, String workoutPlanId, String mainMuscle, String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
@@ -67,15 +74,9 @@ public class DatabaseUtils {
         exercisesWerehouseRef.addListenerForSingleValueEvent(listener);
     }
 
-    public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, OnExerciseSavedListener listener) {
-        DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises");
-        String exerciseId = customExercisesRef.push().getKey();
-        if (exerciseId != null) {
-            customExercisesRef.child(exerciseId).setValue(exercise)
-                    .addOnSuccessListener(aVoid -> listener.onSuccess())
-                    .addOnFailureListener(listener::onFailure);
-        } else {
-            listener.onFailure(new Exception("Failed to generate exercise ID"));
-        }
+    public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, String exerciseId, OnExerciseSavedListener listener) {
+        DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").child(exerciseId);
+        customExercisesRef.setValue(exercise);
     }
+
 }
