@@ -24,6 +24,8 @@ public class CustomExercise {
         this.rest = rest;
         this.other = other;
     }
+
+
     public CustomExercise(String mainMuscle, String name, String imageUrl) {
         this.mainMuscle=mainMuscle;
         this.name = name;
@@ -38,6 +40,10 @@ public class CustomExercise {
     // Getters and Setters
     public String getMainMuscle() {
         return mainMuscle;
+    }
+
+    public void setMainMuscle(String mainMuscle) {
+        this.mainMuscle = mainMuscle;
     }
 
     public String getName() {
@@ -94,5 +100,19 @@ public class CustomExercise {
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomExercise{" +
+                "mainMuscle='" + mainMuscle + '\'' +
+                ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", sets=" + sets +
+                ", reps=" + reps +
+                ", weight=" + weight +
+                ", rest=" + rest +
+                ", other='" + other + '\'' +
+                '}';
     }
 }

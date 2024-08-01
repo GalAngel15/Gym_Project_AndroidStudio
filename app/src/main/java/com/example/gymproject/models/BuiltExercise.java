@@ -47,4 +47,14 @@ public class BuiltExercise {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "BuiltExercise{" +
+                "id='" + id + '\'' +
+                ", mainMuscle='" + mainMuscle + '\'' +
+                ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
 }

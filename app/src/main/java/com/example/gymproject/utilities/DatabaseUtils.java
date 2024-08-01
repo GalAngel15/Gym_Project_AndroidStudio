@@ -1,6 +1,7 @@
 package com.example.gymproject.utilities;
 
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
+import com.example.gymproject.interfaces.OnExerciseLoadedListener ;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.PartialCustomExercise;
@@ -16,20 +17,16 @@ import java.util.Map;
 public class DatabaseUtils {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static final DatabaseReference exercisesWerehouseRef = database.getReference("exercisesWarehouse");
+    private static final DatabaseReference exercisesWarehouseRef = database.getReference("exercisesWarehouse");
     private static final DatabaseReference userWorkoutPlansRef = database.getReference("userWorkoutPlans");
 
-    // פונקציה להוספת תרגיל למחסן התרגילים
-    public static void addExerciseToWarehouse(String exerciseId, String mainMuscle, String name, String imageUrl) {
-        BuiltExercise exercise = new BuiltExercise(exerciseId,mainMuscle, name, imageUrl);
-        exercisesWerehouseRef.child(exerciseId).setValue(exercise);
-    }
-    public static void addExerciseToWarehouse2(BuiltExercise exercise) {
+
+    public static void addExerciseToWarehouse(BuiltExercise exercise) {
         Map<String, Object> exerciseData = new HashMap<>();
         exerciseData.put("mainMuscle", exercise.getMainMuscle());
         exerciseData.put("name", exercise.getName());
         exerciseData.put("imageUrl", exercise.getImageUrl());
-        exercisesWerehouseRef.child(exercise.getId()).setValue(exerciseData);
+        exercisesWarehouseRef.child(exercise.getId()).setValue(exerciseData);
     }
 
     public static void addCustomUserExercise(String userId, String workoutPlanId, String mainMuscle, String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
@@ -41,7 +38,7 @@ public class DatabaseUtils {
 
     // פונקציה להוספת תרגיל מהמחסן לתוכנית אימונים של משתמש
     public static void addWarehouseUserExercise(String userId, String workoutPlanId, String exerciseId, int sets, int reps, int weight, int rest, String other) {
-        DatabaseReference exerciseRef = exercisesWerehouseRef.child(exerciseId);
+        DatabaseReference exerciseRef = exercisesWarehouseRef.child(exerciseId);
         exerciseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,12 +63,34 @@ public class DatabaseUtils {
     // פונקציה לטעינת תוכנית אימונים של משתמש
     public static void loadUserWorkoutPlan(String userId, String workoutPlanId, ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises").addListenerForSingleValueEvent(listener);
+    }
+
+    public static void loadUserWorkoutWarehousePlan(String userId, String workoutPlanId, ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").addListenerForSingleValueEvent(listener);
+    }
+
+    public static void loadExerciseFromWarehouse(String exerciseId, final OnExerciseLoadedListener listener) {
+        exercisesWarehouseRef.child(exerciseId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                BuiltExercise builtExercise = dataSnapshot.getValue(BuiltExercise.class);
+                if (builtExercise != null) {
+                    listener.onExerciseLoaded(builtExercise);
+                } else {
+                    listener.onFailure(new Exception("Built exercise is null"));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailure(databaseError.toException());
+            }
+        });
     }
 
     // פונקציה לטעינת כל התרגילים במחסן
     public static void loadAllWarehouseExercises(ValueEventListener listener) {
-        exercisesWerehouseRef.addListenerForSingleValueEvent(listener);
+        exercisesWarehouseRef.addListenerForSingleValueEvent(listener);
     }
 
     public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, String exerciseId, OnExerciseSavedListener listener) {
