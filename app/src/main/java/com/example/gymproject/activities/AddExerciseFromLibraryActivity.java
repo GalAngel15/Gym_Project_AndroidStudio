@@ -102,7 +102,6 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                 }
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override

@@ -83,7 +83,7 @@ public class CustomExerciseActivity extends BaseActivity {
                             "1",
                             selectedMuscle,
                             exerciseName,
-                            "custom_url_to_image",
+                            "",
                             sets,
                             reps,
                             weight,

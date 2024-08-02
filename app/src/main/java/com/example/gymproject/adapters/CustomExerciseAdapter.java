@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.utilities.ImageLoader;
 
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         CustomExercise exercise = exerciseList.get(position);
+        if(!exercise.getImageUrl().isEmpty())
+            ImageLoader.getInstance().load(exercise.getImageUrl(), holder.imageViewExercise);
         holder.textViewExerciseName.setText(exercise.getName());
         holder.textViewSets.setText(String.valueOf(exercise.getSets()));
         holder.textViewReps.setText(String.valueOf(exercise.getReps()));
