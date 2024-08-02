@@ -32,51 +32,33 @@ import java.util.List;
 
 
 public class AddExerciseFromLibraryActivity extends BaseActivity{
-    private Button btnFinish;
-    private String selectedMuscle, exerciseName, other;
-    private TextView textViewExerciseName;
-    private ImageView imageViewExercise;
     private RecyclerView recyclerView;
     private BuiltExerciseAdapter adapter;
     private List<BuiltExercise> exerciseList;
-    private EditText inputSets, inputReps, inputWeight, inputRest, inputNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_our_exercises);
         exerciseList = new ArrayList<>();
-        initViews();
+        initRecyclerView();
         initButtons();
         ImageLoader.init(this);
         loadExercises();
     }
 
-    private void initViews() {
-        inputSets = findViewById(R.id.inputSets);
-        inputReps = findViewById(R.id.inputReps);
-        inputWeight = findViewById(R.id.inputWeight);
-        inputRest = findViewById(R.id.inputRest);
-        inputNotes = findViewById(R.id.inputNotes);
-        btnFinish= findViewById(R.id.btnFinish);
-
-        textViewExerciseName= findViewById(R.id.textViewExerciseName);
-        imageViewExercise= findViewById(R.id.imageViewExercise);
-        exerciseList = new ArrayList<>();
-        recyclerView=findViewById(R.id.ourExercisesRecyclerView);
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.ourExercisesRecyclerView);
         adapter = new BuiltExerciseAdapter(this, exerciseList);
-        adapter.setOnExerciseSaveListener(this::onSaveExercise); //init callback
+        adapter.setOnExerciseSaveListener(this::onSaveExercise);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
     private void initButtons() {
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddExerciseFromLibraryActivity.this, HomePageActivity.class);
-                startActivity(intent);
-            }
+        findViewById(R.id.btnFinish).setOnClickListener(v->{
+            Intent intent = new Intent(AddExerciseFromLibraryActivity.this, HomePageActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -94,16 +76,12 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                     BuiltExercise exercise = snapshot.getValue(BuiltExercise.class);
                     if (exercise != null) {
                         exercise.setId(snapshot.getKey());
-                        Log.e("ExerciseKey", "key" + snapshot.getKey());
-                        Log.e("Exercise", "name" + exercise.getName() +", imageUrl: " + exercise.getImageUrl() + ", mainMuscle: " + exercise.getMainMuscle() + "\n");
                         exerciseList.add(exercise);
                     } else {
                         Log.e("Exercise", "Exercise is null");
                     }
                 }
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+                adapter.notifyItemRangeInserted(0, exerciseList.size());            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -116,20 +94,14 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         // מציאת הפריט המתאים ב-RecyclerView על פי המיקום (position)
         View itemView = recyclerView.getLayoutManager().findViewByPosition(position);
         if (itemView != null) {
-            inputSets = itemView.findViewById(R.id.inputSets);
-            inputReps = itemView.findViewById(R.id.inputReps);
-            inputWeight = itemView.findViewById(R.id.inputWeight);
-            inputRest = itemView.findViewById(R.id.inputRest);
-            inputNotes = itemView.findViewById(R.id.inputNotes);
-
-            String sets = inputSets.getText().toString();
-            String reps = inputReps.getText().toString();
-            String weight = inputWeight.getText().toString();
-            String rest = inputRest.getText().toString();
-            String notes = inputNotes.getText().toString();
+            String sets = getInputText(itemView, R.id.inputSets);
+            String reps = getInputText(itemView, R.id.inputReps);
+            String weight = getInputText(itemView, R.id.inputWeight);
+            String rest = getInputText(itemView, R.id.inputRest);
+            String notes = getInputText(itemView, R.id.inputNotes);
 
             if (!ExercisesUtiles.checkValuesForExercise(exercise.getMainMuscle(), exercise.getName(), sets, reps, weight, rest)) {
-                Toast.makeText(AddExerciseFromLibraryActivity.this, "Invalid fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Invalid fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -147,5 +119,10 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                 }
             });
         }
+    }
+
+    private String getInputText(View parent, int resId) {
+        EditText editText = parent.findViewById(resId);
+        return editText != null ? editText.getText().toString() : "";
     }
 }

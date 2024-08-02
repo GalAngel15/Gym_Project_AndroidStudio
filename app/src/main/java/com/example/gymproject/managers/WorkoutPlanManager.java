@@ -18,12 +18,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 import android.util.Log;
 
 
 public class WorkoutPlanManager {
-    FirebaseUser currentUser;
+    private FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private CustomExerciseAdapter adapter;
     private List<CustomExercise> exerciseList;
@@ -32,90 +35,112 @@ public class WorkoutPlanManager {
     public WorkoutPlanManager(Context context, FirebaseUser currentUser) {
         this.currentUser = currentUser;
         this.context = context;
-        exerciseList = new ArrayList<>();
-        init();
+        this.exerciseList = new ArrayList<>();
+        initRecyclerView();
+        loadAllUserExercises("1");
     }
 
-    public void init() {
+    public void initRecyclerView() {
         this.recyclerView = ((HomePageActivity) context).findViewById(R.id.recyclerView);
         adapter = new CustomExerciseAdapter(context, exerciseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        loadCustomExercisesList("1"); // העברת ה-ID של תוכנית האימונים הנוכחית
-        loadUserWorkoutWarehousePlan("1");
+        recyclerView.setAdapter(adapter);
     }
 
-    private void loadCustomExercisesList(String workoutPlanId) {
-        exerciseList.clear();
+    private void loadAllUserExercises(String workoutPlanId){
+        List<CustomExercise> tempList = new ArrayList<>();
+        loadCustomExercisesList(workoutPlanId, tempList);
+    }
+
+    private void loadCustomExercisesList(String workoutPlanId, List<CustomExercise> tempList) {
         DatabaseUtils.loadUserWorkoutPlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    System.out.println("No exercises found in the warehouse.");
-                    return;
-                }
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CustomExercise exercise = snapshot.getValue(CustomExercise.class);
-                    if (exercise != null) {
-                        Log.e("Exercise", exercise.toString());
-                        exerciseList.add(exercise);
-                    } else {
-                        Log.e("Exercise", "Exercise is null");
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        CustomExercise exercise = snapshot.getValue(CustomExercise.class);
+                        if (exercise != null) {
+                            tempList.add(exercise);
+                        }
                     }
                 }
-                recyclerView.setAdapter(adapter);
+                // לאחר טעינת כל התרגילים המותאמים אישית, נטעין את תרגילי המחסן
+                loadUserWorkoutWarehousePlan(workoutPlanId, tempList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("WorkoutPlanManager", "Error loading exercise: " + databaseError.getMessage());
+                Log.e("WorkoutPlanManager", "Error loading custom exercises: " + databaseError.getMessage());
             }
         });
     }
 
-    private void loadUserWorkoutWarehousePlan(String workoutPlanId) {
+    private void loadUserWorkoutWarehousePlan(String workoutPlanId, List<CustomExercise> tempList) {
         DatabaseUtils.loadUserWorkoutWarehousePlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    System.out.println("No exercises found in the warehouse.");
-                    return;
-                }
+                if (dataSnapshot.exists()) {
+                    int totalItems = (int) dataSnapshot.getChildrenCount();
+                    int[] loadedItems = {0};
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CustomExercise exercise = snapshot.getValue(CustomExercise.class);
-                    if (exercise != null) {
-                        Log.e("Exercise toString", exercise.toString());
-                        DatabaseUtils.loadExerciseFromWarehouse(snapshot.getKey(), new OnExerciseLoadedListener() {
-                            @Override
-                            public void onExerciseLoaded(BuiltExercise builtExercise) {
-                                Log.e("onExerciseLoaded BuiltExercise toString", builtExercise.toString());
-                                exercise.setMainMuscle(builtExercise.getMainMuscle());
-                                exercise.setName(builtExercise.getName());
-                                exercise.setImageUrl(builtExercise.getImageUrl());
-                                Log.e("onExerciseLoaded BuiltExercise toString", exercise.toString());
-                                exerciseList.add(exercise);
-                            }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        CustomExercise exercise = snapshot.getValue(CustomExercise.class);
+                        if (exercise != null) {
+                            DatabaseUtils.loadExerciseFromWarehouse(snapshot.getKey(), new OnExerciseLoadedListener() {
+                                @Override
+                                public void onExerciseLoaded(BuiltExercise builtExercise) {
+                                    exercise.setMainMuscle(builtExercise.getMainMuscle());
+                                    exercise.setName(builtExercise.getName());
+                                    exercise.setImageUrl(builtExercise.getImageUrl());
+                                    tempList.add(exercise);
+                                    loadedItems[0]++;
 
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.e("WorkoutPlanManager loadUserWorkoutWarehousePlan", "Error loading exercise from warehouse: " + e.getMessage());
+                                    if (loadedItems[0] == totalItems) {
+                                        // מיון ועדכון ה-RecyclerView לאחר טעינת כל הפריטים מהמחסן
+                                        updateAndSortExercises(tempList);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("WorkoutPlanManager", "Error loading exercise from warehouse: " + e.getMessage());
+                                    loadedItems[0]++;
+
+                                    if (loadedItems[0] == totalItems) {
+                                        // מיון ועדכון ה-RecyclerView לאחר טעינת כל הפריטים מהמחסן
+                                        updateAndSortExercises(tempList);
+                                    }
+                                }
+                            });
+                        } else {
+                            loadedItems[0]++;
+                            if (loadedItems[0] == totalItems) {
+                                // מיון ועדכון ה-RecyclerView לאחר טעינת כל הפריטים מהמחסן
+                                updateAndSortExercises(tempList);
                             }
-                        });
-                    } else {
-                        Log.e("WorkoutPlanManager onDataChange", "Exercise is null");
+                        }
                     }
+                } else {
+                    // אם אין פריטים במחסן, נעדכן ונמיין את ה-RecyclerView עם התרגילים המותאמים אישית בלבד
+                    updateAndSortExercises(tempList);
                 }
-                Log.e("out for", "Exercise is updated");
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("WorkoutPlanManager", "Error loading exercise: " + databaseError.getMessage());
+                Log.e("WorkoutPlanManager", "Error loading warehouse exercises: " + databaseError.getMessage());
             }
         });
     }
 
+    private void updateAndSortExercises(List<CustomExercise> tempList) {
+        tempList.sort(new Comparator<CustomExercise>() {
+            @Override
+            public int compare(CustomExercise o1, CustomExercise o2) {
+                return o1.getMainMuscle().compareTo(o2.getMainMuscle());
+            }
+        });
+        exerciseList.addAll(tempList);
+        adapter.notifyDataSetChanged();
+    }
 }
