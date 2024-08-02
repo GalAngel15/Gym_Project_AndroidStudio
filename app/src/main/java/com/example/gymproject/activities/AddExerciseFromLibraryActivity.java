@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -111,7 +112,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         });
     }
 
-    public void onSaveExercise(BuiltExercise exercise, int position) {
+    public void onSaveExercise(BuiltExercise exercise, int position, LinearLayout inputDetailsLayout) {
         // מציאת הפריט המתאים ב-RecyclerView על פי המיקום (position)
         View itemView = recyclerView.getLayoutManager().findViewByPosition(position);
         if (itemView != null) {
@@ -136,6 +137,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
             DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", partialCustomExercise,exercise.getId(), new OnExerciseSavedListener() {
                 @Override
                 public void onSuccess() {
+                    inputDetailsLayout.setVisibility(View.GONE);
                     Toast.makeText(AddExerciseFromLibraryActivity.this, "Exercise saved successfully", Toast.LENGTH_SHORT).show();
                 }
 

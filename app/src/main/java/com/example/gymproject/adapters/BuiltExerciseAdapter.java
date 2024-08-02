@@ -71,7 +71,7 @@ public class BuiltExerciseAdapter extends RecyclerView.Adapter<BuiltExerciseAdap
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    onExerciseSaveListener.onSaveExercise(exerciseList.get(adapterPosition), adapterPosition);
+                    onExerciseSaveListener.onSaveExercise(exerciseList.get(adapterPosition), adapterPosition, holder.inputDetailsLayout);
                 }
             }
         });

@@ -95,7 +95,12 @@ public class DatabaseUtils {
 
     public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, String exerciseId, OnExerciseSavedListener listener) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").child(exerciseId);
-        customExercisesRef.setValue(exercise);
+        customExercisesRef.setValue(exercise).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                listener.onSuccess();
+            } else {
+                listener.onFailure(task.getException());
+            }
+        });
     }
-
 }
