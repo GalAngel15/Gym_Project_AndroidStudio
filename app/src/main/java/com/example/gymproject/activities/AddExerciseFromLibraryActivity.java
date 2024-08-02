@@ -43,7 +43,6 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         exerciseList = new ArrayList<>();
         initRecyclerView();
         initButtons();
-        ImageLoader.init(this);
         loadExercises();
     }
 
