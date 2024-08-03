@@ -1,45 +1,59 @@
 package com.example.gymproject.activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.gymproject.R;
+import com.example.gymproject.managers.SharedPreferencesManager;
+import com.google.android.material.button.MaterialButton;
 
 public class SettingsActivity extends AppCompatActivity {
-    private Button buttonToggleTheme, btnReturn;
+    private MaterialButton btnReturn;
+    private SwitchCompat switchMode;
+    private SharedPreferencesManager sharedPreferencesManager;
+    private boolean isNightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferencesManager = new SharedPreferencesManager(this);
         setContentView(R.layout.activity_settings);
 
         initViews();
         initButtons();
+        isNightMode=sharedPreferencesManager.isNightMode();
+        if(isNightMode){
+            switchMode.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        switchMode.setOnClickListener(v->{
+            if(isNightMode){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                sharedPreferencesManager.setNightMode(false);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                sharedPreferencesManager.setNightMode(true);
+            }
+        });
     }
 
+
+
     private void initViews() {
-        buttonToggleTheme = findViewById(R.id.buttonToggleTheme);
+        switchMode = findViewById(R.id.switchToggleTheme);
+        switchMode.setChecked(isNightMode);
         btnReturn=findViewById(R.id.btnReturnFromSettingsToHomePage);
     }
 
-    private void initButtons() {
-        buttonToggleTheme.setOnClickListener(v->{
-                int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-                recreate(); // Recreate activity to apply theme change
-            });
 
-        btnReturn.setOnClickListener(v->{
+    private void initButtons() {
+
+        btnReturn.setOnClickListener(v -> {
             Intent intent = new Intent(this, HomePageActivity.class);
             startActivity(intent);
         });

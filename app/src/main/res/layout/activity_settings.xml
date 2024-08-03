@@ -3,35 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".activities.SettingsActivity">
 
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnReturnFromSettingsToHomePage"
+        style="@style/CustomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/CustomButton"
-        android:text="return"/>
+        android:text="return" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_gravity="center"
         android:paddingBottom="16dp"
-        android:textColor="@color/black"/>
+        android:text="Settings"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/buttonToggleTheme"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Toggle Theme"
-        android:textSize="14sp"
-        android:textColor="?attr/colorOnPrimary"
-        android:padding="8dp"
-        android:gravity="center"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="8dp"
+            android:text="Dark color theme"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchToggleTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="30dp"
+            android:thumb="@drawable/thumb"
+            app:track="@drawable/track" />
+
+    </LinearLayout>
+
 </LinearLayout>
