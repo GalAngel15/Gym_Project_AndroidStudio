@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- צבע המסגרת -->
+    <stroke android:width="3dp" android:color="@color/colorAccent"/>
+    <!-- שקיפות כללית, לא צבע רקע -->
+    <solid android:color="@color/oppositeBackground"/>
+    <!-- פינות מעוגלות (אופציונלי) -->
+    <corners android:radius="8dp"/>
+</shape>

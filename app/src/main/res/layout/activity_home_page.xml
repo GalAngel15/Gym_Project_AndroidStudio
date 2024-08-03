@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".activities.HomePageActivity"
-    android:background="#100B0B">
+    android:background="@android:color/transparent">
 
     <!-- קו אופקי עליון -->
     <LinearLayout
@@ -33,10 +34,22 @@
             android:text="Welcome, name"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="#ECF400"
+            android:textColor="@color/commonColor"
             android:padding="8dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|end"/>
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonOpenSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/settings"
+            android:text="Settings"
+            android:textColor="#ECF400"
+            app:iconTint="#ECF400"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:gravity="center"/>
     </LinearLayout>
 
     <!-- כותרת -->
@@ -48,14 +61,14 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:paddingBottom="16dp"
-        android:textColor="#ECF400"/>
+        android:textColor="@color/commonColor"/>
 
     <!-- כותרות -->
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:background="#DDDDDD">
+        android:background="@color/backgroundText">
 
         <TextView
             android:layout_width="0dp"
@@ -65,7 +78,8 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:padding="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
 
         <TextView
             android:layout_width="0dp"
@@ -75,7 +89,8 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:padding="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
 
         <TextView
             android:layout_width="0dp"
@@ -85,7 +100,8 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:padding="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
 
         <TextView
             android:layout_width="0dp"
@@ -95,7 +111,8 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:padding="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
 
         <TextView
             android:layout_width="0dp"
@@ -105,7 +122,8 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:padding="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
 
     </TableRow>
 
@@ -115,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#FFFFFF"
+        android:background="@android:color/transparent"
         tools:listitem="@layout/item_workout_exercise"/>
 
     <com.google.android.material.button.MaterialButton

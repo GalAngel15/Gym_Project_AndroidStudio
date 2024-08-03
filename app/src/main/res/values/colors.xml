@@ -3,4 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="hints">#CC6D6D6D</color>
+    <color name="commonColor">#CC6D6D6D</color>
+    <color name="colorPrimary">#E40202</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="oppositeBackground">#000000</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="backgroundText">#737373</color>
+
+
 </resources>

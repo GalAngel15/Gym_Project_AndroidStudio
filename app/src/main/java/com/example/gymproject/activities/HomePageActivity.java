@@ -21,7 +21,7 @@ public class HomePageActivity extends AppCompatActivity {
     private TextView textViewUsername;
     private WorkoutPlanManager planManager;
     private FirebaseUser currentUser;
-    private MaterialButton addExerciseFromLibrary, addCustomExercise;
+    private MaterialButton addExerciseFromLibrary, addCustomExercise, buttonOpenSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class HomePageActivity extends AppCompatActivity {
         addExerciseFromLibrary = findViewById(R.id.addExerciseFromLibrary);
         addCustomExercise = findViewById(R.id.addCustomExercise);
         btnLogout = findViewById(R.id.btnLogout);
+        buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
     }
 
 
@@ -76,6 +77,11 @@ public class HomePageActivity extends AppCompatActivity {
         //add custom exercise button
         addCustomExercise.setOnClickListener(v -> {
             Intent intent = new Intent(HomePageActivity.this, CustomExerciseActivity.class);
+            startActivity(intent);
+        });
+
+        buttonOpenSettings.setOnClickListener(v->{
+            Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
     }

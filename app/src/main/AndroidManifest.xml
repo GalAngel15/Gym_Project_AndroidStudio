@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-
     <application
         android:name=".application.GymProjectApplication"
         android:allowBackup="true"
@@ -19,6 +18,9 @@
         android:theme="@style/Theme.GymProject"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.VisitPageActivity"
             android:exported="true">
             <intent-filter>
@@ -27,11 +29,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" android:exported="false" />
-        <activity android:name=".activities.RegisterActivity" android:exported="false" />
-        <activity android:name=".activities.HomePageActivity" android:exported="false" />
-        <activity android:name=".activities.CustomExerciseActivity" android:exported="false" />
-        <activity android:name=".activities.AddExerciseFromLibraryActivity" android:exported="false" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.HomePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CustomExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AddExerciseFromLibraryActivity"
+            android:exported="false" />
+        <activity android:name=".activities.SettingsActivity" android:exported="false" />
 
     </application>
 
