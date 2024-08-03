@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,16 +22,15 @@ public class CustomExerciseActivity extends BaseActivity {
     private Button buttonAddExercise, btnReturnToHomePage;
     private String selectedMuscle, exerciseName, other;
     private int sets,reps, weight, rest;
-    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_exercise);
 
-        gson= new Gson();
         initViews();
         initButtons();
+        setupSpinner();
     }
 
     private void initViews() {
@@ -49,6 +49,13 @@ public class CustomExerciseActivity extends BaseActivity {
         onMuscleSelected();
         onSaveButtonClick();
         onReturnClicked();
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.muscles, R.layout.custom_spinner_item);
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        typeExerciseName.setAdapter(adapter);
     }
 
     public void onMuscleSelected() {
@@ -71,9 +78,7 @@ public class CustomExerciseActivity extends BaseActivity {
     }
 
     public void onSaveButtonClick() {
-        buttonAddExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonAddExercise.setOnClickListener(v->{
                 checkValues();
                 if (!checkValues()) {
                     Toast.makeText(CustomExerciseActivity.this, "invalid inputs", Toast.LENGTH_SHORT).show();
@@ -94,7 +99,6 @@ public class CustomExerciseActivity extends BaseActivity {
                     Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
                     startActivity(intent);
                 }
-            }
         });
     }
 
@@ -115,13 +119,10 @@ public class CustomExerciseActivity extends BaseActivity {
         return true;
     }
     public void onReturnClicked() {
-        btnReturnToHomePage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnReturnToHomePage.setOnClickListener(v->{
                 Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
                 startActivity(intent);
                 finish();
-            }
         });
     }
 

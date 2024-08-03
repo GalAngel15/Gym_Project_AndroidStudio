@@ -27,10 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         initViews();
         initButtons();
         isNightMode=sharedPreferencesManager.isNightMode();
-        if(isNightMode){
-            switchMode.setChecked(true);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+        switchMode.setChecked(isNightMode);
         switchMode.setOnClickListener(v->{
             if(isNightMode){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -39,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 sharedPreferencesManager.setNightMode(true);
             }
+            isNightMode = !isNightMode;
         });
     }
 

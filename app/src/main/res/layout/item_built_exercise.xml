@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
-    android:background="@drawable/rounded_corners_background"
+    android:background="@drawable/table_row_background"
     android:layout_marginBottom="8dp">
 
     <!-- פריסה ראשית -->
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="שם תרגיל"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textSize="20sp"
             android:layout_gravity="center_vertical"/>
 
         <!-- כפתור הוספה -->
@@ -40,9 +40,9 @@
             android:layout_height="48dp"
             android:src="@drawable/baseline_add"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="הוסף"
+            android:contentDescription="Add"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="8dp"/>
     </LinearLayout>
 
     <!-- פריסה נוספת לקלט מהמשתמש -->
@@ -62,7 +62,7 @@
             android:inputType="number"
             android:textColorHint="@color/hints"
             android:hint="הזן מספר סטים"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/textColor"/>
 
         <EditText
             android:id="@+id/inputReps"
@@ -71,7 +71,7 @@
             android:inputType="number"
             android:textColorHint="@color/hints"
             android:hint="הזן מספר חזרות"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/textColor"/>
 
         <EditText
             android:id="@+id/inputWeight"
@@ -80,7 +80,7 @@
             android:inputType="number"
             android:hint="הזן משקל"
             android:textColorHint="@color/hints"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/textColor"/>
 
         <EditText
             android:id="@+id/inputRest"
@@ -89,7 +89,7 @@
             android:inputType="number"
             android:hint="הזן זמן מנוחה (בשניות)"
             android:textColorHint="@color/hints"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/textColor"/>
 
         <EditText
             android:id="@+id/inputNotes"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:hint="הזן הערות"
             android:textColorHint="@color/hints"
-            android:textColor="#FFFFFF"/>
+            android:textColor="@color/textColor"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddBuiltExercise"

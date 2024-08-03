@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".activities.AddExerciseFromLibraryActivity"
-    android:background="#100B0B">
+    android:background="@color/background">
 
     <!-- כותרת -->
     <TextView
@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:paddingBottom="16dp"
-        android:textColor="#ECF400"/>
+        android:textColor="@color/commonColor"/>
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#100B0B"
+        android:background="@android:color/transparent"
         tools:listitem="@layout/item_built_exercise"/>
 
     <!-- כפתורים -->

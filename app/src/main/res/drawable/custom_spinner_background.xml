@@ -9,5 +9,5 @@
     <item
         android:drawable="@drawable/arrow_drop_down"
         android:gravity="end|center_vertical"
-        android:right="18dp"/>
+        android:right="8dp"/>
 </layer-list>

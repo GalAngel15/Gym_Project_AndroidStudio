@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".activities.CustomExerciseActivity"
-    android:background="#100B0B">
+    android:background="@color/background">
 
     <Button
         android:id="@+id/btnReturnToHomePage"
@@ -26,26 +26,27 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:paddingBottom="16dp"
-        android:textColor="#ECF400"/>
+        android:textColor="@color/commonColor"/>
 
     <!-- שם שריר מרכזי -->
-    <Spinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/typeExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_spinner_background"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp"
-        android:entries="@array/muscles"
         android:layout_marginHorizontal="3dp"
-        android:autofillHints="main muscle"/>
+        android:layout_marginBottom="16dp"
+        android:autofillHints="main muscle"
+        android:background="@drawable/custom_spinner_background"
+        android:paddingHorizontal="20dp"
+        android:spinnerMode="dropdown" />
+
     <!-- שם התרגיל -->
     <EditText
         android:id="@+id/editTextExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="שם התרגיל"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:hint="כמות סטים"
         android:inputType="number"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
@@ -71,7 +72,7 @@
         android:layout_height="wrap_content"
         android:hint="כמות חזרות"
         android:inputType="number"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
@@ -84,7 +85,7 @@
         android:layout_height="wrap_content"
         android:hint="משקל"
         android:inputType="number"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
@@ -96,7 +97,7 @@
         android:layout_height="wrap_content"
         android:hint="זמן מנוחה (בשניות)"
         android:inputType="number"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
@@ -107,7 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="הערות נוספות "
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
         android:padding="8dp"
