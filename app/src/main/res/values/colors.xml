@@ -9,9 +9,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="textColor">#FFFFFF</color>
     <color name="background">#FFFFFF</color>
+    <color name="backgroundButton">#6200EE</color>
     <color name="oppositeBackground">#000000</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="backgroundText">#737373</color>
-
-
 </resources>

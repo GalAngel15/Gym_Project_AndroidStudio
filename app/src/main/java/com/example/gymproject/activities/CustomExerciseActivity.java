@@ -13,13 +13,14 @@ import android.widget.Toast;
 import com.example.gymproject.R;
 import com.example.gymproject.utilities.DatabaseUtils;
 import com.example.gymproject.utilities.ExercisesUtiles;
-import com.google.gson.Gson;
+import com.google.android.material.button.MaterialButton;
+
 
 
 public class CustomExerciseActivity extends BaseActivity {
     private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, editTextRest, additionalComments;
     private Spinner typeExerciseName;
-    private Button buttonAddExercise, btnReturnToHomePage;
+    private MaterialButton buttonAddExercise, btnReturnToHomePage;
     private String selectedMuscle, exerciseName, other;
     private int sets,reps, weight, rest;
 

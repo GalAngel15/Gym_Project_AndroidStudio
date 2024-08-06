@@ -4,10 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="hints">#CC6D6D6D</color>
     <color name="commonColor">#F23645</color>
-    <color name="colorPrimary">#002847</color>
+    <color name="colorPrimary">#0E456F</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="textColor">#000000</color>
     <color name="background">#000000</color>
+    <color name="backgroundButton">#FFFFFF</color>
     <color name="oppositeBackground">#FFFFFFFF</color>
     <color name="backgroundText">#DDDDDD</color>
+    <color name="switchThumbColor">#12120A</color>
 </resources>
