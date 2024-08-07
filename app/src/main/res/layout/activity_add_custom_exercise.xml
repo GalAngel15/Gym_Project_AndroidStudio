@@ -40,7 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="שם התרגיל"
-        android:text="aaa"
         android:textColor="@color/black"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
