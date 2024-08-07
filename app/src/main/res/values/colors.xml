@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="hints">#CC6D6D6D</color>
     <color name="commonColor">#CC6D6D6D</color>
@@ -13,4 +13,6 @@
     <color name="oppositeBackground">#000000</color>
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="backgroundText">#737373</color>
+    <color name="textButton">#ECF400</color>
+
 </resources>

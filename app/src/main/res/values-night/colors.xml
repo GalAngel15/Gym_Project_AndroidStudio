@@ -8,8 +8,9 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="textColor">#000000</color>
     <color name="background">#000000</color>
-    <color name="backgroundButton">#FFFFFF</color>
+    <color name="backgroundButton">#062FF0</color>
     <color name="oppositeBackground">#FFFFFFFF</color>
     <color name="backgroundText">#DDDDDD</color>
-    <color name="switchThumbColor">#12120A</color>
+    <color name="textButton">#DDDDDD</color>
+
 </resources>

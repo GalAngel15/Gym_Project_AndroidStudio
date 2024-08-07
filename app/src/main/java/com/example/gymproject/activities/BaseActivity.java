@@ -18,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        planName= getIntent().getStringExtra("planId");
     }
 
     protected FirebaseUser getCurrentUser() {

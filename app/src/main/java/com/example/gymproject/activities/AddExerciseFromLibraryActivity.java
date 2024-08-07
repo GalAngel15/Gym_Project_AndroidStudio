@@ -36,7 +36,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_our_exercises);
-        planName= getIntent().getStringExtra("planId");
+
         exerciseList = new ArrayList<>();
         initRecyclerView();
         initButtons();

@@ -27,12 +27,12 @@
         <TextView
             android:id="@+id/textViewExerciseName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:layout_height="match_parent"
             android:gravity="center"
+            android:padding="8dp"
             android:text="שם התרגיל"
-            android:textStyle="bold"
-            android:textColor="@color/textColor"/>
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".activities.SettingsActivity">
+    tools:context=".activities.SettingsActivity"
+    android:background="@color/background">
 
     <include
         android:id="@+id/btnReturnFromSettings"
@@ -18,7 +19,7 @@
         android:layout_gravity="center"
         android:paddingBottom="16dp"
         android:text="Settings"
-        android:textColor="@color/black"
+        android:textColor="@color/oppositeBackground"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="8dp"
             android:text="Dark color theme"
-            android:textColor="@color/black"
+            android:textColor="@color/oppositeBackground"
             android:textSize="14sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial

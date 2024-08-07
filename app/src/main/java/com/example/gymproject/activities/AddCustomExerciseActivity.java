@@ -14,8 +14,6 @@ import com.example.gymproject.utilities.DatabaseUtils;
 import com.example.gymproject.utilities.ExercisesUtiles;
 import com.google.android.material.button.MaterialButton;
 
-
-
 public class AddCustomExerciseActivity extends BaseActivity {
     private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, editTextRest, additionalComments;
     private Spinner typeExerciseName;
@@ -28,7 +26,6 @@ public class AddCustomExerciseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_custom_exercise);
 
-        planName= getIntent().getStringExtra("planId");
         initViews();
         initButtons();
         setupSpinner();

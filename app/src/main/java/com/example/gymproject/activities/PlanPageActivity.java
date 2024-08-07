@@ -14,23 +14,17 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class PlanPageActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
+public class PlanPageActivity extends BaseActivity {
     private TextView textViewUsername,textViewPlanName;
     private WorkoutPlanManager planManager;
-    private FirebaseUser currentUser;
     private MaterialButton addExerciseFromLibrary, addCustomExercise, buttonOpenSettings, btnReturn;
-    private String planName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_page);
-        planName= getIntent().getStringExtra("planId");
         initView();
         initButtons();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         //addExercise();
         if (currentUser != null) {
