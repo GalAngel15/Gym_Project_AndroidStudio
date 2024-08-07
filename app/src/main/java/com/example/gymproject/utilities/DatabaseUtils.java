@@ -84,4 +84,8 @@ public class DatabaseUtils {
     public static void loadAllPlans(String userId,ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).addListenerForSingleValueEvent(listener);
     }
+    public static void addPlan(String userId, String planName, String planDescription) {
+        DatabaseReference plansRef = userWorkoutPlansRef.child(userId).child(planName);
+        plansRef.child("description").setValue(planDescription);
+    }
 }

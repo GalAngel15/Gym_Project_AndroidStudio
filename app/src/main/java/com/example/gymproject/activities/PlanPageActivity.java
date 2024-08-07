@@ -2,9 +2,8 @@ package com.example.gymproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
@@ -16,23 +15,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class PlanPageActivity extends AppCompatActivity {
-    private Button btnLogout;
     private FirebaseAuth mAuth;
-    private TextView textViewUsername;
+    private TextView textViewUsername,textViewPlanName;
     private WorkoutPlanManager planManager;
     private FirebaseUser currentUser;
-    private MaterialButton addExerciseFromLibrary, addCustomExercise, buttonOpenSettings;
+    private MaterialButton addExerciseFromLibrary, addCustomExercise, buttonOpenSettings, btnReturn;
+    private String planName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_page);
-
+        planName= getIntent().getStringExtra("planId");
         initView();
         initButtons();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        String planId = getIntent().getStringExtra("planId");
+
         //addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
@@ -40,7 +39,7 @@ public class PlanPageActivity extends AppCompatActivity {
             textViewUsername.setText("Welcome, " + userName + "!");
         }
         planManager = new WorkoutPlanManager(this, currentUser);
-        planManager.loadAllUserExercises(planId);
+        planManager.loadAllUserExercises(planName);
     }
 
     private void addExercise() {
@@ -52,38 +51,39 @@ public class PlanPageActivity extends AppCompatActivity {
 
     private void initView() {
         textViewUsername = findViewById(R.id.textViewWelcome);
+        textViewPlanName = findViewById(R.id.textViewPlanName);
+        textViewPlanName.setText(planName);
         addExerciseFromLibrary = findViewById(R.id.addExerciseFromLibrary);
         addCustomExercise = findViewById(R.id.addCustomExercise);
-        btnLogout = findViewById(R.id.btnLogout);
+        btnReturn = findViewById(R.id.btnReturnFromPlanPage);
         buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
     }
 
 
     private void initButtons() {
-        //logout button
-        btnLogout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Toast.makeText(PlanPageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(PlanPageActivity.this, LoginActivity.class);
+        //return button
+        btnReturn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MyPlansActivity.class);
             startActivity(intent);
-            finish();
         });
 
         //add exercise from library button
         addExerciseFromLibrary.setOnClickListener(v -> {
-
-            Intent intent = new Intent(PlanPageActivity.this, AddExerciseFromLibraryActivity.class);
+            Intent intent = new Intent(this, AddExerciseFromLibraryActivity.class);
+            intent.putExtra("planId", planName);
             startActivity(intent);
         });
 
         //add custom exercise button
         addCustomExercise.setOnClickListener(v -> {
-            Intent intent = new Intent(PlanPageActivity.this, CustomExerciseActivity.class);
+            Intent intent = new Intent(this, AddCustomExerciseActivity.class);
+            intent.putExtra("planId", planName);
             startActivity(intent);
         });
 
+        //settings button
         buttonOpenSettings.setOnClickListener(v->{
-            Intent intent = new Intent(PlanPageActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         });
     }

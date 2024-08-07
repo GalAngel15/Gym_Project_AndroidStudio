@@ -137,7 +137,7 @@
         tools:listitem="@layout/item_workout_plan"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/addExerciseFromLibrary"
+        android:id="@+id/addWorkoutPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="הוספת תוכנית אימונים"

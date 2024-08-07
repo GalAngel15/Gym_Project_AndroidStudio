@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class BaseActivity extends AppCompatActivity {
     protected FirebaseAuth mAuth;
     protected FirebaseUser currentUser;
+    protected String planName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,4 +23,5 @@ public class BaseActivity extends AppCompatActivity {
     protected FirebaseUser getCurrentUser() {
         return currentUser;
     }
+
 }

@@ -5,16 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.adapters.WorkoutPlanAdapter;
-import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.WorkoutPlan;
 import com.example.gymproject.utilities.DatabaseUtils;
+import com.example.gymproject.utilities.DialogUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyPlansActivity extends BaseActivity {
-    private MaterialButton btnLogout, buttonOpenSettings;
+    private MaterialButton btnLogout, buttonOpenSettings, btnAddWorkoutPlan;
     private RecyclerView recyclerView;
     private WorkoutPlanAdapter adapter;
     private List<WorkoutPlan> workoutPlans;
@@ -53,6 +52,7 @@ public class MyPlansActivity extends BaseActivity {
     private void initView() {
         btnLogout = findViewById(R.id.btnLogout);
         buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
+        btnAddWorkoutPlan = findViewById(R.id.addWorkoutPlan);
     }
 
     private void initButtons() {
@@ -68,6 +68,10 @@ public class MyPlansActivity extends BaseActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         });
+        btnAddWorkoutPlan.setOnClickListener(v -> {
+            DialogUtils.showAddWorkoutPlanDialog(this, workoutPlans, this::onAddPlan);
+        });
+
     }
 
     public void onPlanClick(String workoutPlanId) {
@@ -87,9 +91,8 @@ public class MyPlansActivity extends BaseActivity {
                 }
 
                 for (DataSnapshot planSnapshot : dataSnapshot.getChildren()) {
-                    String id = planSnapshot.getKey();
-                    String name = "Workout Plan " + id;
-                    WorkoutPlan workoutPlan = new WorkoutPlan(id, name, "Last Date", 0, "Description");
+                    String name = planSnapshot.getKey();
+                    WorkoutPlan workoutPlan = new WorkoutPlan(name, "Last Date", 0, "Description");
                     workoutPlans.add(workoutPlan);
                 }
                 adapter.notifyItemRangeInserted(0, workoutPlans.size());            }
@@ -99,6 +102,12 @@ public class MyPlansActivity extends BaseActivity {
                 Log.e("Exercise", "Database error: " + error.getMessage());
             }
         });
+    }
+
+    //AddPlanCallback implementation
+    public void onAddPlan(String planName, String planDescription) {
+            DatabaseUtils.addPlan(currentUser.getUid(), planName, planDescription);
+            onPlanClick(planName);
     }
 
 }

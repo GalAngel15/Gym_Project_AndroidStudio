@@ -16,7 +16,7 @@ import com.google.android.material.button.MaterialButton;
 
 
 
-public class CustomExerciseActivity extends BaseActivity {
+public class AddCustomExerciseActivity extends BaseActivity {
     private EditText editTextExerciseName , editTextSets , editTextReps, editTextWeight, editTextRest, additionalComments;
     private Spinner typeExerciseName;
     private MaterialButton buttonAddExercise, btnReturnToHomePage;
@@ -26,8 +26,9 @@ public class CustomExerciseActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_exercise);
+        setContentView(R.layout.activity_add_custom_exercise);
 
+        planName= getIntent().getStringExtra("planId");
         initViews();
         initButtons();
         setupSpinner();
@@ -81,11 +82,11 @@ public class CustomExerciseActivity extends BaseActivity {
         buttonAddExercise.setOnClickListener(v->{
                 checkValues();
                 if (!checkValues()) {
-                    Toast.makeText(CustomExerciseActivity.this, "invalid inputs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCustomExerciseActivity.this, "invalid inputs", Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseUtils.addCustomUserExercise(
                             currentUser.getUid(),
-                            "1",
+                            planName,
                             selectedMuscle,
                             exerciseName,
                             "",
@@ -95,9 +96,11 @@ public class CustomExerciseActivity extends BaseActivity {
                             rest,
                             other
                     );
-                    Toast.makeText(CustomExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CustomExerciseActivity.this, PlanPageActivity.class);
+                    Toast.makeText(AddCustomExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddCustomExerciseActivity.this, PlanPageActivity.class);
+                    intent.putExtra("planId", planName);
                     startActivity(intent);
+                    finish();
                 }
         });
     }
@@ -120,7 +123,8 @@ public class CustomExerciseActivity extends BaseActivity {
     }
     public void onReturnClicked() {
         btnReturnToHomePage.setOnClickListener(v->{
-                Intent intent = new Intent(CustomExerciseActivity.this, PlanPageActivity.class);
+                Intent intent = new Intent(AddCustomExerciseActivity.this, PlanPageActivity.class);
+                intent.putExtra("planId", planName);
                 startActivity(intent);
                 finish();
         });

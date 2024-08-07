@@ -9,7 +9,7 @@
     tools:context=".activities.SettingsActivity">
 
     <include
-        android:id="@+id/btnReturnFromSettingsToHomePage"
+        android:id="@+id/btnReturnFromSettings"
         layout="@layout/custom_button" />
 
     <TextView

@@ -15,16 +15,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- כפתור התנתק בצד שמאל -->
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="logout"
-            android:textSize="14sp"
-            android:textColor="#ECF400"
-            android:padding="8dp"
-            android:gravity="center"/>
+        <include
+            android:id="@+id/btnReturnFromPlanPage"
+            layout="@layout/custom_button" />
 
         <!-- טקסט שלום, name בצד ימין -->
         <TextView
@@ -54,6 +47,7 @@
 
     <!-- כותרת -->
     <TextView
+        android:id="@+id/textViewPlanName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="תוכנית אימונים"

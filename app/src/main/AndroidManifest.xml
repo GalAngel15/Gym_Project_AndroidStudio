@@ -29,7 +29,7 @@
         <activity android:name=".activities.LoginActivity" android:exported="false" />
         <activity android:name=".activities.RegisterActivity" android:exported="false" />
         <activity android:name=".activities.PlanPageActivity" android:exported="false" />
-        <activity android:name=".activities.CustomExerciseActivity" android:exported="false" />
+        <activity android:name=".activities.AddCustomExerciseActivity" android:exported="false" />
         <activity android:name=".activities.AddExerciseFromLibraryActivity" android:exported="false" />
         <activity android:name=".activities.SettingsActivity" android:exported="false" />
         <activity android:name=".activities.MyPlansActivity" android:exported="false" />

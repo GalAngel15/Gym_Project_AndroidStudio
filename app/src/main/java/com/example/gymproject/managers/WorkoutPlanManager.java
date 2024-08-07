@@ -51,6 +51,16 @@ public class WorkoutPlanManager {
     }
 
     private void loadCustomExercisesList(String workoutPlanId, List<CustomExercise> tempList) {
+        String userId = currentUser != null ? currentUser.getUid() : null;
+        if (userId == null || userId.isEmpty()) {
+            Log.e("WorkoutPlanManager", "Error: User ID is null or empty");
+            return;
+        }
+        if (workoutPlanId == null || workoutPlanId.isEmpty()) {
+            Log.e("WorkoutPlanManager", "Error: Workout Plan ID is null or empty");
+            return;
+        }
+
         DatabaseUtils.loadUserWorkoutPlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

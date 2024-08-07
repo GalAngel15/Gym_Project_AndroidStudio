@@ -34,13 +34,13 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WorkoutPlan workoutPlan = workoutPlans.get(position);
-        holder.tvWorkoutPlanName.setText(workoutPlan.getId());
+        holder.tvWorkoutPlanName.setText(workoutPlan.getName());
         holder.tvLastDate.setText("Last Workout Date: " + workoutPlan.getLastDate());
         holder.tvTimesDone.setText("Times Done: " + workoutPlan.getTimesDone());
         holder.tvDescription.setText("Description: " + workoutPlan.getDescription());
 
         holder.itemView.setOnClickListener(v -> {
-            onPlanClickedListener.onPlanClick(workoutPlan.getId());
+            onPlanClickedListener.onPlanClick(workoutPlan.getName());
         });
     }
     public void setOnPlanClickListener(OnPlanClickListener listener) {

@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void initViews() {
         switchMode = findViewById(R.id.switchToggleTheme);
         switchMode.setChecked(isNightMode);
-        btnReturn=findViewById(R.id.btnReturnFromSettingsToHomePage);
+        btnReturn=findViewById(R.id.btnReturnFromSettings);
     }
 
 

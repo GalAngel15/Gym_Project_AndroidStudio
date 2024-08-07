@@ -36,6 +36,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_our_exercises);
+        planName= getIntent().getStringExtra("planId");
         exerciseList = new ArrayList<>();
         initRecyclerView();
         initButtons();
@@ -53,7 +54,9 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
     private void initButtons() {
         findViewById(R.id.btnFinish).setOnClickListener(v->{
             Intent intent = new Intent(AddExerciseFromLibraryActivity.this, PlanPageActivity.class);
+            intent.putExtra("planId", planName);
             startActivity(intent);
+            finish();
         });
     }
 
@@ -101,7 +104,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
             }
 
             PartialCustomExercise partialCustomExercise = new PartialCustomExercise( Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
-            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), "1", partialCustomExercise,exercise.getId(), new OnExerciseSavedListener() {
+            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), planName, partialCustomExercise,exercise.getId(), new OnExerciseSavedListener() {
                 @Override
                 public void onSuccess() {
                     inputDetailsLayout.setVisibility(View.GONE);
