@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
-import com.example.gymproject.activities.HomePageActivity;
+import com.example.gymproject.activities.PlanPageActivity;
 import com.example.gymproject.adapters.CustomExerciseAdapter;
 import com.example.gymproject.interfaces.OnExerciseLoadedListener;
 import com.example.gymproject.models.BuiltExercise;
@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,17 +36,16 @@ public class WorkoutPlanManager {
         this.context = context;
         this.exerciseList = new ArrayList<>();
         initRecyclerView();
-        loadAllUserExercises("1");
     }
 
     public void initRecyclerView() {
-        this.recyclerView = ((HomePageActivity) context).findViewById(R.id.recyclerView);
+        this.recyclerView = ((PlanPageActivity) context).findViewById(R.id.myPlansRecyclerView);
         adapter = new CustomExerciseAdapter(context, exerciseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
     }
 
-    private void loadAllUserExercises(String workoutPlanId){
+    public void loadAllUserExercises(String workoutPlanId){
         List<CustomExercise> tempList = new ArrayList<>();
         loadCustomExercisesList(workoutPlanId, tempList);
     }

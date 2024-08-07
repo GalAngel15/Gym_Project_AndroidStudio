@@ -1,5 +1,6 @@
 package com.example.gymproject.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
+import com.example.gymproject.interfaces.OnPlanClickListener;
 import com.example.gymproject.models.WorkoutPlan;
 
 import java.util.List;
 
 public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.ViewHolder> {
+    private Context context;
     private List<WorkoutPlan> workoutPlans;
+    private OnPlanClickListener onPlanClickedListener;
 
-    public WorkoutPlanAdapter(List<WorkoutPlan> workoutPlans) {
+    public WorkoutPlanAdapter(Context context, List<WorkoutPlan> workoutPlans) {
+        this.context = context;
         this.workoutPlans = workoutPlans;
     }
 
@@ -29,10 +34,17 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WorkoutPlan workoutPlan = workoutPlans.get(position);
-        holder.tvWorkoutPlanName.setText(workoutPlan.getName());
+        holder.tvWorkoutPlanName.setText(workoutPlan.getId());
         holder.tvLastDate.setText("Last Workout Date: " + workoutPlan.getLastDate());
         holder.tvTimesDone.setText("Times Done: " + workoutPlan.getTimesDone());
         holder.tvDescription.setText("Description: " + workoutPlan.getDescription());
+
+        holder.itemView.setOnClickListener(v -> {
+            onPlanClickedListener.onPlanClick(workoutPlan.getId());
+        });
+    }
+    public void setOnPlanClickListener(OnPlanClickListener listener) {
+        this.onPlanClickedListener = listener;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.example.gymproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -52,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void initButtons() {
 
         btnReturn.setOnClickListener(v -> {
-            Intent intent = new Intent(this, HomePageActivity.class);
+            Intent intent = new Intent(this, MyPlansActivity.class);
             startActivity(intent);
         });
     }

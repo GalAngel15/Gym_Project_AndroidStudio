@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,7 +19,6 @@ import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.PartialCustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
 import com.example.gymproject.utilities.ExercisesUtiles;
-import com.example.gymproject.utilities.ImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -56,7 +52,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
 
     private void initButtons() {
         findViewById(R.id.btnFinish).setOnClickListener(v->{
-            Intent intent = new Intent(AddExerciseFromLibraryActivity.this, HomePageActivity.class);
+            Intent intent = new Intent(AddExerciseFromLibraryActivity.this, PlanPageActivity.class);
             startActivity(intent);
         });
     }

@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class HomePageActivity extends AppCompatActivity {
+public class PlanPageActivity extends AppCompatActivity {
     private Button btnLogout;
     private FirebaseAuth mAuth;
     private TextView textViewUsername;
@@ -26,19 +26,21 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_plan_page);
 
         initView();
         initButtons();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        addExercise();
+        String planId = getIntent().getStringExtra("planId");
+        //addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
             textViewUsername.setText("Welcome, " + userName + "!");
         }
         planManager = new WorkoutPlanManager(this, currentUser);
+        planManager.loadAllUserExercises(planId);
     }
 
     private void addExercise() {
@@ -61,8 +63,8 @@ public class HomePageActivity extends AppCompatActivity {
         //logout button
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
-            Toast.makeText(HomePageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+            Toast.makeText(PlanPageActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PlanPageActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });
@@ -70,18 +72,18 @@ public class HomePageActivity extends AppCompatActivity {
         //add exercise from library button
         addExerciseFromLibrary.setOnClickListener(v -> {
 
-            Intent intent = new Intent(HomePageActivity.this, AddExerciseFromLibraryActivity.class);
+            Intent intent = new Intent(PlanPageActivity.this, AddExerciseFromLibraryActivity.class);
             startActivity(intent);
         });
 
         //add custom exercise button
         addCustomExercise.setOnClickListener(v -> {
-            Intent intent = new Intent(HomePageActivity.this, CustomExerciseActivity.class);
+            Intent intent = new Intent(PlanPageActivity.this, CustomExerciseActivity.class);
             startActivity(intent);
         });
 
         buttonOpenSettings.setOnClickListener(v->{
-            Intent intent = new Intent(HomePageActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(PlanPageActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
     }

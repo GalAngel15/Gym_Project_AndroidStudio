@@ -36,30 +36,6 @@ public class DatabaseUtils {
         customExercisesRef.child(exerciseId).setValue(exercise);
     }
 
-    // פונקציה להוספת תרגיל מהמחסן לתוכנית אימונים של משתמש
-    public static void addWarehouseUserExercise(String userId, String workoutPlanId, String exerciseId, int sets, int reps, int weight, int rest, String other) {
-        DatabaseReference exerciseRef = exercisesWarehouseRef.child(exerciseId);
-        exerciseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                CustomExercise warehouseExercise = dataSnapshot.getValue(CustomExercise.class);
-                if (warehouseExercise != null) {
-                    warehouseExercise.setSets(sets);
-                    warehouseExercise.setReps(reps);
-                    warehouseExercise.setWeight(weight);
-                    warehouseExercise.setRest(rest);
-                    warehouseExercise.setOther(other);
-                    userWorkoutPlansRef.child(userId).child(workoutPlanId).child("warehouseExercises").child(exerciseId).setValue(warehouseExercise);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle error
-            }
-        });
-    }
-
     // פונקציה לטעינת תוכנית אימונים של משתמש
     public static void loadUserWorkoutPlan(String userId, String workoutPlanId, ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises").addListenerForSingleValueEvent(listener);
@@ -93,6 +69,7 @@ public class DatabaseUtils {
         exercisesWarehouseRef.addListenerForSingleValueEvent(listener);
     }
 
+    // פונקציה להוספת תרגיל מהמחסן לתוכנית אימונים של משתמש
     public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, String exerciseId, OnExerciseSavedListener listener) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").child(exerciseId);
         customExercisesRef.setValue(exercise).addOnCompleteListener(task -> {
@@ -102,5 +79,9 @@ public class DatabaseUtils {
                 listener.onFailure(task.getException());
             }
         });
+    }
+
+    public static void loadAllPlans(String userId,ValueEventListener listener) {
+        userWorkoutPlansRef.child(userId).addListenerForSingleValueEvent(listener);
     }
 }

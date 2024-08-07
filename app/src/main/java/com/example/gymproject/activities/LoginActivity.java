@@ -7,19 +7,13 @@ import android.util.Patterns;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -37,12 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         checkTextView = findViewById(R.id.checkTextView);
         validateLogin();
 
-//        login_BTN_login.setOnClickListener(v -> {
-//            login_BTN_login.setEnabled(false); // Disable button to prevent double click
-//            String email = emailInputLayout.getEditText().getText().toString().trim();
-//            String password = passwordInputLayout.getEditText().getText().toString().trim();
-//            login();
-//        });
         login_BTN_login.setOnClickListener(v -> {
             login_BTN_login.setEnabled(false); // Disable button to prevent double click
             String email = emailInputLayout.getEditText().getText().toString().trim();
@@ -93,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                                             user.getPhoneNumber()
                             );
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MyPlansActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -103,24 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-//    private void login() {
-//        Intent signInIntent = AuthUI.getInstance()
-//                .createSignInIntentBuilder()
-//                .setAvailableProviders(Arrays.asList(
-//                        new AuthUI.IdpConfig.EmailBuilder().build(),
-//                        new AuthUI.IdpConfig.PhoneBuilder().build()
-//                ))
-//                .build();
-//
-//        signInLauncher.launch(signInIntent);
-//    }
-
-//    private ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-//            new FirebaseAuthUIActivityResultContract(),
-//            (result) -> {
-//                validateLogin();
-//                login_BTN_login.setEnabled(true);
-//            });
 
     private void validateLogin() {
         currentUser = mAuth.getCurrentUser(); //get current user

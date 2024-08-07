@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".activities.PlanPageActivity"
+    android:background="@color/background">
+
+    <!-- קו אופקי עליון -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- כפתור התנתק בצד שמאל -->
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout"
+            android:textSize="14sp"
+            android:textColor="#ECF400"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+        <!-- טקסט שלום, name בצד ימין -->
+        <TextView
+            android:id="@+id/textViewWelcome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Welcome, name"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/commonColor"
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonOpenSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/settings"
+            android:text="Settings"
+            android:textColor="#ECF400"
+            app:iconTint="#ECF400"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- כותרת -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="תוכנית אימונים"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="16dp"
+        android:textColor="@color/commonColor"/>
+
+    <!-- כותרות -->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:background="@color/backgroundText">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="תמונה"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="מנוחה"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="משקל"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="חזרות"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="סטים"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="@color/textColor"/>
+
+    </TableRow>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myPlansRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        tools:listitem="@layout/item_workout_exercise"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addExerciseFromLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת תרגיל מהמאגר"
+        android:layout_gravity="center" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addCustomExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הוספת תרגיל עצמאית"
+        android:layout_gravity="center" />
+
+</LinearLayout>

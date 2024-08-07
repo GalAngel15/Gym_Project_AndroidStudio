@@ -8,11 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -93,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     .addOnCompleteListener(profileTask -> {
                                         if (profileTask.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(RegisterActivity.this, HomePageActivity.class);
+                                            Intent intent = new Intent(RegisterActivity.this, PlanPageActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }

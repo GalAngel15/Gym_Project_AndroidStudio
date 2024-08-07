@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -97,7 +96,7 @@ public class CustomExerciseActivity extends BaseActivity {
                             other
                     );
                     Toast.makeText(CustomExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(CustomExerciseActivity.this, PlanPageActivity.class);
                     startActivity(intent);
                 }
         });
@@ -121,7 +120,7 @@ public class CustomExerciseActivity extends BaseActivity {
     }
     public void onReturnClicked() {
         btnReturnToHomePage.setOnClickListener(v->{
-                Intent intent = new Intent(CustomExerciseActivity.this, HomePageActivity.class);
+                Intent intent = new Intent(CustomExerciseActivity.this, PlanPageActivity.class);
                 startActivity(intent);
                 finish();
         });
