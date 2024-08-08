@@ -41,8 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="סיים"
-            android:backgroundTint="#6200EE"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/backgroundButton"
+            android:textColor="@color/textButton"
             android:padding="12dp"/>
     </LinearLayout>
 

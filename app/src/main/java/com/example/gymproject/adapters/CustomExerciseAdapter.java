@@ -47,8 +47,11 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         CustomExercise exercise = exerciseList.get(position);
+
+        holder.imageViewExercise.setImageDrawable(null);
         if (!exercise.getImageUrl().isEmpty())
             ImageLoader.getInstance().load(exercise.getImageUrl(), holder.imageViewExercise);
+
         holder.textViewExerciseName.setText(exercise.getName());
         holder.textViewSets.setText(String.valueOf(exercise.getSets()));
         holder.textViewReps.setText(String.valueOf(exercise.getReps()));

@@ -26,7 +26,7 @@ public class PlanPageActivity extends BaseActivity {
         initView();
         initButtons();
 
-        //addExercise();
+        addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
@@ -37,8 +37,8 @@ public class PlanPageActivity extends BaseActivity {
     }
 
     private void addExercise() {
-        BuiltExercise exercise1=new BuiltExercise("E1","chest","bench press","https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/04/10-Exercises-Build-Muscle-Bench-Press.jpg?quality=86&strip=all");
-        BuiltExercise exercise2=new BuiltExercise("E2","back","pull-ups","https://youfit.com/wp-content/uploads/2022/11/pull-ups-for-beginners.jpg");
+        BuiltExercise exercise1=new BuiltExercise("chest","bench press","https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/04/10-Exercises-Build-Muscle-Bench-Press.jpg?quality=86&strip=all");
+        BuiltExercise exercise2=new BuiltExercise("back","pull-ups","https://youfit.com/wp-content/uploads/2022/11/pull-ups-for-beginners.jpg");
         DatabaseUtils.addExerciseToWarehouse(exercise1);
         DatabaseUtils.addExerciseToWarehouse(exercise2);
     }

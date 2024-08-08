@@ -73,7 +73,7 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     BuiltExercise exercise = snapshot.getValue(BuiltExercise.class);
                     if (exercise != null) {
-                        exercise.setId(snapshot.getKey());
+                        exercise.setName(snapshot.getKey());
                         exerciseList.add(exercise);
                     } else {
                         Log.e("Exercise", "Exercise is null");
@@ -103,8 +103,8 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
                 return;
             }
 
-            PartialCustomExercise partialCustomExercise = new PartialCustomExercise( Integer.parseInt(sets), Integer.parseInt(reps), Integer.parseInt(weight), Integer.parseInt(rest), notes);
-            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), planName, partialCustomExercise,exercise.getId(), new OnExerciseSavedListener() {
+            PartialCustomExercise partialCustomExercise = new PartialCustomExercise( Integer.parseInt(sets), Integer.parseInt(reps), Double.parseDouble(weight), Integer.parseInt(rest), notes);
+            DatabaseUtils.saveCustomUserExerciseFromLibrary(currentUser.getUid(), planName, partialCustomExercise,exercise.getName(), new OnExerciseSavedListener() {
                 @Override
                 public void onSuccess() {
                     inputDetailsLayout.setVisibility(View.GONE);

@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="משקל"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textColor="@color/black"
         android:textColorHint="@color/hints"
         android:background="@android:drawable/editbox_background"
@@ -116,8 +116,8 @@
         android:text="הוסף תרגיל"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:backgroundTint="#6200EE"
-        android:textColor="@color/textColor"
+        android:backgroundTint="@color/backgroundButton"
+        android:textColor="@color/textButton"
         android:padding="12dp"
         android:layout_marginTop="16dp"/>
 </LinearLayout>

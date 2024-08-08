@@ -21,11 +21,13 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/settings"
             android:text="Settings"
-            android:textColor="#ECF400"
-            app:iconTint="#ECF400"
+            android:textColor="@color/textButton"
+            app:iconTint="@color/textButton"
+            android:backgroundTint="@color/backgroundButton"
             android:textSize="14sp"
             android:padding="8dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            />
 
         <TextView
             android:id="@+id/textViewWelcome"
@@ -45,7 +47,8 @@
             android:layout_height="wrap_content"
             android:text="logout"
             android:textSize="14sp"
-            android:textColor="#ECF400"
+            android:textColor="@color/textButton"
+            android:backgroundTint="@color/backgroundButton"
             android:padding="8dp"
             android:gravity="center"/>
 
@@ -141,6 +144,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="הוספת תוכנית אימונים"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textColor="@color/textButton"
+        android:backgroundTint="@color/backgroundButton"
+        />
 
 </LinearLayout>

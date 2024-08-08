@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.gymproject.R;
+import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
 import com.example.gymproject.utilities.ExercisesUtiles;
 import com.google.android.material.button.MaterialButton;
@@ -19,7 +20,8 @@ public class AddCustomExerciseActivity extends BaseActivity {
     private Spinner typeExerciseName;
     private MaterialButton buttonAddExercise, btnReturnToHomePage;
     private String selectedMuscle, exerciseName, other;
-    private int sets,reps, weight, rest;
+    private int sets,reps, rest;
+    private double weight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +83,11 @@ public class AddCustomExerciseActivity extends BaseActivity {
                 if (!checkValues()) {
                     Toast.makeText(AddCustomExerciseActivity.this, "invalid inputs", Toast.LENGTH_SHORT).show();
                 } else {
+                    CustomExercise exercise = new CustomExercise(selectedMuscle, exerciseName, "", sets, reps, weight, rest, other);
                     DatabaseUtils.addCustomUserExercise(
                             currentUser.getUid(),
                             planName,
-                            selectedMuscle,
-                            exerciseName,
-                            "",
-                            sets,
-                            reps,
-                            weight,
-                            rest,
-                            other
+                            exercise
                     );
                     Toast.makeText(AddCustomExerciseActivity.this, "התרגיל נוסף בהצלחה", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddCustomExerciseActivity.this, PlanPageActivity.class);
@@ -114,7 +110,7 @@ public class AddCustomExerciseActivity extends BaseActivity {
         }
         sets=Integer.parseInt(setsString);
         reps=Integer.parseInt(repsString);
-        weight=Integer.parseInt(weightString);
+        weight=Double.parseDouble(weightString);
         rest=Integer.parseInt(restString);
         return true;
     }

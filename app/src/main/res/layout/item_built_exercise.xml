@@ -77,7 +77,7 @@
             android:id="@+id/inputWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="הזן משקל"
             android:textColorHint="@color/hints"
             android:textColor="@color/textColor"/>
@@ -103,7 +103,9 @@
             android:id="@+id/btnAddBuiltExercise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"/>
+            android:text="Add"
+            android:backgroundTint="@color/backgroundButton"
+            android:textColor="@color/textButton"/>
 
     </LinearLayout>
 </LinearLayout>

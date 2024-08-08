@@ -38,8 +38,9 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/settings"
             android:text="Settings"
-            android:textColor="#ECF400"
-            app:iconTint="#ECF400"
+            android:textColor="@color/textButton"
+            app:iconTint="@color/textButton"
+            android:backgroundTint="@color/backgroundButton"
             android:textSize="14sp"
             android:padding="8dp"
             android:gravity="center"/>
@@ -135,13 +136,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="הוספת תרגיל מהמאגר"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:backgroundTint="@color/backgroundButton"
+        android:textColor="@color/textButton"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addCustomExercise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="הוספת תרגיל עצמאית"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:backgroundTint="@color/backgroundButton"
+        android:textColor="@color/textButton"/>
 
 </LinearLayout>

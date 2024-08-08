@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -16,6 +17,8 @@ import com.example.gymproject.interfaces.OnExerciseEditedListener;
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.WorkoutPlan;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -90,27 +93,37 @@ public class DialogUtils {
         builder.setTitle("Edit Exercise");
 
         View viewInflated = LayoutInflater.from(context).inflate(R.layout.edit_exercise_dialog, null);
-        EditText inputSets = viewInflated.findViewById(R.id.editExerciseSets);
-        EditText inputReps = viewInflated.findViewById(R.id.editExerciseReps);
-        EditText inputWeight = viewInflated.findViewById(R.id.editExerciseWeight);
-        EditText inputRestTime = viewInflated.findViewById(R.id.editExerciseRestTime);
-        EditText inputNotes = viewInflated.findViewById(R.id.editExerciseNotes);
+        TextInputLayout inputSets = viewInflated.findViewById(R.id.editExerciseSets);
+        TextInputLayout inputReps = viewInflated.findViewById(R.id.editExerciseReps);
+        TextInputLayout inputWeight = viewInflated.findViewById(R.id.editExerciseWeight);
+        TextInputLayout inputRestTime = viewInflated.findViewById(R.id.editExerciseRestTime);
+        TextInputLayout inputNotes = viewInflated.findViewById(R.id.editExerciseNotes);
 
-        inputSets.setText(String.valueOf(exercise.getSets()));
-        inputReps.setText(String.valueOf(exercise.getReps()));
-        inputWeight.setText(String.valueOf(exercise.getWeight()));
-        inputRestTime.setText(String.valueOf(exercise.getRest()));
-        inputNotes.setText(exercise.getOther());
+        inputSets.getEditText().setText(String.valueOf(exercise.getSets()));
+        inputReps.getEditText().setText(String.valueOf(exercise.getReps()));
+        inputWeight.getEditText().setText(String.valueOf(exercise.getWeight()));
+        inputRestTime.getEditText().setText(String.valueOf(exercise.getRest()));
+        inputNotes.getEditText().setText(exercise.getOther());
 
         builder.setView(viewInflated);
 
         builder.setPositiveButton("Save", (dialog, which) -> {
-            //להוסיף בדיקה
-            exercise.setSets(Integer.parseInt(inputSets.getText().toString()));
-            exercise.setReps(Integer.parseInt(inputReps.getText().toString()));
-            exercise.setWeight(Double.parseDouble(inputWeight.getText().toString()));
-            exercise.setRest(Integer.parseInt(inputRestTime.getText().toString()));
-            exercise.setOther(inputNotes.getText().toString());
+            String sets = inputSets.getEditText().getText().toString();
+            String reps = inputReps.getEditText().getText().toString();
+            String weight = inputWeight.getEditText().getText().toString();
+            String rest = inputRestTime.getEditText().getText().toString();
+            String notes = inputNotes.getEditText().getText().toString();
+
+            if (!ExercisesUtiles.checkValuesForExercise(exercise.getMainMuscle(), exercise.getName(), sets, reps, weight, rest)) {
+                Toast.makeText(context, "Invalid fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            exercise.setSets(Integer.parseInt(sets));
+            exercise.setReps(Integer.parseInt(reps));
+            exercise.setWeight(Double.parseDouble(weight));
+            exercise.setRest(Integer.parseInt(rest));
+            exercise.setOther(notes);
             listener.onExerciseEdited(exercise);
         });
 
