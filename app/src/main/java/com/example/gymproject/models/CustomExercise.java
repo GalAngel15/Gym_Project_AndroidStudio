@@ -6,7 +6,7 @@ public class CustomExercise {
     private String imageUrl;
     private int sets;
     private int reps;
-    private int weight;
+    private double weight;
     private int rest;
     private String other;
 
@@ -14,7 +14,7 @@ public class CustomExercise {
     public CustomExercise() {
     }
 
-    public CustomExercise(String mainMuscle, String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
+    public CustomExercise(String mainMuscle, String name, String imageUrl, int sets, int reps, double weight, int rest, String other) {
         this.mainMuscle=mainMuscle;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -23,18 +23,6 @@ public class CustomExercise {
         this.weight = weight;
         this.rest = rest;
         this.other = other;
-    }
-
-
-    public CustomExercise(String mainMuscle, String name, String imageUrl) {
-        this.mainMuscle=mainMuscle;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.sets = 0;
-        this.reps = 0;
-        this.weight = 0;
-        this.rest = 0;
-        this.other = "";
     }
 
     // Getters and Setters
@@ -78,11 +66,11 @@ public class CustomExercise {
         this.reps = reps;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 

@@ -12,6 +12,7 @@ import com.example.gymproject.interfaces.OnExerciseLoadedListener;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
+import com.example.gymproject.utilities.DialogUtils;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class WorkoutPlanManager {
@@ -30,17 +32,38 @@ public class WorkoutPlanManager {
     private CustomExerciseAdapter adapter;
     private List<CustomExercise> exerciseList;
     private Context context;
+    private String workoutPlanId;
 
-    public WorkoutPlanManager(Context context, FirebaseUser currentUser) {
+    public WorkoutPlanManager(Context context, FirebaseUser currentUser, String workoutPlanId) {
         this.currentUser = currentUser;
         this.context = context;
         this.exerciseList = new ArrayList<>();
+        this.workoutPlanId = workoutPlanId;
         initRecyclerView();
     }
 
     public void initRecyclerView() {
         this.recyclerView = ((PlanPageActivity) context).findViewById(R.id.myPlansRecyclerView);
         adapter = new CustomExerciseAdapter(context, exerciseList);
+
+        adapter.setOnExerciseEditedListener(exercise -> {
+            DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise -> {
+                String userId = currentUser.getUid();
+                DatabaseUtils.updateCustomExerciseInFirebase(userId, workoutPlanId, updatedExercise, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show();
+                        int index = exerciseList.indexOf(exercise);
+                        if (index != -1) {
+                            exerciseList.set(index, updatedExercise);
+                            adapter.notifyItemChanged(index);
+                        }
+                    } else {
+                        Toast.makeText(context, "Failed to update exercise", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
     }

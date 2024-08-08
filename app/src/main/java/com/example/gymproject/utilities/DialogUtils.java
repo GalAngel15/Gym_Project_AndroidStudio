@@ -2,6 +2,7 @@ package com.example.gymproject.utilities;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -9,7 +10,11 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.gymproject.R;
 import com.example.gymproject.interfaces.AddPlanCallback;
+import com.example.gymproject.interfaces.OnExerciseEditedListener;
+import com.example.gymproject.interfaces.OnExerciseSavedListener;
+import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.WorkoutPlan;
 
 import java.util.List;
@@ -78,6 +83,40 @@ public class DialogUtils {
 
         dialog.show();
 
+    }
+
+    public static void showEditExerciseDialog(Context context, CustomExercise exercise, OnExerciseEditedListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Edit Exercise");
+
+        View viewInflated = LayoutInflater.from(context).inflate(R.layout.edit_exercise_dialog, null);
+        EditText inputSets = viewInflated.findViewById(R.id.editExerciseSets);
+        EditText inputReps = viewInflated.findViewById(R.id.editExerciseReps);
+        EditText inputWeight = viewInflated.findViewById(R.id.editExerciseWeight);
+        EditText inputRestTime = viewInflated.findViewById(R.id.editExerciseRestTime);
+        EditText inputNotes = viewInflated.findViewById(R.id.editExerciseNotes);
+
+        inputSets.setText(String.valueOf(exercise.getSets()));
+        inputReps.setText(String.valueOf(exercise.getReps()));
+        inputWeight.setText(String.valueOf(exercise.getWeight()));
+        inputRestTime.setText(String.valueOf(exercise.getRest()));
+        inputNotes.setText(exercise.getOther());
+
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            //להוסיף בדיקה
+            exercise.setSets(Integer.parseInt(inputSets.getText().toString()));
+            exercise.setReps(Integer.parseInt(inputReps.getText().toString()));
+            exercise.setWeight(Double.parseDouble(inputWeight.getText().toString()));
+            exercise.setRest(Integer.parseInt(inputRestTime.getText().toString()));
+            exercise.setOther(inputNotes.getText().toString());
+            listener.onExerciseEdited(exercise);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
 }

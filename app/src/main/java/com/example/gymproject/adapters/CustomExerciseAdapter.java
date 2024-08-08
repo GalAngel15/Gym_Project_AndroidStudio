@@ -4,15 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
+import com.example.gymproject.interfaces.OnExerciseEditedListener;
 import com.example.gymproject.models.CustomExercise;
+import com.example.gymproject.utilities.DatabaseUtils;
+import com.example.gymproject.utilities.DialogUtils;
 import com.example.gymproject.utilities.ImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 import java.util.List;
@@ -21,10 +27,14 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
 
     private Context context;
     private List<CustomExercise> exerciseList;
+    private OnExerciseEditedListener onExerciseEditedListener;
 
     public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList) {
         this.context = context;
         this.exerciseList = exerciseList;
+    }
+    public void setOnExerciseEditedListener(OnExerciseEditedListener listener) {
+        this.onExerciseEditedListener = listener;
     }
 
     @NonNull
@@ -37,7 +47,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         CustomExercise exercise = exerciseList.get(position);
-        if(!exercise.getImageUrl().isEmpty())
+        if (!exercise.getImageUrl().isEmpty())
             ImageLoader.getInstance().load(exercise.getImageUrl(), holder.imageViewExercise);
         holder.textViewExerciseName.setText(exercise.getName());
         holder.textViewSets.setText(String.valueOf(exercise.getSets()));
@@ -45,6 +55,13 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         holder.textViewWeight.setText(String.valueOf(exercise.getWeight()));
         holder.textViewRest.setText(String.valueOf(exercise.getRest()));
         holder.additionalComments.setText(exercise.getOther());
+        holder.btnEdit.setOnClickListener(v -> {
+            onExerciseEditedListener.onExerciseEdited(exercise);
+        });
+        holder.btnDelete.setOnClickListener(v -> {
+            exerciseList.remove(position);
+            notifyItemRemoved(position);
+        });
 
     }
 
@@ -62,6 +79,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         TextView textViewWeight;
         TextView textViewRest;
         TextView additionalComments;
+        ImageButton btnEdit, btnDelete;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +90,8 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
             textViewWeight = itemView.findViewById(R.id.textViewWeight);
             textViewRest = itemView.findViewById(R.id.textViewRest);
             additionalComments = itemView.findViewById(R.id.additionalComments);
+            btnEdit = itemView.findViewById(R.id.btnEditExercise);
+            btnDelete = itemView.findViewById(R.id.btnDeleteExercise);
         }
     }
 }

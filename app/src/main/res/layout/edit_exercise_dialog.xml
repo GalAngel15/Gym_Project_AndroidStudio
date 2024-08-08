@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editExerciseSets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sets"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/editExerciseReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Reps"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/editExerciseWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Weight"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/editExerciseRestTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Rest Time (seconds)"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/editExerciseNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Additional Notes"
+        android:inputType="text"/>
+</LinearLayout>

@@ -3,72 +3,105 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="2dp"
     android:background="@drawable/table_row_background"
     android:gravity="center_vertical"
-    android:paddingLeft="5dp"
-    android:layout_marginVertical="2dp">
+    android:paddingLeft="5dp">
 
     <ImageView
         android:id="@+id/imageViewExercise"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:padding="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:padding="8dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/textViewExerciseName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="שם התרגיל"
-            android:textColor="@color/textColor"
-            android:textStyle="bold" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/btnDeleteExercise"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/baseline_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Add"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageButton
+                android:id="@+id/btnEditExercise"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Edit"
+                android:src="@drawable/baseline_edit" />
+
+            <TextView
+                android:id="@+id/textViewExerciseName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="שם התרגיל"
+                android:textColor="@color/textColor"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewRest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center"
+                android:padding="4dp"
                 android:text="מנוחה"
-                android:textColor="@color/textColor"/>
+                android:textColor="@color/textColor" />
 
             <TextView
                 android:id="@+id/textViewWeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center"
+                android:padding="4dp"
                 android:text="משקל"
-                android:textColor="@color/textColor"/>
+                android:textColor="@color/textColor" />
 
             <TextView
                 android:id="@+id/textViewReps"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center"
+                android:padding="4dp"
                 android:text="חזרות"
-                android:textColor="@color/textColor"/>
+                android:textColor="@color/textColor" />
 
 
             <TextView
@@ -76,19 +109,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center"
+                android:padding="4dp"
                 android:text="סטים"
-                android:textColor="@color/textColor"/>
+                android:textColor="@color/textColor" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/additionalComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:gravity="center"
+            android:padding="8dp"
             android:text="הערות"
-            android:textColor="@color/textColor"/>
+            android:textColor="@color/textColor" />
     </LinearLayout>
 </TableRow>

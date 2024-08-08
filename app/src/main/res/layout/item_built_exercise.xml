@@ -62,7 +62,6 @@
             android:inputType="number"
             android:textColorHint="@color/hints"
             android:hint="הזן מספר סטים"
-            android:text="aaa"
             android:textColor="@color/textColor"/>
 
         <EditText

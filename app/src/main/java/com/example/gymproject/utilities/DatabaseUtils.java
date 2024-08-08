@@ -5,6 +5,7 @@ import com.example.gymproject.interfaces.OnExerciseLoadedListener ;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.PartialCustomExercise;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,9 +32,8 @@ public class DatabaseUtils {
 
     public static void addCustomUserExercise(String userId, String workoutPlanId, String mainMuscle, String name, String imageUrl, int sets, int reps, int weight, int rest, String other) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises");
-        String exerciseId = customExercisesRef.push().getKey(); // יצירת מזהה ייחודי
         CustomExercise exercise = new CustomExercise(mainMuscle, name, imageUrl, sets, reps, weight, rest, other);
-        customExercisesRef.child(exerciseId).setValue(exercise);
+        customExercisesRef.child(name).setValue(exercise);
     }
 
     // פונקציה לטעינת תוכנית אימונים של משתמש
@@ -87,5 +87,14 @@ public class DatabaseUtils {
     public static void addPlan(String userId, String planName, String planDescription) {
         DatabaseReference plansRef = userWorkoutPlansRef.child(userId).child(planName);
         plansRef.child("description").setValue(planDescription);
+    }
+
+    public static void updateCustomExerciseInFirebase(String userId, String planId, CustomExercise exercise, OnCompleteListener<Void> listener) {
+                userWorkoutPlansRef
+                .child(userId)
+                .child(planId)
+                .child("customExercises")
+                .child(exercise.getName()).
+                setValue(exercise).addOnCompleteListener(listener);
     }
 }

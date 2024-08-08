@@ -32,7 +32,7 @@ public class PlanPageActivity extends BaseActivity {
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
             textViewUsername.setText("Welcome, " + userName + "!");
         }
-        planManager = new WorkoutPlanManager(this, currentUser);
+        planManager = new WorkoutPlanManager(this, currentUser,planName);
         planManager.loadAllUserExercises(planName);
     }
 
