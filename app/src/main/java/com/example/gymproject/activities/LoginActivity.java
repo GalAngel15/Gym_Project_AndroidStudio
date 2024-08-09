@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +23,28 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout emailInputLayout, passwordInputLayout;
     private TextView checkTextView;
     private MaterialButton login_BTN_login;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        initViews();
         initButtons();
         mAuth = FirebaseAuth.getInstance();
-        checkTextView = findViewById(R.id.checkTextView);
-        validateLogin();
 
+    }
+
+    private void initViews() {
+        login_BTN_login = findViewById(R.id.buttonLoginLoginPage);
+        emailInputLayout = findViewById(R.id.login_EDT_mail);
+        passwordInputLayout = findViewById(R.id.login_EDT_Password);
+        checkTextView = findViewById(R.id.checkTextView);
+        progressBar = findViewById(R.id.progressBar);
+    }
+
+    private void initButtons() {
         login_BTN_login.setOnClickListener(v -> {
             login_BTN_login.setEnabled(false); // Disable button to prevent double click
             String email = emailInputLayout.getEditText().getText().toString().trim();
@@ -59,52 +73,27 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void initButtons() {
-        login_BTN_login = findViewById(R.id.buttonLoginLoginPage);
-        emailInputLayout = findViewById(R.id.login_EDT_mail);
-        passwordInputLayout = findViewById(R.id.login_EDT_Password);
-        checkTextView = findViewById(R.id.checkTextView);
-    }
-
     private void loginUser(String email, String password) {
+        progressBar.setVisibility(View.VISIBLE); // Show the ProgressBar
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     login_BTN_login.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            checkTextView.setText(
-                                    user.getDisplayName() + "\n" +
-                                            user.getUid() + "\n" +
-                                            user.getProviderId() + "\n" +
-                                            user.getEmail() + "\n" +
-                                            user.getPhoneNumber()
-                            );
+                            checkTextView.setVisibility(TextView.INVISIBLE);
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MyPlansActivity.class);
                             startActivity(intent);
                             finish();
                         }
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        checkTextView.setText("One or more fields are incorrect");
+                        checkTextView.setVisibility(TextView.VISIBLE);
+                        checkTextView.setTextColor(getResources().getColor(R.color.red, null));
                     }
                 });
-    }
-
-
-    private void validateLogin() {
-        currentUser = mAuth.getCurrentUser(); //get current user
-        if (currentUser != null) {
-            checkTextView.setText(
-                    currentUser.getDisplayName() + "\n" +
-                            currentUser.getUid() + "\n" +
-                            currentUser.getProviderId() + "\n" +
-                            currentUser.getEmail() + "\n" +
-                            currentUser.getPhoneNumber()
-            );
-        }else{
-            checkTextView.setText("no user");
-        }
-
     }
 }

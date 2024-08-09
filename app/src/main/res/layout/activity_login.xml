@@ -63,11 +63,19 @@
             android:id="@+id/checkTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="0000000">
+            android:padding="20dp">
         </TextView>
-
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/layoutLoginValues"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLoginLoginPage"

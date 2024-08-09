@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gymproject.R;
 import com.example.gymproject.interfaces.OnExerciseEditedListener;
 import com.example.gymproject.models.CustomExercise;
-import com.example.gymproject.utilities.DatabaseUtils;
-import com.example.gymproject.utilities.DialogUtils;
 import com.example.gymproject.utilities.ImageLoader;
-import com.google.firebase.auth.FirebaseAuth;
 
 
 import java.util.List;
@@ -27,7 +23,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
 
     private Context context;
     private List<CustomExercise> exerciseList;
-    private OnExerciseEditedListener onExerciseEditedListener;
+    private OnExerciseEditedListener onExerciseEditedListener, onExerciseDeletitedListener;
 
     public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList) {
         this.context = context;
@@ -35,6 +31,9 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
     }
     public void setOnExerciseEditedListener(OnExerciseEditedListener listener) {
         this.onExerciseEditedListener = listener;
+    }
+    public void onExerciseDeletedListener(OnExerciseEditedListener listener) {
+        this.onExerciseDeletitedListener = listener;
     }
 
     @NonNull
@@ -62,8 +61,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
             onExerciseEditedListener.onExerciseEdited(exercise);
         });
         holder.btnDelete.setOnClickListener(v -> {
-            exerciseList.remove(position);
-            notifyItemRemoved(position);
+            onExerciseDeletitedListener.onExerciseEdited(exercise);
         });
 
     }

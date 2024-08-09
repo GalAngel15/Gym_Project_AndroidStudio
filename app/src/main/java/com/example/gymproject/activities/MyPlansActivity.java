@@ -3,6 +3,7 @@ package com.example.gymproject.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ public class MyPlansActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private WorkoutPlanAdapter adapter;
     private List<WorkoutPlan> workoutPlans;
+    private TextView textViewUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class MyPlansActivity extends BaseActivity {
     }
 
     private void initView() {
+        textViewUsername = findViewById(R.id.textViewWelcome);
+        textViewUsername.setText("Welcome, " + currentUser.getDisplayName() + "!");
         btnLogout = findViewById(R.id.btnLogout);
         buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
         btnAddWorkoutPlan = findViewById(R.id.addWorkoutPlan);

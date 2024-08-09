@@ -132,4 +132,17 @@ public class DialogUtils {
         builder.show();
     }
 
+    public static void showDeleteExerciseDialog(Context context, CustomExercise exercise, OnExerciseEditedListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete Confirmation")
+            .setMessage("Are you sure you want to delete the exercise " + exercise.getName() + "?")
+            .setPositiveButton("Yes", (dialog, which) -> {
+                        listener.onExerciseEdited(exercise);
+                    });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
 }

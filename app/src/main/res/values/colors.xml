@@ -3,7 +3,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="hints">#CC6D6D6D</color>
-    <color name="commonColor">#CC6D6D6D</color>
+    <color name="commonColor">#062FF0</color>
     <color name="colorPrimary">#E40202</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
@@ -14,5 +14,6 @@
     <color name="colorOnPrimary">#FFFFFF</color>
     <color name="backgroundText">#737373</color>
     <color name="textButton">#ECF400</color>
+    <color name="red">#FF0000</color>
 
 </resources>

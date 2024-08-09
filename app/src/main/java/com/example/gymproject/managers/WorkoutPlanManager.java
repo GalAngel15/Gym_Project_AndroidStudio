@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import android.util.Log;
@@ -46,23 +45,8 @@ public class WorkoutPlanManager {
         this.recyclerView = ((PlanPageActivity) context).findViewById(R.id.myPlansRecyclerView);
         adapter = new CustomExerciseAdapter(context, exerciseList);
 
-        adapter.setOnExerciseEditedListener(exercise -> {
-            DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise -> {
-                String userId = currentUser.getUid();
-                DatabaseUtils.updateCustomExerciseInFirebase(userId, workoutPlanId, updatedExercise, task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show();
-                        int index = exerciseList.indexOf(exercise);
-                        if (index != -1) {
-                            exerciseList.set(index, updatedExercise);
-                            adapter.notifyItemChanged(index);
-                        }
-                    } else {
-                        Toast.makeText(context, "Failed to update exercise", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            });
-        });
+        adapter.setOnExerciseEditedListener(this::handleExerciseEdit);
+        adapter.onExerciseDeletedListener(this::handleExerciseDelete);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
@@ -165,13 +149,42 @@ public class WorkoutPlanManager {
     }
 
     private void updateAndSortExercises(List<CustomExercise> tempList) {
-        tempList.sort(new Comparator<CustomExercise>() {
-            @Override
-            public int compare(CustomExercise o1, CustomExercise o2) {
-                return o1.getMainMuscle().compareTo(o2.getMainMuscle());
-            }
-        });
+        tempList.sort((o1, o2) -> o1.getMainMuscle().compareTo(o2.getMainMuscle()));
         exerciseList.addAll(tempList);
         adapter.notifyDataSetChanged();
+    }
+
+    private void handleExerciseEdit(CustomExercise exercise) {
+        DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise -> {
+            DatabaseUtils.updateCustomExerciseInFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show();
+                    int index = exerciseList.indexOf(exercise);
+                    if (index != -1) {
+                        exerciseList.set(index, updatedExercise);
+                        adapter.notifyItemChanged(index);
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to update exercise", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private void handleExerciseDelete(CustomExercise exercise) {
+        DialogUtils.showDeleteExerciseDialog(context, exercise, updatedExercise -> {
+            DatabaseUtils.deleteExerciseFromFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Exercise deleted", Toast.LENGTH_SHORT).show();
+                    int index = exerciseList.indexOf(exercise);
+                    if (index != -1) {
+                        exerciseList.remove(index);
+                        adapter.notifyItemRemoved(index);
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to delete exercise", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }

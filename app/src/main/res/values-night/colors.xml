@@ -12,5 +12,6 @@
     <color name="oppositeBackground">#FFFFFFFF</color>
     <color name="backgroundText">#DDDDDD</color>
     <color name="textButton">#DDDDDD</color>
+    <color name="red">#FF0000</color>
 
 </resources>

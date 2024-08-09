@@ -34,18 +34,11 @@ public class DatabaseUtils {
         exercisesWarehouseRef.child(exercise.getName()).setValue(exerciseData);
     }
 
-//    public static void addCustomUserExercise(String userId, String workoutPlanId, String mainMuscle, String name, String imageUrl, int sets, int reps, double weight, int rest, String other) {
-//        DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises");
-//        CustomExercise exercise = new CustomExercise(mainMuscle, name, imageUrl, sets, reps, weight, rest, other);
-//        customExercisesRef.child(name).setValue(exercise);
-//    }
-
     public static void addCustomUserExercise(String userId, String workoutPlanId, CustomExercise exercise) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises");
         customExercisesRef.child(exercise.getName()).setValue(exercise);
     }
 
-    // פונקציה לטעינת תוכנית אימונים של משתמש
     public static void loadUserWorkoutPlan(String userId, String workoutPlanId, ValueEventListener listener) {
         userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises").addListenerForSingleValueEvent(listener);
     }
@@ -122,11 +115,25 @@ public class DatabaseUtils {
                 Log.e("DatabaseUtils", "Error updating exercise in Firebase: " + error.getMessage());
             }
         });
-//                userWorkoutPlansRef
-//                .child(userId)
-//                .child(planId)
-//                .child("customExercises")
-//                .child(exercise.getName()).
-//                setValue(exercise).addOnCompleteListener(listener);
+    }
+    public static void deleteExerciseFromFirebase(String userId, String planId, CustomExercise exercise, OnCompleteListener<Void> listener) {
+        DatabaseReference warehouseRef = userWorkoutPlansRef.child(userId).child(planId).child("WarehouseExercises").child(exercise.getName());
+        DatabaseReference customRef = userWorkoutPlansRef.child(userId).child(planId).child("customExercises").child(exercise.getName());
+
+        warehouseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    warehouseRef.removeValue().addOnCompleteListener(listener);
+                } else {
+                    customRef.removeValue().addOnCompleteListener(listener);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DatabaseUtils", "Error updating exercise in Firebase: " + error.getMessage());
+            }
+        });
     }
 }
