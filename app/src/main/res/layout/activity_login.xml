@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:textSize="24sp"
-        android:textColor="#000"
+        android:textColor="@color/commonColor"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
