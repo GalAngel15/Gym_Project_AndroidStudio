@@ -1,7 +1,6 @@
 package com.example.gymproject.utilities;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

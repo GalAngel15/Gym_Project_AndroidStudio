@@ -60,37 +60,26 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         recyclerView.setAdapter(adapter);
     }
 
-    public void loadAllUserExercises(String workoutPlanId){
+    public void loadAllUserExercises(){
         List<CustomExercise> tempList = new ArrayList<>();
-        loadCustomExercisesList(workoutPlanId, tempList);
+        loadCustomExercisesList(tempList);
     }
 
-    private void loadCustomExercisesList(String workoutPlanId, List<CustomExercise> tempList) {
-        String userId = currentUser != null ? currentUser.getUid() : null;
-        if (userId == null || userId.isEmpty()) {
+    private void loadCustomExercisesList(List<CustomExercise> tempList) {
+        String userId = currentUser.getUid();
+        if (workoutPlanId.isEmpty()) {
             Log.e("WorkoutPlanManager", "Error: User ID is null or empty");
             return;
         }
-        if (workoutPlanId == null || workoutPlanId.isEmpty()) {
-            Log.e("WorkoutPlanManager", "Error: Workout Plan ID is null or empty");
-            return;
-        }
 
-        DatabaseUtils.loadUserWorkoutPlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
+        DatabaseUtils.loadUserWorkoutPlan(userId, workoutPlanId, new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        CustomExercise exercise = snapshot.getValue(CustomExercise.class);
-                        if (exercise != null) {
-                            tempList.add(exercise);
-                        }
-                    }
+                        loadExercisesFromDataSnapshot(dataSnapshot, tempList);
                 }
-                // לאחר טעינת כל התרגילים המותאמים אישית, נטעין את תרגילי המחסן
                 loadUserWorkoutWarehousePlan(workoutPlanId, tempList);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("WorkoutPlanManager", "Error loading custom exercises: " + databaseError.getMessage());
@@ -166,34 +155,55 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise -> {
             DatabaseUtils.updateCustomExerciseInFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show();
-                    int index = exerciseList.indexOf(exercise);
-                    if (index != -1) {
-                        exerciseList.set(index, updatedExercise);
-                        adapter.notifyItemChanged(index);
-                    }
+                    updateExerciseInList(exercise, updatedExercise);
                 } else {
-                    Toast.makeText(context, "Failed to update exercise", Toast.LENGTH_SHORT).show();
+                    showToast("Failed to update exercise");
                 }
             });
         });
+    }
+
+    private void updateExerciseInList(CustomExercise oldExercise, CustomExercise updatedExercise) {
+        int index = exerciseList.indexOf(oldExercise);
+        if (index != -1) {
+            exerciseList.set(index, updatedExercise);
+            adapter.notifyItemChanged(index);
+            showToast("Exercise updated");
+        }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     private void handleExerciseDelete(CustomExercise exercise) {
         DialogUtils.showDeleteExerciseDialog(context, exercise, updatedExercise -> {
             DatabaseUtils.deleteExerciseFromFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(context, "Exercise deleted", Toast.LENGTH_SHORT).show();
-                    int index = exerciseList.indexOf(exercise);
-                    if (index != -1) {
-                        exerciseList.remove(index);
-                        adapter.notifyItemRemoved(index);
-                    }
+                    removeExerciseFromList(exercise);
                 } else {
-                    Toast.makeText(context, "Failed to delete exercise", Toast.LENGTH_SHORT).show();
+                    showToast("Failed to delete exercise");
                 }
             });
         });
+    }
+
+    private void loadExercisesFromDataSnapshot(DataSnapshot dataSnapshot, List<CustomExercise> exerciseList) {
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            CustomExercise exercise = snapshot.getValue(CustomExercise.class);
+            if (exercise != null) {
+                exerciseList.add(exercise);
+            }
+        }
+    }
+
+    private void removeExerciseFromList(CustomExercise exercise) {
+        int index = exerciseList.indexOf(exercise);
+        if (index != -1) {
+            exerciseList.remove(index);
+            adapter.notifyItemRemoved(index);
+            showToast("Exercise deleted");
+        }
     }
 
     @Override
@@ -211,6 +221,7 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         // השמעת צליל בסיום הזמן
         MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.ouchsound);
         mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(MediaPlayer::release);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

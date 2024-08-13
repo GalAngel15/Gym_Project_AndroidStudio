@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextInputLayout emailInputLayout, passwordInputLayout;
     private TextView checkTextView;
-    private MaterialButton login_BTN_login;
+    private MaterialButton login_BTN_login, btnReturn;
     private ProgressBar progressBar;
 
     @Override
@@ -29,10 +29,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
         initViews();
         initButtons();
-        mAuth = FirebaseAuth.getInstance();
-
     }
 
     private void initViews() {
@@ -41,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordInputLayout = findViewById(R.id.login_EDT_Password);
         checkTextView = findViewById(R.id.checkTextView);
         progressBar = findViewById(R.id.progressBar);
+        btnReturn = findViewById(R.id.btnReturnToVisitPage);
     }
 
     private void initButtons() {
@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 login_BTN_login.setEnabled(true); // Enable button if validation fails
             }
         });
+        btnReturn.setOnClickListener(v -> navigateToVisitPage());
     }
 
     private boolean validateInputs(String email, String password) {
@@ -73,26 +74,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String email, String password) {
-        progressBar.setVisibility(View.VISIBLE); // Show the ProgressBar
+        showProgress(true);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     login_BTN_login.setEnabled(true);
-                    progressBar.setVisibility(View.GONE);
+                    showProgress(false);
 
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            checkTextView.setVisibility(TextView.INVISIBLE);
-                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MyPlansActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                        onLoginSuccess();
                     } else {
-                        checkTextView.setText("One or more fields are incorrect");
-                        checkTextView.setVisibility(TextView.VISIBLE);
-                        checkTextView.setTextColor(getResources().getColor(R.color.red, null));
+                        onLoginFailed();
                     }
                 });
+    }
+    private void showProgress(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void onLoginSuccess() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            checkTextView.setVisibility(TextView.INVISIBLE);
+            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+            navigateToMyPlans();
+        }
+    }
+
+    private void onLoginFailed() {
+        checkTextView.setText("One or more fields are incorrect");
+        checkTextView.setVisibility(TextView.VISIBLE);
+        checkTextView.setTextColor(getResources().getColor(R.color.red, null));
+    }
+
+    private void navigateToMyPlans() {
+        Intent intent = new Intent(LoginActivity.this, MyPlansActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+        startActivity(intent);
+        finish();
+    }
+
+    private void navigateToVisitPage() {
+        Intent intent = new Intent(LoginActivity.this, VisitPageActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

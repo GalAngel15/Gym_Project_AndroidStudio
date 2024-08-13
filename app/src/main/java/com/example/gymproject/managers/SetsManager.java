@@ -2,15 +2,14 @@ package com.example.gymproject.managers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.CountDownTimer;
 
 import com.example.gymproject.activities.TimerActivity;
 import com.example.gymproject.models.CustomExercise;
 
 public class SetsManager {
     private int setCount = 0;
-    private OnRestFinishListener onRestFinishListener;
-    private Activity activity;
+    private final OnRestFinishListener onRestFinishListener;
+    private final Activity activity;
     private CustomExercise currentExercise;
 
     public SetsManager(OnRestFinishListener listener, Activity activity) {

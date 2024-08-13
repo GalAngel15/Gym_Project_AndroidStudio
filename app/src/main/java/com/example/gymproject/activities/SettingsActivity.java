@@ -25,34 +25,37 @@ public class SettingsActivity extends AppCompatActivity {
 
         initViews();
         initButtons();
-        isNightMode=sharedPreferencesManager.isNightMode();
-        switchMode.setChecked(isNightMode);
-        switchMode.setOnClickListener(v->{
-            if(isNightMode){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                sharedPreferencesManager.setNightMode(false);
-            }else{
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                sharedPreferencesManager.setNightMode(true);
-            }
-            isNightMode = !isNightMode;
-        });
+        setupSwitchMode();
     }
-
-
 
     private void initViews() {
         switchMode = findViewById(R.id.switchToggleTheme);
-        switchMode.setChecked(isNightMode);
         btnReturn=findViewById(R.id.btnReturnFromSettings);
     }
 
-
     private void initButtons() {
+        btnReturn.setOnClickListener(v -> navigateBackToPlans());
+    }
 
-        btnReturn.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MyPlansActivity.class);
-            startActivity(intent);
-        });
+    private void setupSwitchMode() {
+        isNightMode = sharedPreferencesManager.isNightMode();
+        switchMode.setChecked(isNightMode);
+        switchMode.setOnClickListener(v -> toggleNightMode());
+    }
+
+    private void toggleNightMode() {
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            sharedPreferencesManager.setNightMode(false);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            sharedPreferencesManager.setNightMode(true);
+        }
+        isNightMode = !isNightMode;
+    }
+
+    private void navigateBackToPlans() {
+        Intent intent = new Intent(this, MyPlansActivity.class);
+        startActivity(intent);
     }
 }

@@ -5,7 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".activities.RegisterActivity"
+    android:padding="10dp">
+
+    <include
+        android:id="@+id/btnReturnToVisitPage"
+        layout="@layout/custom_button" />
 
     <TextView
         android:id="@+id/textViewRegisterTitle"
@@ -17,8 +22,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="32dp"
-        android:gravity="center"/>
+        android:layout_marginTop="38dp"
+        android:gravity="center"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/editTextRegisterUsername"
@@ -80,7 +86,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

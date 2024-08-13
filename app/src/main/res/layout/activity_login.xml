@@ -5,7 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity"
+    android:padding="10dp">
+
+    <include
+        android:id="@+id/btnReturnToVisitPage"
+        layout="@layout/custom_button" />
 
     <TextView
         android:id="@+id/textViewLoginTitle"
@@ -17,8 +22,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"
-        android:gravity="center" />
+        android:layout_marginTop="38dp"
+        android:gravity="center"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:id="@+id/layoutLoginValues"

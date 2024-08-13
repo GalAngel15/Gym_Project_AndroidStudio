@@ -39,7 +39,6 @@ public class MyPlansActivity extends BaseActivity {
         initView();
         initButtons();
         loadWorkoutPlans();
-
     }
 
     private void initRecyclerView() {
@@ -54,29 +53,34 @@ public class MyPlansActivity extends BaseActivity {
 
     private void initView() {
         textViewUsername = findViewById(R.id.textViewWelcome);
-        textViewUsername.setText("Welcome, " + currentUser.getDisplayName() + "!");
+        textViewUsername.setText(getString(R.string.welcome_user, currentUser.getDisplayName()));
         btnLogout = findViewById(R.id.btnLogout);
         buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
         btnAddWorkoutPlan = findViewById(R.id.addWorkoutPlan);
     }
 
     private void initButtons() {
-        btnLogout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        btnLogout.setOnClickListener(v -> logoutUser());
+        buttonOpenSettings.setOnClickListener(v -> openSettings());
+        btnAddWorkoutPlan.setOnClickListener(v -> openAddWorkoutPlanDialog());
+    }
 
-        buttonOpenSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        });
-        btnAddWorkoutPlan.setOnClickListener(v -> {
-            DialogUtils.showAddWorkoutPlanDialog(this, workoutPlans, this::onAddPlan);
-        });
+    private void logoutUser() {
+        mAuth.signOut();
+        Toast.makeText(this, R.string.logged_out, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
 
+    private void openSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openAddWorkoutPlanDialog() {
+        DialogUtils.showAddWorkoutPlanDialog(this, workoutPlans, this::onAddPlan);
     }
 
     public void onPlanClick(WorkoutPlan workoutPlanId) {

@@ -1,7 +1,6 @@
 package com.example.gymproject.activities;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,7 @@ public class BaseActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         planName= getIntent().getStringExtra("planId");
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();

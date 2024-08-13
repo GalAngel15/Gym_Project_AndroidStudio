@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.gymproject.R;
 import com.example.gymproject.managers.WorkoutPlanManager;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class PlanPageActivity extends BaseActivity {
     private TextView textViewUsername,textViewPlanName;
@@ -30,10 +26,10 @@ public class PlanPageActivity extends BaseActivity {
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth
-            textViewUsername.setText("Welcome, " + userName + "!");
+            textViewUsername.setText(getString(R.string.welcome_user, userName));
         }
         planManager = new WorkoutPlanManager(this, currentUser,planName);
-        planManager.loadAllUserExercises(planName);
+        planManager.loadAllUserExercises();
     }
 
     private void addExercise() {
