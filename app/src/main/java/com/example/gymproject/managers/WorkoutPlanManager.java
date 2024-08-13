@@ -2,6 +2,7 @@ package com.example.gymproject.managers;
 
 import android.content.Context;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,23 +22,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
 
-public class WorkoutPlanManager {
+public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     private FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private CustomExerciseAdapter adapter;
     private List<CustomExercise> exerciseList;
     private Context context;
     private String workoutPlanId;
+    private SetsManager workoutSetManager;
 
     public WorkoutPlanManager(Context context, FirebaseUser currentUser, String workoutPlanId) {
         this.currentUser = currentUser;
         this.context = context;
         this.exerciseList = new ArrayList<>();
         this.workoutPlanId = workoutPlanId;
+        workoutSetManager = new SetsManager(this, (PlanPageActivity) context);
         initRecyclerView();
     }
 
@@ -46,7 +51,10 @@ public class WorkoutPlanManager {
         adapter = new CustomExerciseAdapter(context, exerciseList);
 
         adapter.setOnExerciseEditedListener(this::handleExerciseEdit);
-        adapter.onExerciseDeletedListener(this::handleExerciseDelete);
+        adapter.setOnExerciseDeletedListener(this::handleExerciseDelete);
+        adapter.setOnDoneSetListener(exercise -> {
+            workoutSetManager.startNewSet(exercise);
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
@@ -186,5 +194,33 @@ public class WorkoutPlanManager {
                 }
             });
         });
+    }
+
+    @Override
+    public void onSetCompleted(int setCount, CustomExercise customExercise) {
+        int setsRemaining = customExercise.getSets() - setCount;
+        Toast.makeText(context, "Set " + setCount + " completed! " + setsRemaining + " sets remaining.", Toast.LENGTH_SHORT).show();
+
+        if (setsRemaining <= 0) {
+            Toast.makeText(context, "Exercise completed!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onTick(long millisUntilFinished) {
+
+    }
+
+    @Override
+    public void onRestFinished() {
+        // השמעת צליל בסיום הזמן
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.ouchsound);
+        mediaPlayer.start();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == AppCompatActivity.RESULT_OK) {
+            onRestFinished();
+        }
     }
 }

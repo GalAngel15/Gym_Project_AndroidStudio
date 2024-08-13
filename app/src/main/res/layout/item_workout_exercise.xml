@@ -64,6 +64,15 @@
                 android:layout_height="0dp"
                 android:layout_width="0dp"
                 />
+            <ImageButton
+                android:id="@+id/btnDoneSet"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Edit exercise"
+                android:src="@drawable/ic_done"/>
 
 
         </LinearLayout>

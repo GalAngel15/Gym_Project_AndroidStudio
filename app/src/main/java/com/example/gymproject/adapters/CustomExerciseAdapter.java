@@ -23,17 +23,24 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
 
     private final Context context;
     private List<CustomExercise> exerciseList;
-    private OnExerciseEditedListener onExerciseEditedListener, onExerciseDeletitedListener;
+    private OnExerciseEditedListener onExerciseEditedListener, onExerciseDeletitedListener, onDoneSetListener;
+
 
     public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList) {
         this.context = context;
         this.exerciseList = exerciseList;
     }
+
     public void setOnExerciseEditedListener(OnExerciseEditedListener listener) {
         this.onExerciseEditedListener = listener;
     }
-    public void onExerciseDeletedListener(OnExerciseEditedListener listener) {
+
+    public void setOnExerciseDeletedListener(OnExerciseEditedListener listener) {
         this.onExerciseDeletitedListener = listener;
+    }
+
+    public void setOnDoneSetListener(OnExerciseEditedListener listener) {
+        this.onDoneSetListener = listener;
     }
 
     @NonNull
@@ -63,6 +70,9 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         holder.btnDelete.setOnClickListener(v -> {
             onExerciseDeletitedListener.onExerciseEdited(exercise);
         });
+        holder.btnDoneSet.setOnClickListener(v->{
+            onDoneSetListener.onExerciseEdited(exercise);
+        });
 
     }
 
@@ -80,7 +90,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         TextView textViewWeight;
         TextView textViewRest;
         TextView additionalComments;
-        ImageButton btnEdit, btnDelete;
+        ImageButton btnEdit, btnDelete, btnDoneSet;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +103,7 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
             additionalComments = itemView.findViewById(R.id.additionalComments);
             btnEdit = itemView.findViewById(R.id.btnEditExercise);
             btnDelete = itemView.findViewById(R.id.btnDeleteExercise);
+            btnDoneSet = itemView.findViewById(R.id.btnDoneSet);
         }
     }
 }

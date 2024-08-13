@@ -94,4 +94,10 @@ public class PlanPageActivity extends BaseActivity {
             startActivity(intent);
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        planManager.onActivityResult(requestCode, resultCode, data);
+    }
 }
