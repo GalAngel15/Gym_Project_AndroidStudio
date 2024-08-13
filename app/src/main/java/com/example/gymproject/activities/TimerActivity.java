@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,15 +29,27 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        initViews();
+        initOnBackPressedHandler();
+
+        // קבלת הזמן שנותר
+        timeLeftInMillis = getIntent().getLongExtra("timeLeft", 0);
+        startTimer();
+    }
+
+    private void initViews() {
         timerTextView = findViewById(R.id.timerTextView);
         finishEarlyButton = findViewById(R.id.finishEarlyButton);
+        finishEarlyButton.setOnClickListener(v -> finishEarly());
+    }
 
-        // קבלת הזמן שנותר מהמטרה
-        timeLeftInMillis = getIntent().getLongExtra("timeLeft", 0);
-
-        startTimer();
-
-        finishEarlyButton.setOnClickListener(v->finishEarly());
+    private void initOnBackPressedHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finishEarly();
+            }
+        });
     }
 
     private void startTimer() {
@@ -62,14 +75,34 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void finishEarly() {
-        countDownTimer.cancel();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
         setResult(RESULT_OK);
         finish();
     }
 
     @Override
-    public void onBackPressed() {
-        // מניעת יציאה ללא לחיצה על הכפתור
-        finishEarly();
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // עצירת הטיימר בעת הפסקה
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // עצירת פעולות זמניות
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // שחרור הטיימר אם נדרש
+        }
     }
 }

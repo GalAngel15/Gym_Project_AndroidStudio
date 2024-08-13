@@ -123,4 +123,5 @@ public class AddExerciseFromLibraryActivity extends BaseActivity{
         EditText editText = parent.findViewById(resId);
         return editText != null ? editText.getText().toString() : "";
     }
+
 }
