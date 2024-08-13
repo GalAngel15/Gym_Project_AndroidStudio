@@ -13,6 +13,12 @@ public class WorkoutPlan {
         this.description = description;
     }
 
+    public WorkoutPlan(String planName, String planDescription){
+        this.name = planName;
+        this.description = planDescription;
+        this.lastDate = "last date";
+        this.timesDone = 0;
+    }
 
     public String getName() {
         return name;

@@ -47,6 +47,7 @@ public class MyPlansActivity extends BaseActivity {
         recyclerView = findViewById(R.id.myPlansRecyclerView);
         adapter = new WorkoutPlanAdapter(this, workoutPlans);
         adapter.setOnPlanClickListener(this::onPlanClick);
+        adapter.setOnPlanDeletedListener(this::onPlanDeleted);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -78,9 +79,9 @@ public class MyPlansActivity extends BaseActivity {
 
     }
 
-    public void onPlanClick(String workoutPlanId) {
+    public void onPlanClick(WorkoutPlan workoutPlanId) {
         Intent intent = new Intent(this, PlanPageActivity.class);
-        intent.putExtra("planId", workoutPlanId);
+        intent.putExtra("planId", workoutPlanId.getName());
         startActivity(intent);
     }
 
@@ -96,7 +97,8 @@ public class MyPlansActivity extends BaseActivity {
 
                 for (DataSnapshot planSnapshot : dataSnapshot.getChildren()) {
                     String name = planSnapshot.getKey();
-                    WorkoutPlan workoutPlan = new WorkoutPlan(name, "Last Date", 0, "Description");
+                    String description = planSnapshot.child("description").getValue(String.class);
+                    WorkoutPlan workoutPlan = new WorkoutPlan(name, "Last Date", 0, description);
                     workoutPlans.add(workoutPlan);
                 }
                 adapter.notifyItemRangeInserted(0, workoutPlans.size());            }
@@ -108,10 +110,26 @@ public class MyPlansActivity extends BaseActivity {
         });
     }
 
-    //AddPlanCallback implementation
     public void onAddPlan(String planName, String planDescription) {
             DatabaseUtils.addPlan(currentUser.getUid(), planName, planDescription);
-            onPlanClick(planName);
+            WorkoutPlan plan = new WorkoutPlan(planName, planDescription);
+            onPlanClick(plan);
+    }
+    public void onPlanDeleted(WorkoutPlan plan) {
+        DialogUtils.showDeletePlanDialog(this, plan, deletedPlan -> {
+            DatabaseUtils.deletePlanFromFirebase(currentUser.getUid(), plan.getName(), task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(this, "Exercise deleted", Toast.LENGTH_SHORT).show();
+                    int index = workoutPlans.indexOf(plan);
+                    if (index != -1) {
+                        workoutPlans.remove(index);
+                        adapter.notifyItemRemoved(index);
+                    }
+                } else {
+                    Toast.makeText(this, "Failed to delete exercise", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
 }

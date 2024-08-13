@@ -136,4 +136,24 @@ public class DatabaseUtils {
             }
         });
     }
+
+    public static void deletePlanFromFirebase(String userId, String planId, OnCompleteListener<Void> listener) {
+        DatabaseReference planRef = userWorkoutPlansRef.child(userId).child(planId);
+
+        planRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    planRef.removeValue().addOnCompleteListener(listener);
+                } else {
+                    Log.e("DatabaseUtils", "Plan with ID " + planId + " does not exist in Firebase");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DatabaseUtils", "Error updating exercise in Firebase: " + error.getMessage());
+            }
+        });
+    }
 }

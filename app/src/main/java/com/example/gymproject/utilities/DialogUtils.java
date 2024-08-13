@@ -15,6 +15,7 @@ import com.example.gymproject.R;
 import com.example.gymproject.interfaces.AddPlanCallback;
 import com.example.gymproject.interfaces.OnExerciseEditedListener;
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
+import com.example.gymproject.interfaces.OnPlanClickListener;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.WorkoutPlan;
 import com.google.android.material.textfield.TextInputEditText;
@@ -141,7 +142,18 @@ public class DialogUtils {
                     });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
 
+    public static void showDeletePlanDialog(Context context, WorkoutPlan planNameDelete, OnPlanClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete Confirmation")
+                .setMessage("Are you sure you want to delete the plan " + planNameDelete.getName() + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    listener.onClick(planNameDelete);
+                });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 

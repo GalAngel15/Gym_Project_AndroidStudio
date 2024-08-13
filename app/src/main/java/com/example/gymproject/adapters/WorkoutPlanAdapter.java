@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +16,9 @@ import com.example.gymproject.models.WorkoutPlan;
 import java.util.List;
 
 public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.ViewHolder> {
-    private Context context;
+    private final Context context;
     private List<WorkoutPlan> workoutPlans;
-    private OnPlanClickListener onPlanClickedListener;
+    private OnPlanClickListener onPlanClickedListener, onPlanDeletedListener;
 
     public WorkoutPlanAdapter(Context context, List<WorkoutPlan> workoutPlans) {
         this.context = context;
@@ -27,7 +28,7 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_workout_plan, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_workout_plan, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,8 +41,12 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
         holder.tvDescription.setText("Description: " + workoutPlan.getDescription());
 
         holder.itemView.setOnClickListener(v -> {
-            onPlanClickedListener.onPlanClick(workoutPlan.getName());
+            onPlanClickedListener.onClick(workoutPlan);
         });
+        holder.btnDeletePlan.setOnClickListener(v -> {
+            onPlanDeletedListener.onClick(workoutPlan);
+        });
+
     }
     public void setOnPlanClickListener(OnPlanClickListener listener) {
         this.onPlanClickedListener = listener;
@@ -52,11 +57,16 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
         return workoutPlans.size();
     }
 
+    public void setOnPlanDeletedListener(OnPlanClickListener onPlanDeletedListener) {
+        this.onPlanDeletedListener = onPlanDeletedListener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvWorkoutPlanName;
         public TextView tvLastDate;
         public TextView tvTimesDone;
         public TextView tvDescription;
+        public ImageButton btnDeletePlan;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +74,7 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
             tvLastDate = itemView.findViewById(R.id.workout_LBL_last_date);
             tvTimesDone = itemView.findViewById(R.id.workout_LBL_times_done);
             tvDescription = itemView.findViewById(R.id.workout_LBL_description);
+            btnDeletePlan = itemView.findViewById(R.id.btnDeletePlan);
         }
     }
 }

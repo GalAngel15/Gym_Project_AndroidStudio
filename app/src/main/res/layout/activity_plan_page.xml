@@ -63,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:background="@color/backgroundText">
+        android:background="@color/backgroundText"
+        android:layoutDirection="ltr">
 
         <TextView
             android:layout_width="0dp"

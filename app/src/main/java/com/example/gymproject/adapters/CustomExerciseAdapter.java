@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAdapter.ExerciseViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<CustomExercise> exerciseList;
     private OnExerciseEditedListener onExerciseEditedListener, onExerciseDeletitedListener;
 
