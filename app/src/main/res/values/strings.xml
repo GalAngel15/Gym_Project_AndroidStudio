@@ -5,6 +5,14 @@
     <string name="logged_out">Logged out</string>
     <string name="plan_deleted">Plan deleted</string>
     <string name="plan_delete_failed">Failed to delete plan</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="full_name">Full Name</string>
+
+    <string name="error_incorrect_login_fields">One or more fields are incorrect</string>
 
     <string-array name="muscles">
         <item>Main Muscle</item>

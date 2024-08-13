@@ -2,6 +2,7 @@ package com.example.gymproject.managers;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Intent;
@@ -29,13 +31,13 @@ import android.widget.Toast;
 
 
 public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
-    private FirebaseUser currentUser;
+    private final FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private CustomExerciseAdapter adapter;
-    private List<CustomExercise> exerciseList;
-    private Context context;
-    private String workoutPlanId;
-    private SetsManager workoutSetManager;
+    private final List<CustomExercise> exerciseList;
+    private final Context context;
+    private final String workoutPlanId;
+    private final SetsManager workoutSetManager;
 
     public WorkoutPlanManager(Context context, FirebaseUser currentUser, String workoutPlanId) {
         this.currentUser = currentUser;
@@ -52,15 +54,13 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
 
         adapter.setOnExerciseEditedListener(this::handleExerciseEdit);
         adapter.setOnExerciseDeletedListener(this::handleExerciseDelete);
-        adapter.setOnDoneSetListener(exercise -> {
-            workoutSetManager.startNewSet(exercise);
-        });
+        adapter.setOnDoneSetListener(workoutSetManager::startNewSet);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
     }
 
-    public void loadAllUserExercises(){
+    public void loadAllUserExercises() {
         List<CustomExercise> tempList = new ArrayList<>();
         loadCustomExercisesList(tempList);
     }
@@ -74,14 +74,15 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
 
         DatabaseUtils.loadUserWorkoutPlan(userId, workoutPlanId, new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                        loadExercisesFromDataSnapshot(dataSnapshot, tempList);
+                    loadExercisesFromDataSnapshot(dataSnapshot, tempList);
                 }
                 loadUserWorkoutWarehousePlan(workoutPlanId, tempList);
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("WorkoutPlanManager", "Error loading custom exercises: " + databaseError.getMessage());
             }
         });
@@ -90,7 +91,7 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     private void loadUserWorkoutWarehousePlan(String workoutPlanId, List<CustomExercise> tempList) {
         DatabaseUtils.loadUserWorkoutWarehousePlan(currentUser.getUid(), workoutPlanId, new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     int totalItems = (int) dataSnapshot.getChildrenCount();
                     int[] loadedItems = {0};
@@ -139,28 +140,30 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("WorkoutPlanManager", "Error loading warehouse exercises: " + databaseError.getMessage());
             }
         });
     }
 
     private void updateAndSortExercises(List<CustomExercise> tempList) {
-        tempList.sort((o1, o2) -> o1.getMainMuscle().compareTo(o2.getMainMuscle()));
+        tempList.sort(Comparator.comparing(CustomExercise::getMainMuscle).thenComparing(CustomExercise::getName));
+        if (!exerciseList.isEmpty()) {
+            exerciseList.clear();
+        }
         exerciseList.addAll(tempList);
         adapter.notifyDataSetChanged();
     }
 
     private void handleExerciseEdit(CustomExercise exercise) {
-        DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise -> {
-            DatabaseUtils.updateCustomExerciseInFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
-                if (task.isSuccessful()) {
-                    updateExerciseInList(exercise, updatedExercise);
-                } else {
-                    showToast("Failed to update exercise");
-                }
-            });
-        });
+        DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise ->
+                DatabaseUtils.updateCustomExerciseInFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
+                    if (task.isSuccessful()) {
+                        updateExerciseInList(exercise, updatedExercise);
+                    } else {
+                        showToast("Failed to update exercise");
+                    }
+                }));
     }
 
     private void updateExerciseInList(CustomExercise oldExercise, CustomExercise updatedExercise) {
@@ -177,15 +180,14 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     }
 
     private void handleExerciseDelete(CustomExercise exercise) {
-        DialogUtils.showDeleteExerciseDialog(context, exercise, updatedExercise -> {
-            DatabaseUtils.deleteExerciseFromFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
-                if (task.isSuccessful()) {
-                    removeExerciseFromList(exercise);
-                } else {
-                    showToast("Failed to delete exercise");
-                }
-            });
-        });
+        DialogUtils.showDeleteExerciseDialog(context, exercise, updatedExercise ->
+                DatabaseUtils.deleteExerciseFromFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
+                    if (task.isSuccessful()) {
+                        removeExerciseFromList(exercise);
+                    } else {
+                        showToast("Failed to delete exercise");
+                    }
+                }));
     }
 
     private void loadExercisesFromDataSnapshot(DataSnapshot dataSnapshot, List<CustomExercise> exerciseList) {

@@ -105,7 +105,8 @@ public class MyPlansActivity extends BaseActivity {
                     WorkoutPlan workoutPlan = new WorkoutPlan(name, "Last Date", 0, description);
                     workoutPlans.add(workoutPlan);
                 }
-                adapter.notifyItemRangeInserted(0, workoutPlans.size());            }
+                adapter.notifyItemRangeInserted(0, workoutPlans.size());
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -115,25 +116,25 @@ public class MyPlansActivity extends BaseActivity {
     }
 
     public void onAddPlan(String planName, String planDescription) {
-            DatabaseUtils.addPlan(currentUser.getUid(), planName, planDescription);
-            WorkoutPlan plan = new WorkoutPlan(planName, planDescription);
-            onPlanClick(plan);
+        DatabaseUtils.addPlan(currentUser.getUid(), planName, planDescription);
+        WorkoutPlan plan = new WorkoutPlan(planName, planDescription);
+        onPlanClick(plan);
     }
+
     public void onPlanDeleted(WorkoutPlan plan) {
-        DialogUtils.showDeletePlanDialog(this, plan, deletedPlan -> {
-            DatabaseUtils.deletePlanFromFirebase(currentUser.getUid(), plan.getName(), task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(this, "Exercise deleted", Toast.LENGTH_SHORT).show();
-                    int index = workoutPlans.indexOf(plan);
-                    if (index != -1) {
-                        workoutPlans.remove(index);
-                        adapter.notifyItemRemoved(index);
+        DialogUtils.showDeletePlanDialog(this, plan, deletedPlan ->
+                DatabaseUtils.deletePlanFromFirebase(currentUser.getUid(), plan.getName(), task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Exercise deleted", Toast.LENGTH_SHORT).show();
+                        int index = workoutPlans.indexOf(plan);
+                        if (index != -1) {
+                            workoutPlans.remove(index);
+                            adapter.notifyItemRemoved(index);
+                        }
+                    } else {
+                        Toast.makeText(this, "Failed to delete exercise", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(this, "Failed to delete exercise", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
+                }));
     }
 
 }

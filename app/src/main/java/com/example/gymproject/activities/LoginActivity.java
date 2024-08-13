@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginFailed() {
-        checkTextView.setText("One or more fields are incorrect");
+        checkTextView.setText(getString(R.string.error_incorrect_login_fields));
         checkTextView.setVisibility(TextView.VISIBLE);
         checkTextView.setTextColor(getResources().getColor(R.color.red, null));
     }
