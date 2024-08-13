@@ -38,12 +38,4 @@ public class ImageLoader {
                 .centerInside()
                 .into(imageView);
     }
-    public void load (Drawable source, ImageView imageView){
-        Glide
-                .with(context)
-                .load(source)
-                .placeholder(R.drawable.unavailable_photo)
-                .centerInside()
-                .into(imageView);
-    }
 }

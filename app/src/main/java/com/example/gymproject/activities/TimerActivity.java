@@ -62,6 +62,7 @@ public class TimerActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                setResult(RESULT_OK);
                 finish();
             }
         }.start();

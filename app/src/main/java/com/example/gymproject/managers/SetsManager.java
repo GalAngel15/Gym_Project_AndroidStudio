@@ -40,7 +40,7 @@ public class SetsManager {
 
     public interface OnRestFinishListener {
         void onSetCompleted(int setCount, CustomExercise customExercise);
-        void onTick(long millisUntilFinished);
+        //void onTick(long millisUntilFinished);
         void onRestFinished();
     }
 }

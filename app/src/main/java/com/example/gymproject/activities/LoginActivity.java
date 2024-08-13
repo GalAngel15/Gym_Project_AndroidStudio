@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private TextInputLayout emailInputLayout, passwordInputLayout;
     private TextView checkTextView;
     private MaterialButton login_BTN_login;

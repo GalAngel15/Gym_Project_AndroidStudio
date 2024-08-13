@@ -20,10 +20,7 @@ public class BaseActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         planName= getIntent().getStringExtra("planId");
     }
-
-    protected FirebaseUser getCurrentUser() {
-        return currentUser;
-    }
+    
     @Override
     protected void onResume() {
         super.onResume();

@@ -26,7 +26,7 @@ public class PlanPageActivity extends BaseActivity {
         initView();
         initButtons();
 
-        addExercise();
+        //addExercise();
         if (currentUser != null) {
             String userName = currentUser.getDisplayName();
             // הצגת שם המשתמש שהתקבל מ-FirebaseAuth

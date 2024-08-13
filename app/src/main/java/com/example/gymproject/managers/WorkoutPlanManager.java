@@ -207,11 +207,6 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     }
 
     @Override
-    public void onTick(long millisUntilFinished) {
-
-    }
-
-    @Override
     public void onRestFinished() {
         // השמעת צליל בסיום הזמן
         MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.ouchsound);
