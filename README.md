@@ -17,43 +17,56 @@ This is a Gym application built in Android Studio using Java. The application al
 
 
 ## Application Flow
-![image](https://github.com/user-attachments/assets/9c16324d-e8d8-4422-a70a-536bf3da75c3)
-
 
 ### 1. Getting Started
-- **User Onboarding**: Introduce the users to the features and benefits of the app.
-- **Sign-Up/Login**: Users can create an account or log in to track their progress over time.
+- **User Onboarding**
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/visitPage.jpg?raw=true" alt="Visit Page" style="height:700px;"/>
 
-![image](https://github.com/user-attachments/assets/59641a45-0683-42c9-a1f6-e2a0ddc43cbc)
-<img src="![image](https://github.com/user-attachments/assets/00baad2a-6641-4db4-885b-124e7960b0ba)" alt="Log In Screen" style="height:700px;"/>
-
-
+- **Sign-Up/Login**: Users can create an account or log in to track their plans over time.
+<div class="row">
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/registerPage.jpg?raw=true" alt="Register Page" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/loginPage.jpg?raw=true" alt="Login Page" style="height:700px;"/>
+</div>
 
 ### 2. Creating and Managing Workout Plans
-- **Create Workout Plan**: Users can create a new workout plan by adding exercises from a library or by creating custom exercises.
-- **Manage Workout Plans**: Users can view and manage their existing workout plans.
+- **Create/delete Workout Plan**: Users can create a new workout plan, and can be deleted by clicking on the trash.
+- Here you can see a small example of the day and night mode that the application offers. Of course, this affects the display of the entire application
+<div class="row">
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/myPlansDark.jpg?raw=true" alt="My Plans Dark" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/myPlans.jpg?raw=true" alt="My Plans" style="height:700px;"/>
+</div>
 
-    ![Create Plan Screen](path/to/create_plan_screen_image)
-    ![Manage Plans Screen](path/to/manage_plans_screen_image)
+### 3. Managing Workout Plan
+- **Manage Workout Plan**: Users can build a dynamic training plan for themselves, add, remove, edit exercises.
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/plan.jpg?raw=true" alt="Plan" style="height:700px;"/>
 
-### 3. Adding Exercises
+### 4. Adding Exercises
 - **Add Custom Exercise**: Users can add exercises that are not available in the library.
 - **Add Exercise from Library**: Users can browse and select exercises from the pre-defined library.
+<div class="row">
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/addExer.jpg?raw=true" alt="Add Exercise" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/addLibraryexec.jpg?raw=true" alt="Add Library Exec" style="height:700px;"/>
+</div>
 
-    ![Add Custom Exercise Screen](path/to/add_custom_exercise_screen_image)
-    ![Add Exercise from Library Screen](path/to/add_exercise_from_library_screen_image)
+### 5. Edit/ Remove Exercises
+- **Edit Exercise**: Users can modify details of existing exercises to better suit their needs by clicking on the pencil.
+- **Delete Exercise**: Users can remove exercises that they no longer wish to keep in their workout.
+<div class="row">
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/editExer.jpg?raw=true" alt="Edit Exercise" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/deleteEx.jpg?raw=true" alt="Edit Exercise" style="height:700px;"/>
+</div>
 
-### 4. Tracking Workouts
-- **Workout Timer**: Users can start a workout session and use the built-in timer to track their workout duration.
-- **Exercise Execution**: Users can follow the exercises as per their workout plan.
+### 6. Tracking rest times during sets
+- **Training timer**: Users who finish a set can press the V and start a timer that counts the rest time the user entered and the amount of sets performed (and how many are left to perform).
+- At the end of the timer, a sound is heard to warn that the next set should start
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/timer.jpg?raw=true" alt="Timer" style="height:700px;"/>
 
-    ![Workout Timer Screen](path/to/workout_timer_screen_image)
-    ![Exercise Execution Screen](path/to/exercise_execution_screen_image)
-
-### 5. Customization
-- **User Profiles**: Users can set goals, and customize their profiles according to their fitness levels and preferences.
-
-    ![User Profile Screen](path/to/user_profile_screen_image)
+### 7. Settings
+- **Mode button:**: User can select day/night mode.
+<div class="row">
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/settingsDark.jpg?raw=true" alt="Settings Dark" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/GymProject_AndroidStudio/blob/gh-pages/images/settings.jpg?raw=true" alt="Settings" style="height:700px;"/>
+</div>
   
 ## Project Structure
 
@@ -110,7 +123,11 @@ This is a Gym application built in Android Studio using Java. The application al
 - **ImageLoader.java**: Utility class for loading images.
 - **ThemeUtil.java**: Utility class for theme management.
 
-## Application Flow
+## Libraries Used
 
-
-
+- **Firebase Authentication**: Handles user authentication processes.
+- **Gson**: Converts Java objects to JSON and vice versa.
+- **Firebase Analytics**: Analyzes user behavior within the app.
+- **Firebase Realtime Database**: Manages real-time data within the app.
+- **Firebase UI Authentication**: Provides UI components for Firebase authentication.
+- **Glide**: Manages and displays images efficiently.
