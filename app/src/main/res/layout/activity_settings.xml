@@ -41,7 +41,7 @@
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchToggleTheme"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:theme="@style/Theme.AppCompat"
             android:thumb="@drawable/thumb"
             app:track="@drawable/track" />
