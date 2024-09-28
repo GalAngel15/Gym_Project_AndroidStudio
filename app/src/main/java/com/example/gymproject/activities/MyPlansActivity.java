@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyPlansActivity extends BaseActivity {
-    private MaterialButton btnLogout, buttonOpenSettings, btnAddWorkoutPlan;
+    private MaterialButton btnLogout, buttonOpenSettings, btnAddWorkoutPlan, btnMyProfile;
     private RecyclerView recyclerView;
     private WorkoutPlanAdapter adapter;
     private List<WorkoutPlan> workoutPlans;
@@ -57,12 +57,19 @@ public class MyPlansActivity extends BaseActivity {
         btnLogout = findViewById(R.id.btnLogout);
         buttonOpenSettings = findViewById(R.id.buttonOpenSettings);
         btnAddWorkoutPlan = findViewById(R.id.addWorkoutPlan);
+        btnMyProfile = findViewById(R.id.myProfileBtn);
     }
 
     private void initButtons() {
         btnLogout.setOnClickListener(v -> logoutUser());
         buttonOpenSettings.setOnClickListener(v -> openSettings());
         btnAddWorkoutPlan.setOnClickListener(v -> openAddWorkoutPlanDialog());
+        btnMyProfile.setOnClickListener(v -> openMyProfile());
+    }
+
+    private void openMyProfile() {
+        Intent intent = new Intent(this, MyProfileActivity.class);
+        startActivity(intent);
     }
 
     private void logoutUser() {

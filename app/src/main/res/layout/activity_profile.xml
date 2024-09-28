@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- מידע על המשתמש -->
+        <include
+            android:id="@+id/btnReturnFromSettings"
+            layout="@layout/custom_button" />
+
+        <TextView
+            android:id="@+id/profile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מידע על המשתמש"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"
+            android:layout_gravity="center"
+            />
+
+        <!-- ריבוע לחיץ להוספת תמונות -->
+        <RelativeLayout
+            android:id="@+id/add_image_container"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/btn_add_image_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_add_image"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <!-- רשת תמונות התקדמות -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_progress_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>

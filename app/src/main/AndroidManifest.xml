@@ -2,13 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".application.GymProjectApplication"
@@ -22,6 +20,9 @@
         android:theme="@style/Theme.GymProject"
         tools:targetApi="31">
         <activity
+            android:name=".activities.MyProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.VisitPageActivity"
             android:exported="true">
             <intent-filter>
@@ -30,18 +31,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TimerActivity" android:exported="false" />
-        <activity android:name=".activities.LoginActivity" android:exported="false" />
-        <activity android:name=".activities.RegisterActivity" android:exported="false" />
-        <activity android:name=".activities.PlanPageActivity" android:exported="false" />
-        <activity android:name=".activities.AddCustomExerciseActivity" android:exported="false" />
-        <activity android:name=".activities.AddExerciseFromLibraryActivity" android:exported="false" />
-        <activity android:name=".activities.SettingsActivity" android:exported="false" />
-        <activity android:name=".activities.MyPlansActivity" android:exported="false" />
+        <activity
+            android:name=".activities.TimerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PlanPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AddCustomExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AddExerciseFromLibraryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MyPlansActivity"
+            android:exported="false" />
 
         <service
             android:name=".services.CountdownService"
-            android:foregroundServiceType="shortService"/>
+            android:foregroundServiceType="shortService" />
     </application>
 
 </manifest>

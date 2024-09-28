@@ -84,5 +84,14 @@
         android:textColor="@color/textButton"
         android:backgroundTint="@color/backgroundButton"
         />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/myProfileBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הפרופיל שלי"
+        android:layout_gravity="center"
+        android:textColor="@color/textButton"
+        android:backgroundTint="@color/backgroundButton"
+        />
 
 </LinearLayout>
