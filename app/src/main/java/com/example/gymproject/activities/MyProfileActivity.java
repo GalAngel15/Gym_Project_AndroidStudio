@@ -37,15 +37,19 @@ public class MyProfileActivity extends AppCompatActivity {
 
         findViews();
         initButtons();
+        initAdapter();
 
+        // Initialize the media picker
+        setPickMedia();
+    }
+
+    private void initAdapter() {
         // Initialize the image list and the RecyclerView adapter
         imagesUri = new ArrayList<>();
         progressImageAdapter = new ProgressImageAdapter(imagesUri, this);
         recyclerViewProgressImages.setLayoutManager(new GridLayoutManager(this, 3)); // Display 3 images in a row
         recyclerViewProgressImages.setAdapter(progressImageAdapter);
-
-        // Initialize the media picker
-        setPickMedia();
+        progressImageAdapter.setImgRemovedCallBack((remove) -> updateImgSelectUI());
     }
 
     private void initButtons() {
