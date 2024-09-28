@@ -4,9 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.gymproject.models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -116,6 +121,32 @@ public class MyDbStorageManager {
                     });
         }
     }
+
+    public void deleteProfilePicture(String userUid, String imageUrl, ImgCallBack imgcallBack) {
+        StorageReference imageRef = storage.getReferenceFromUrl(imageUrl);
+        imageRef.delete().addOnSuccessListener(aVoid -> {
+            // מחיקת ה-URL מה-DB
+            String currentMonth = new SimpleDateFormat("yyyy/MM", Locale.getDefault()).format(new Date());
+            database.child("users").child(userUid).child("bodyProgress").child(currentMonth).orderByValue().equalTo(imageUrl)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().removeValue();
+                            }
+                            imgcallBack.onSuccess(null); // מחיקה הצליחה
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            imgcallBack.onFailure(error.toException()); // טיפול בשגיאות
+                        }
+                    });
+        }).addOnFailureListener(exception -> {
+            imgcallBack.onFailure(exception); // טיפול בשגיאות במחיקת התמונה מה-Storage
+        });
+    }
+
 
     private void uploadTask(StorageReference imageRef, UploadTask uploadTask, ImgCallBack imgcallBack){
         uploadTask.addOnFailureListener((exception) -> {

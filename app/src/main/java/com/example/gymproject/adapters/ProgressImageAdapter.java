@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.gymproject.R;
 import com.example.gymproject.interfaces.ImgRemovedCallBack;
+import com.example.gymproject.managers.MyDbStorageManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -22,11 +24,13 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
     private final ArrayList<Uri> imagesUri;
     private final Context context;
     private ImgRemovedCallBack imgRemovedCallBack;
+    private String userId;
 
 
-    public ProgressImageAdapter(ArrayList<Uri> imagesUri, Context context) {
+    public ProgressImageAdapter(ArrayList<Uri> imagesUri, Context context, String userId) {
         this.imagesUri = imagesUri;
         this.context = context;
+        this.userId = userId;
     }
 
     public void setImgRemovedCallBack(ImgRemovedCallBack imgRemovedCallBack) {
@@ -42,6 +46,7 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+        int currentPosition = holder.getAdapterPosition();
         Uri imageUri = imagesUri.get(position);
         Glide.with(context)
                 .load(imageUri)
@@ -50,10 +55,21 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
 
         holder.property_BTN_remove.setOnClickListener(v -> {
             if(imgRemovedCallBack != null) {
-                imagesUri.remove(imagesUri.get(position));
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getItemCount());
-                imgRemovedCallBack.removeImage(imagesUri.size());
+                // קריאה למחיקת תמונה מ-Storage ומ-DB
+                MyDbStorageManager.getInstance().deleteProfilePicture(userId, imageUri.toString(), new MyDbStorageManager.ImgCallBack() {
+                    @Override
+                    public void onSuccess(String imageUrl) {
+                        imagesUri.remove(currentPosition);
+                        notifyItemRemoved(currentPosition);
+                        notifyItemRangeChanged(currentPosition, getItemCount());
+                        imgRemovedCallBack.removeImage(imagesUri.size());
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        Toast.makeText(context, "שגיאה במחיקת התמונה", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

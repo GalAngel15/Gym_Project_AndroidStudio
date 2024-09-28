@@ -9,17 +9,17 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.adapters.ProgressImageAdapter;
+import com.example.gymproject.managers.MyDbStorageManager;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileActivity extends BaseActivity {
 
     private ImageView btnAddImageIcon;
     private RecyclerView recyclerViewProgressImages;
@@ -34,6 +34,7 @@ public class MyProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        MyDbStorageManager.init(this);
 
         findViews();
         initButtons();
@@ -46,7 +47,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private void initAdapter() {
         // Initialize the image list and the RecyclerView adapter
         imagesUri = new ArrayList<>();
-        progressImageAdapter = new ProgressImageAdapter(imagesUri, this);
+        progressImageAdapter = new ProgressImageAdapter(imagesUri, this, currentUser.getUid());
         recyclerViewProgressImages.setLayoutManager(new GridLayoutManager(this, 3)); // Display 3 images in a row
         recyclerViewProgressImages.setAdapter(progressImageAdapter);
         progressImageAdapter.setImgRemovedCallBack((remove) -> updateImgSelectUI());
@@ -75,9 +76,19 @@ public class MyProfileActivity extends AppCompatActivity {
                 if (uris.size() > MAX_SELECTION - imgSelected) {
                     Toast.makeText(this, "You can select only " + (MAX_SELECTION - imgSelected) + " more images", Toast.LENGTH_SHORT).show();
                 } else {
-                    imagesUri.addAll(uris);
-                    progressImageAdapter.notifyDataSetChanged();
-                    updateImgSelectUI();
+                    MyDbStorageManager.getInstance().uploadBodyImages(new ArrayList<>(uris), currentUser.getUid(), new MyDbStorageManager.ImgListCallBack() {
+                        @Override
+                        public void onSuccess(ArrayList<String> list) {
+                            imagesUri.addAll(uris); // הוספת התמונות ל-RecyclerView לאחר העלאה מוצלחת
+                            progressImageAdapter.notifyDataSetChanged();
+                            updateImgSelectUI();
+                        }
+
+                        @Override
+                        public void onFailure(Exception exception) {
+                            Toast.makeText(MyProfileActivity.this, "שגיאה בהעלאת התמונות", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             } else {
                 Toast.makeText(this, "No media selected", Toast.LENGTH_SHORT).show();
