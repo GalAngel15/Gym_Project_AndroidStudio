@@ -90,12 +90,13 @@ public class MyDbStorageManager {
 
     public void uploadBodyImages(ArrayList<Uri> imagesUri, String userUid, ImgListCallBack imagesCallBack) {
         String imgId;
-        String currentMonth = new SimpleDateFormat("yyyy/MM", Locale.getDefault()).format(new Date());
-        StorageReference rootRef = storage.getReference("users").child(userUid).child("bodyProgress").child(currentMonth);
+        String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+        String currentMonth = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
+        StorageReference rootRef = storage.getReference("users").child(userUid).child("bodyProgress").child(currentYear).child(currentMonth);
         UploadTask uploadTask;
         ArrayList<String> imageUrls = new ArrayList<>();
         for(int i = 0 ; i < imagesUri.size() ; i++){
-            int j = i; //maybe not needed
+            int j = i;
             imgId = "img" + i;
             StorageReference imageRef = rootRef.child(imgId + ".jpg");
             uploadTask = imageRef.putFile(imagesUri.get(i));

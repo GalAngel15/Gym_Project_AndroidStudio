@@ -11,7 +11,7 @@
 
         <!-- מידע על המשתמש -->
         <include
-            android:id="@+id/btnReturnFromSettings"
+            android:id="@+id/btnReturnFromProfile"
             layout="@layout/custom_button" />
 
         <TextView
