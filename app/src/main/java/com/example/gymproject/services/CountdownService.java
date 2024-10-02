@@ -3,6 +3,7 @@ package com.example.gymproject.services;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,7 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
 import com.example.gymproject.R;
-import com.example.gymproject.utilities.MediaPlayerUtil;
+import com.example.gymproject.activities.TimerActivity;
 
 import java.util.Locale;
 
@@ -32,16 +33,14 @@ public class CountdownService extends Service {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // יצירת ערוץ התראה (Notification Channel) אם המכשיר משתמש בגרסה מעל Android 8
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    "CountdownChannel",
-                    "ספירה לאחור",
-                    NotificationManager.IMPORTANCE_LOW
-            );
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            if (manager != null) {
-                manager.createNotificationChannel(channel);
-            }
+        NotificationChannel channel = new NotificationChannel(
+                "CountdownChannel",
+                "ספירה לאחור",
+                NotificationManager.IMPORTANCE_LOW
+        );
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.createNotificationChannel(channel);
         }
     }
 
@@ -65,12 +64,31 @@ public class CountdownService extends Service {
         return START_STICKY;
     }
 
-    // יצירת ההתראה עם הזמן הנותר
     private Notification getNotification(long timeLeftInMillis) {
+        // יצירת Intent לפתיחת TimerActivity
+        Intent intent = new Intent(this, TimerActivity.class);
+        intent.putExtra("timeLeft", timeLeftInMillis); // העברת הזמן הנותר כפרמטר
+
+        // יצירת PendingIntent לפתיחת הפעילות
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE // שימוש ב-Immutable למכשירים מעל API 31
+        );
+
         return notificationBuilder
-                .setContentText(formatTimeLeft(timeLeftInMillis))  // הצגת הזמן הנותר
+                .setContentText(formatTimeLeft(timeLeftInMillis)) // הצגת הזמן הנותר
+                .setContentIntent(pendingIntent) // חיבור ה-PendingIntent להתראה
                 .build();
     }
+
+//    // יצירת ההתראה עם הזמן הנותר
+//    private Notification getNotification(long timeLeftInMillis) {
+//        return notificationBuilder
+//                .setContentText(formatTimeLeft(timeLeftInMillis))  // הצגת הזמן הנותר
+//                .build();
+//    }
 
     // הפעלת הטיימר
     private void startCountDownTimer() {

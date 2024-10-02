@@ -13,7 +13,7 @@
         android:text="2024/09"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:textColor="@color/oppositeBackground"
         android:layout_marginBottom="8dp" />
 
     <!-- RecyclerView פנימי להצגת התמונות של אותו חודש -->

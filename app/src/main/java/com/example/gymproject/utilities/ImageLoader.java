@@ -1,6 +1,7 @@
 package com.example.gymproject.utilities;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -11,8 +12,7 @@ public class ImageLoader {
     private static volatile ImageLoader instance;
 
     private ImageLoader(Context context) {
-        this.context = context;
-    }
+        ImageLoader.context = context.getApplicationContext();    }
 
     public static ImageLoader getInstance() {
         return instance;
@@ -30,6 +30,15 @@ public class ImageLoader {
     }
 
     public void load (String source, ImageView imageView){
+        Glide
+                .with(context)
+                .load(source)
+                .placeholder(R.drawable.unavailable_photo)
+                .centerInside()
+                .into(imageView);
+    }
+
+    public void load (Uri source, ImageView imageView){
         Glide
                 .with(context)
                 .load(source)

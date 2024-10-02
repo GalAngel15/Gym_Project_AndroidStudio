@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,14 +19,13 @@ import com.example.gymproject.adapters.ProgressEntryAdapter;
 import com.example.gymproject.adapters.ProgressImageAdapter;
 import com.example.gymproject.managers.MyDbStorageManager;
 import com.example.gymproject.models.ProgressEntry;
+import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 public class MyProfileActivity extends BaseActivity {
@@ -51,24 +49,14 @@ public class MyProfileActivity extends BaseActivity {
 
         findViews();
         initButtons();
-//        initAdapter();
 
         // הגדרת ה-RecyclerView להצגת תמונות לפי תאריכים
         recyclerViewProgressImages.setLayoutManager(new LinearLayoutManager(this));
 
         // טעינת התמונות ממסד הנתונים
-        loadProgressImages(currentUser.getUid());
+        loadProgressImages();
         // Initialize the media picker
         setPickMedia();
-    }
-
-    private void initAdapter() {
-        // Initialize the image list and the RecyclerView adapter
-        imagesUri = new ArrayList<>();
-        progressImageAdapter = new ProgressImageAdapter(imagesUri, this, currentUser.getUid());
-        recyclerViewProgressImages.setLayoutManager(new GridLayoutManager(this, 3)); // Display 3 images in a row
-        recyclerViewProgressImages.setAdapter(progressImageAdapter);
-        progressImageAdapter.setImgRemovedCallBack((remove) -> updateImgSelectUI());
     }
 
     private void initButtons() {
@@ -88,42 +76,10 @@ public class MyProfileActivity extends BaseActivity {
     }
 
     // טעינת תמונות ממסד הנתונים לפי תאריך (שנה/חודש)
-    private void loadProgressImages(String userId) {
-        DatabaseReference progressImagesRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("bodyProgress");
-
-        progressImagesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<ProgressEntry> progressEntries = new ArrayList<>();
-
-                for (DataSnapshot yearSnapshot : dataSnapshot.getChildren()) {
-                    String year = yearSnapshot.getKey();
-
-                    for (DataSnapshot monthSnapshot : yearSnapshot.getChildren()) {
-                        String month = monthSnapshot.getKey();
-                        ArrayList<Uri> imagesForMonth = new ArrayList<>();
-
-                        for (DataSnapshot imageSnapshot : monthSnapshot.getChildren()) {
-                            String imageUrl = imageSnapshot.getValue(String.class);
-                            Uri imageUri = Uri.parse(imageUrl);
-                            imagesForMonth.add(imageUri);
-                        }
-
-                        // הוספת התמונות לפי החודש לרשימה
-                        progressEntries.add(new ProgressEntry(year + "/" + month, imagesForMonth));
-                    }
-                }
-
-                // עדכון ה-RecyclerView עם הנתונים
-                updateRecyclerView(progressEntries);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Firebase", "Failed to load data: " + databaseError.getMessage());
-            }
-        });
+    private void loadProgressImages() {
+        ArrayList<ProgressEntry> progressEntries = new ArrayList<>();
+        // עדכון ה-RecyclerView עם הנתונים
+        DatabaseUtils.loadProgressImages(currentUser.getUid(), progressEntries, this::updateRecyclerView);
     }
 
 
@@ -131,6 +87,7 @@ public class MyProfileActivity extends BaseActivity {
     private void updateRecyclerView(ArrayList<ProgressEntry> progressEntries) {
         ProgressEntryAdapter adapter = new ProgressEntryAdapter(progressEntries, this, currentUser.getUid());
         recyclerViewProgressImages.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     // Initialize the media picker for selecting images
@@ -140,7 +97,9 @@ public class MyProfileActivity extends BaseActivity {
                 if (uris.size() > MAX_SELECTION - imgSelected) {
                     Toast.makeText(this, "You can select only " + (MAX_SELECTION - imgSelected) + " more images", Toast.LENGTH_SHORT).show();
                 } else {
-                    MyDbStorageManager.getInstance().uploadBodyImages(new ArrayList<>(uris), currentUser.getUid(), new MyDbStorageManager.ImgListCallBack() {
+                    String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+                    String currentMonth = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
+                    MyDbStorageManager.getInstance().uploadBodyImages(new ArrayList<>(uris), currentUser.getUid(), currentYear, currentMonth, new MyDbStorageManager.ImgListCallBack() {
                         @Override
                         public void onSuccess(ArrayList<String> list) {
                             if (imagesUri == null) {
@@ -153,6 +112,7 @@ public class MyProfileActivity extends BaseActivity {
                                 progressImageAdapter = new ProgressImageAdapter(imagesUri, MyProfileActivity.this, currentUser.getUid());
                                 recyclerViewProgressImages.setLayoutManager(new GridLayoutManager(MyProfileActivity.this, 3)); // 3 תמונות בשורה
                                 recyclerViewProgressImages.setAdapter(progressImageAdapter);
+                                progressImageAdapter.setImgRemovedCallBack(MyProfileActivity.this::removeImage);
                             } else {
                                 progressImageAdapter.notifyDataSetChanged();
                             }
@@ -187,5 +147,9 @@ public class MyProfileActivity extends BaseActivity {
         } else {
             btnAddImageIcon.setVisibility(ImageView.VISIBLE);
         }
+    }
+    private void removeImage(int size) {
+        if (size < MAX_SELECTION)
+            btnAddImageIcon.setVisibility(ImageView.GONE);
     }
 }

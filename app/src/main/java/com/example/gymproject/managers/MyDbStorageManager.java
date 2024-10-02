@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.gymproject.models.User;
+import com.example.gymproject.utilities.DatabaseUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -88,10 +89,9 @@ public class MyDbStorageManager {
 //        });
     }*/
 
-    public void uploadBodyImages(ArrayList<Uri> imagesUri, String userUid, ImgListCallBack imagesCallBack) {
+    public void uploadBodyImages(ArrayList<Uri> imagesUri, String userUid, String currentYear, String currentMonth, ImgListCallBack imagesCallBack) {
         String imgId;
-        String currentYear = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
-        String currentMonth = new SimpleDateFormat("MM", Locale.getDefault()).format(new Date());
+
         StorageReference rootRef = storage.getReference("users").child(userUid).child("bodyProgress").child(currentYear).child(currentMonth);
         UploadTask uploadTask;
         ArrayList<String> imageUrls = new ArrayList<>();
@@ -110,10 +110,7 @@ public class MyDbStorageManager {
                         imageRef.getDownloadUrl().addOnCompleteListener((task) -> {
                             String imageUrl = task.getResult().toString();
                             imageUrls.add(imageUrl);
-                            Log.e("FirebaseStorage", "Image URL: " + imageUrl);
-                            database.child("users").child(userUid).child("bodyProgress").child(currentMonth).child(finalImgId).setValue(imageUrl)
-                                    .addOnSuccessListener(aVoid -> Log.e("FirebaseDatabase", "URL saved successfully"))
-                                    .addOnFailureListener(e -> Log.e("FirebaseDatabase", "Failed to save URL: " + e.getMessage()));
+                            DatabaseUtils.uploadBodyImages(imageUrl, userUid, currentYear, currentMonth, finalImgId);
 
                             if(j == imagesUri.size()-1) {
                                 imagesCallBack.onSuccess(imageUrls);

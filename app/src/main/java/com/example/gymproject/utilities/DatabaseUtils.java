@@ -1,14 +1,17 @@
 package com.example.gymproject.utilities;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.gymproject.interfaces.OnExerciseSavedListener;
 import com.example.gymproject.interfaces.OnExerciseLoadedListener;
+import com.example.gymproject.interfaces.OnProgressImagesLoadedListener;
 import com.example.gymproject.models.BuiltExercise;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.models.PartialCustomExercise;
+import com.example.gymproject.models.ProgressEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +28,7 @@ public class DatabaseUtils {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final DatabaseReference exercisesWarehouseRef = database.getReference("exercisesWarehouse");
     private static final DatabaseReference userWorkoutPlansRef = database.getReference("userWorkoutPlans");
+    private static final DatabaseReference usersRef = database.getReference("users");
 
 
     public static void addExerciseToWarehouse(BuiltExercise exercise) {
@@ -155,5 +160,49 @@ public class DatabaseUtils {
                 Log.e("DatabaseUtils", "Error updating exercise in Firebase: " + error.getMessage());
             }
         });
+    }
+
+
+    public static void loadProgressImages(String userId, ArrayList<ProgressEntry> progressEntries, OnProgressImagesLoadedListener listener) {
+        DatabaseReference progressImagesRef = usersRef.child(userId).child("bodyProgress");
+
+        progressImagesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot yearSnapshot : dataSnapshot.getChildren()) {
+                    String year = yearSnapshot.getKey();
+
+                    for (DataSnapshot monthSnapshot : yearSnapshot.getChildren()) {
+                        String month = monthSnapshot.getKey();
+                        ArrayList<Uri> imagesForMonth = new ArrayList<>();
+
+                        for (DataSnapshot imageSnapshot : monthSnapshot.getChildren()) {
+                            String imageUrl = imageSnapshot.getValue(String.class);
+                            Uri imageUri = Uri.parse(imageUrl);
+                            imagesForMonth.add(imageUri);
+                        }
+                        // הוספת התמונות לפי החודש לרשימה
+                        progressEntries.add(new ProgressEntry(year + "/" + month, imagesForMonth));
+                    }
+                }
+                listener.onProgressImagesLoaded(progressEntries);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Failed to load data: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public static void uploadBodyImages(String imageUrl, String userId, String currentYear, String currentMonth, String finalImgId) {
+        DatabaseReference progressImagesRef = usersRef.child(userId).child("bodyProgress")
+                .child(currentYear).child(currentMonth);
+        progressImagesRef.child(finalImgId).setValue(imageUrl)
+                .addOnSuccessListener(aVoid -> Log.e("FirebaseDatabase", "URL saved successfully"))
+                .addOnFailureListener(e -> Log.e("FirebaseDatabase", "Failed to save URL: " + e.getMessage()));
+
     }
 }

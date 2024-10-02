@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gymproject.R;
+import com.example.gymproject.utilities.FullScreenManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        FullScreenManager.getInstance().fullScreen(getWindow());
         mAuth = FirebaseAuth.getInstance();
         initViews();
         initButtons();

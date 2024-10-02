@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.gymproject.R;
+import com.example.gymproject.utilities.FullScreenManager;
 
 public class VisitPageActivity extends AppCompatActivity {
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
@@ -22,6 +23,7 @@ public class VisitPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_page);
 
+        FullScreenManager.getInstance().fullScreen(getWindow());
         // בקשת הרשאות להצגת התראות
         checkAndRequestNotificationPermission();
     }

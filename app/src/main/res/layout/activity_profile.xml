@@ -23,6 +23,7 @@
             android:textStyle="bold"
             android:paddingBottom="8dp"
             android:layout_gravity="center"
+            android:textColor="@color/commonColor"
             />
 
         <!-- ריבוע לחיץ להוספת תמונות -->

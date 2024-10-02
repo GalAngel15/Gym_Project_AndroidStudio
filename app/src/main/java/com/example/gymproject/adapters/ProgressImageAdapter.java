@@ -24,7 +24,7 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
     private final ArrayList<Uri> imagesUri;
     private final Context context;
     private ImgRemovedCallBack imgRemovedCallBack;
-    private String userId;
+    private final String userId;
 
 
     public ProgressImageAdapter(ArrayList<Uri> imagesUri, Context context, String userId) {
@@ -54,8 +54,8 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
                 .into(holder.imageView);
 
         holder.property_BTN_remove.setOnClickListener(v -> {
-            if(imgRemovedCallBack != null) {
-                // קריאה למחיקת תמונה מ-Storage ומ-DB
+            // קריאה למחיקת תמונה מ-Storage ומ-DB
+            if(imgRemovedCallBack != null)
                 MyDbStorageManager.getInstance().deleteProfilePicture(userId, imageUri.toString(), new MyDbStorageManager.ImgCallBack() {
                     @Override
                     public void onSuccess(String imageUrl) {
@@ -70,7 +70,6 @@ public class ProgressImageAdapter extends RecyclerView.Adapter<ProgressImageAdap
                         Toast.makeText(context, "שגיאה במחיקת התמונה", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
         });
     }
 

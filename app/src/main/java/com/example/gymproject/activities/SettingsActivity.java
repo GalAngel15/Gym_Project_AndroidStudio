@@ -3,7 +3,6 @@ package com.example.gymproject.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -11,7 +10,7 @@ import com.example.gymproject.R;
 import com.example.gymproject.managers.SharedPreferencesManager;
 import com.google.android.material.button.MaterialButton;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
     private MaterialButton btnReturn;
     private SwitchCompat switchMode;
     private SharedPreferencesManager sharedPreferencesManager;
