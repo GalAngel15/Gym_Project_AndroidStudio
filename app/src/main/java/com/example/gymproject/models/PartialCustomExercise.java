@@ -6,6 +6,7 @@ public class PartialCustomExercise {
     private double weight;
     private int rest;
     private String other;
+    private int numExercise;
 
     public PartialCustomExercise(int sets, int reps, double weight, int rest, String other) {
         this.sets = sets;
@@ -35,5 +36,11 @@ public class PartialCustomExercise {
     }
     public void setOther(String other) {
         this.other = other;
+    }
+    public int getNum() {
+        return numExercise;
+    }
+    public void setNum(int num) {
+        this.numExercise = num;
     }
 }

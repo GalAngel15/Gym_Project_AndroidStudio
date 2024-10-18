@@ -9,6 +9,7 @@ public class CustomExercise {
     private double weight;
     private int rest;
     private String other;
+    private int numExercise;
 
     // בונה ברירת מחדל דרוש לפעולה של Firebase
     public CustomExercise() {
@@ -88,6 +89,14 @@ public class CustomExercise {
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    public int getNum() {
+        return numExercise;
+    }
+
+    public void setNum(int num) {
+        this.numExercise = num;
     }
 
     @Override

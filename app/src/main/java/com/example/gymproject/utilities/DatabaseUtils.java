@@ -41,6 +41,7 @@ public class DatabaseUtils {
 
     public static void addCustomUserExercise(String userId, String workoutPlanId, CustomExercise exercise) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("customExercises");
+        exercise.setNum(-1);
         customExercisesRef.child(exercise.getName()).setValue(exercise);
     }
 
@@ -79,6 +80,7 @@ public class DatabaseUtils {
     // פונקציה להוספת תרגיל מהמחסן לתוכנית אימונים של משתמש
     public static void saveCustomUserExerciseFromLibrary(String userId, String workoutPlanId, PartialCustomExercise exercise, String exerciseId, OnExerciseSavedListener listener) {
         DatabaseReference customExercisesRef = userWorkoutPlansRef.child(userId).child(workoutPlanId).child("WarehouseExercises").child(exerciseId);
+        exercise.setNum(-1);
         customExercisesRef.setValue(exercise).addOnCompleteListener(task -> {
             if (listener != null) {
                 if (task.isSuccessful()) {
@@ -204,5 +206,39 @@ public class DatabaseUtils {
                 .addOnSuccessListener(aVoid -> Log.e("FirebaseDatabase", "URL saved successfully"))
                 .addOnFailureListener(e -> Log.e("FirebaseDatabase", "Failed to save URL: " + e.getMessage()));
 
+    }
+
+    public static void saveExerciseToFirebase(String userId, String planId, CustomExercise exercise) {
+        DatabaseReference warehouseRef = userWorkoutPlansRef.child(userId).child(planId).child("WarehouseExercises").child(exercise.getName());
+        DatabaseReference customRef = userWorkoutPlansRef.child(userId).child(planId).child("customExercises").child(exercise.getName());
+        // check if exist in warehouse
+        warehouseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // if exist in warehouse, update it
+                    warehouseRef.setValue(exercise).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("Firebase", "Warehouse exercise updated successfully.");
+                        } else {
+                            Log.e("Firebase", "Failed to update warehouse exercise.");
+                        }
+                    });
+                } else {
+                    // else save it in custom exercises
+                    customRef.setValue(exercise).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("Firebase", "Custom exercise saved successfully.");
+                        } else {
+                            Log.e("Firebase", "Failed to save custom exercise.");
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Error checking warehouse exercises: " + databaseError.getMessage());
+            }
+        });
     }
 }

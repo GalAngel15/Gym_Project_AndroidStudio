@@ -1,9 +1,12 @@
 package com.example.gymproject.managers;
 
+import static androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags;
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +66,8 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
+
+        setupItemTouchHelper();
     }
 
     public void loadAllUserExercises() {
@@ -151,7 +157,9 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     }
 
     private void updateAndSortExercises(List<CustomExercise> tempList) {
-        tempList.sort(Comparator.comparing(CustomExercise::getMainMuscle).thenComparing(CustomExercise::getName));
+        tempList.sort(Comparator.comparingInt(CustomExercise::getNum)
+                .thenComparing(Comparator.comparing(CustomExercise::getMainMuscle)
+                .thenComparing(CustomExercise::getName)));
         if (!exerciseList.isEmpty()) {
             exerciseList.clear();
         }
@@ -245,5 +253,35 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     public int getSetsForExercise(String name) {
         Integer currentSetsObj = exerciseSetsMap.get(name);
         return currentSetsObj != null ? currentSetsObj : 0;
+    }
+
+    private void setupItemTouchHelper() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                return makeMovementFlags(dragFlags, 0);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                // עדכון הרשימה עם הסדר החדש
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+                Collections.swap(exerciseList, fromPosition, toPosition); // החלפה ברשימה
+                for (int i = 0; i < exerciseList.size(); i++) {
+                    exerciseList.get(i).setNum(i);
+                    DatabaseUtils.saveExerciseToFirebase(currentUser.getUid(), workoutPlanId, exerciseList.get(i)); // שמירת כל תרגיל עם num מעודכן
+                }
+                adapter.notifyItemMoved(fromPosition, toPosition); // עדכון ה-RecyclerView
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // לא נדרשת פעולה עבור החלקה
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView); // חיבור ל-RecyclerView
     }
 }
