@@ -22,7 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -38,19 +40,21 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     private final Context context;
     private final String workoutPlanId;
     private final SetsManager workoutSetManager;
+    private Map<String, Integer> exerciseSetsMap;
 
     public WorkoutPlanManager(Context context, FirebaseUser currentUser, String workoutPlanId) {
         this.currentUser = currentUser;
         this.context = context;
         this.exerciseList = new ArrayList<>();
         this.workoutPlanId = workoutPlanId;
+        this.exerciseSetsMap = new HashMap<>();
         workoutSetManager = new SetsManager(this, (PlanPageActivity) context);
         initRecyclerView();
     }
 
     public void initRecyclerView() {
         this.recyclerView = ((PlanPageActivity) context).findViewById(R.id.myPlansRecyclerView);
-        adapter = new CustomExerciseAdapter(context, exerciseList);
+        adapter = new CustomExerciseAdapter(context, exerciseList, this);
 
         adapter.setOnExerciseEditedListener(this::handleExerciseEdit);
         adapter.setOnExerciseDeletedListener(this::handleExerciseDelete);
@@ -155,8 +159,8 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         adapter.notifyDataSetChanged();
     }
 
-    private void handleExerciseEdit(CustomExercise exercise) {
-        DialogUtils.showEditExerciseDialog(context, exercise, updatedExercise ->
+    private void handleExerciseEdit(CustomExercise exercise, int position) {
+        DialogUtils.showEditExerciseDialog(context, exercise, (updatedExercise, place) ->
                 DatabaseUtils.updateCustomExerciseInFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
                     if (task.isSuccessful()) {
                         updateExerciseInList(exercise, updatedExercise);
@@ -179,8 +183,8 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void handleExerciseDelete(CustomExercise exercise) {
-        DialogUtils.showDeleteExerciseDialog(context, exercise, updatedExercise ->
+    private void handleExerciseDelete(CustomExercise exercise, int position) {
+        DialogUtils.showDeleteExerciseDialog(context, exercise, (updatedExercise, place) ->
                 DatabaseUtils.deleteExerciseFromFirebase(currentUser.getUid(), workoutPlanId, updatedExercise, task -> {
                     if (task.isSuccessful()) {
                         removeExerciseFromList(exercise);
@@ -209,13 +213,19 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
     }
 
     @Override
-    public void onSetCompleted(int setCount, CustomExercise customExercise) {
-        int setsRemaining = customExercise.getSets() - setCount;
-        Toast.makeText(context, "Set " + setCount + " completed! " + setsRemaining + " sets remaining.", Toast.LENGTH_SHORT).show();
+    public void onSetCompleted(CustomExercise customExercise, int position) {
+        Integer currentSetsObj = exerciseSetsMap.getOrDefault(customExercise.getName(), 0);
+        int currentSets = currentSetsObj != null ? currentSetsObj : 0;
+        currentSets++; // Increment the set count
+        exerciseSetsMap.put(customExercise.getName(), currentSets);
+
+        int setsRemaining = customExercise.getSets() - currentSets;
+        Toast.makeText(context, "Set " + currentSets + " completed! " + setsRemaining + " sets remaining.", Toast.LENGTH_SHORT).show();
 
         if (setsRemaining <= 0) {
             Toast.makeText(context, "Exercise completed!", Toast.LENGTH_SHORT).show();
         }
+        adapter.notifyItemChanged(position);
     }
 
     @Override
@@ -230,5 +240,10 @@ public class WorkoutPlanManager implements SetsManager.OnRestFinishListener {
         if (requestCode == 1 && resultCode == AppCompatActivity.RESULT_OK) {
             onRestFinished();
         }
+    }
+
+    public int getSetsForExercise(String name) {
+        Integer currentSetsObj = exerciseSetsMap.get(name);
+        return currentSetsObj != null ? currentSetsObj : 0;
     }
 }

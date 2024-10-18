@@ -71,7 +71,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Edit exercise"
+                android:contentDescription="Done set"
                 android:src="@drawable/ic_done"/>
 
 

@@ -17,7 +17,7 @@ public class SetsManager {
         this.activity = activity;
     }
 
-    public void startNewSet(CustomExercise exercise) {
+    public void startNewSet(CustomExercise exercise, int position) {
         if (currentExercise == null || !isSameExercise(exercise)) {
             setCount = 0;
             currentExercise = exercise; // עדכון התרגיל הנוכחי
@@ -25,7 +25,7 @@ public class SetsManager {
 
         setCount++;
         if (onRestFinishListener != null) {
-            onRestFinishListener.onSetCompleted(setCount, exercise);
+            onRestFinishListener.onSetCompleted(exercise, position);
         }
 
         // פתיחת המסך עם הטיימר
@@ -38,7 +38,7 @@ public class SetsManager {
     }
 
     public interface OnRestFinishListener {
-        void onSetCompleted(int setCount, CustomExercise customExercise);
+        void onSetCompleted(CustomExercise customExercise, int position);
         //void onTick(long millisUntilFinished);
         void onRestFinished();
     }

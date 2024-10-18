@@ -125,7 +125,7 @@ public class DialogUtils {
             exercise.setWeight(Double.parseDouble(weight));
             exercise.setRest(Integer.parseInt(rest));
             exercise.setOther(notes);
-            listener.onExerciseEdited(exercise);
+            listener.onExerciseEdited(exercise,0); //dummy 0
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
@@ -138,7 +138,7 @@ public class DialogUtils {
         builder.setTitle("Delete Confirmation")
             .setMessage("Are you sure you want to delete the exercise " + exercise.getName() + "?")
             .setPositiveButton("Yes", (dialog, which) -> {
-                        listener.onExerciseEdited(exercise);
+                        listener.onExerciseEdited(exercise,0); //dummy 0
                     });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());

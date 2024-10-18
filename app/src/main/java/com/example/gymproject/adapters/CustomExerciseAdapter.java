@@ -1,6 +1,7 @@
 package com.example.gymproject.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymproject.R;
 import com.example.gymproject.interfaces.OnExerciseEditedListener;
+import com.example.gymproject.managers.WorkoutPlanManager;
 import com.example.gymproject.models.CustomExercise;
 import com.example.gymproject.utilities.ImageLoader;
 
@@ -23,12 +26,14 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
 
     private final Context context;
     private List<CustomExercise> exerciseList;
+    private WorkoutPlanManager workoutPlanManager;
     private OnExerciseEditedListener onExerciseEditedListener, onExerciseDeletitedListener, onDoneSetListener;
 
 
-    public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList) {
+    public CustomExerciseAdapter(Context context, List<CustomExercise> exerciseList, WorkoutPlanManager workoutPlanManager) {
         this.context = context;
         this.exerciseList = exerciseList;
+        this.workoutPlanManager = workoutPlanManager;
     }
 
     public void setOnExerciseEditedListener(OnExerciseEditedListener listener) {
@@ -43,6 +48,24 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         this.onDoneSetListener = listener;
     }
 
+    private void setButtonColors(ExerciseViewHolder holder, int color) {
+        holder.btnDoneSet.setColorFilter(ContextCompat.getColor(context, color));
+        holder.btnDelete.setColorFilter(ContextCompat.getColor(context, color));
+        holder.btnEdit.setColorFilter(ContextCompat.getColor(context, color));
+    }
+
+
+    public void setTableRowBorderColor(View tableRow, int color) {
+        // קבלת ה-drawable הנוכחי של הרקע
+        GradientDrawable background = (GradientDrawable) tableRow.getBackground();
+
+        // שינוי צבע ה-stroke (המסגרת)
+        background.setStroke(3, ContextCompat.getColor(context, color)); // 3dp רוחב הקו
+
+        // עדכון הרקע
+        tableRow.setBackground(background);
+    }
+
     @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,10 +76,22 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         CustomExercise exercise = exerciseList.get(position);
+        int completedSets = workoutPlanManager.getSetsForExercise(exercise.getName());
 
         holder.imageViewExercise.setImageDrawable(null);
         if (!exercise.getImageUrl().isEmpty())
             ImageLoader.getInstance().load(exercise.getImageUrl(), holder.imageViewExercise);
+
+        if (completedSets == 0) {
+            setButtonColors(holder, R.color.red); // צבע התחלה
+            setTableRowBorderColor(holder.itemView, R.color.red); // צבע התחלה
+        } else if (completedSets < exercise.getSets()) {
+            setButtonColors(holder, R.color.yellow); // צבע בזמן ביצוע סטים
+            setTableRowBorderColor(holder.itemView, R.color.yellow); // צבע התחלה
+        } else {
+            setButtonColors(holder, R.color.green); // צבע כשכל הסטים הושלמו
+            setTableRowBorderColor(holder.itemView, R.color.green); // צבע התחלה
+        }
 
         holder.textViewExerciseName.setText(exercise.getName());
         holder.textViewSets.setText(String.valueOf(exercise.getSets()));
@@ -65,13 +100,13 @@ public class CustomExerciseAdapter extends RecyclerView.Adapter<CustomExerciseAd
         holder.textViewRest.setText(String.valueOf(exercise.getRest()));
         holder.additionalComments.setText(exercise.getOther());
         holder.btnEdit.setOnClickListener(v -> {
-            onExerciseEditedListener.onExerciseEdited(exercise);
+            onExerciseEditedListener.onExerciseEdited(exercise, position);
         });
         holder.btnDelete.setOnClickListener(v -> {
-            onExerciseDeletitedListener.onExerciseEdited(exercise);
+            onExerciseDeletitedListener.onExerciseEdited(exercise, position);
         });
         holder.btnDoneSet.setOnClickListener(v->{
-            onDoneSetListener.onExerciseEdited(exercise);
+            onDoneSetListener.onExerciseEdited(exercise, position);
         });
 
     }
