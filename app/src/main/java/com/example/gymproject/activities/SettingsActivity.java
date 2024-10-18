@@ -54,7 +54,6 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void navigateBackToPlans() {
-        Intent intent = new Intent(this, MyPlansActivity.class);
-        startActivity(intent);
+        finish();
     }
 }
